@@ -20,7 +20,9 @@ const SettingsScreen = () => {
 
 const router=useRouter()
   const toggleLanguage = () => {
-    setLanguage((prevLang) => prevLang === "English" ? "हिन्दी" : "English");
+    setLanguage((prevLang) => prevLang === "English" ? "हिंदी" : "English");
+    console.log(language)
+    changeLanguage(language);
   };
 
   const handleLogout=async()=>{
@@ -45,7 +47,7 @@ router.replace("login")
       <View style={styles.menuContainer}>
         <TouchableOpacity style={styles.menuItem} onPress={toggleLanguage}>
           <Ionicons name="globe-outline" size={24} color="black" />
-          <Text style={styles.menuText}>Change Language</Text>
+          <Text style={styles.menuText}>{t('changeLanguage')}</Text>
           <Text style={styles.menuValue}>{language}</Text>
         </TouchableOpacity>
 
