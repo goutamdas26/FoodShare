@@ -4,18 +4,26 @@
 import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
-
+import axios from "axios";
 export default function SignupScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!name || !email || !password) {
       alert("Please fill all fields");
       return;
     }
+    const response=await axios.post("http://localhost:5000/api/auth/register", {
+      name,
+      email,
+      password,
+    });
+    console.log(response
+
+    )
     alert("Signed Up Successfully");
     router.push("/home");
   };
