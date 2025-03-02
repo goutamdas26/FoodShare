@@ -2,10 +2,11 @@ import { Tabs } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-
+import { ItemsProvider } from "../../src/context/ItemContext";
 export default function Layout() {
   return (
-    <Tabs screenOptions={{ tabBarShowLabel: false, headerShown: false }}>
+ <ItemsProvider>
+     <Tabs screenOptions={{ tabBarShowLabel: false, headerShown: false }}>
       <Tabs.Screen
         name="index"
         options={{
@@ -60,6 +61,7 @@ export default function Layout() {
         }}
       />
     </Tabs>
+ </ItemsProvider>
   );
 }
 

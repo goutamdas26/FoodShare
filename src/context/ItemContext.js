@@ -15,13 +15,14 @@ export const ItemsProvider = ({ children }) => {
       setLoading(true);
       const response = await axios.get("http://192.168.29.119:5000/api/food/available");
       setItems(response.data);
-      console.log(response.data)
+      
       setLoading(false);
     } catch (error) {
       console.error("Error fetching items:", error);
       setLoading(false);
     }
   };
+
 
 
   const addItem = async (newItem) => {

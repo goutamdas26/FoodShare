@@ -27,6 +27,7 @@ const router=useRouter()
 
   const handleLogout=async()=>{
       const token =await  SecureStore.deleteItemAsync("userToken");
+      console.log(token)
 router.replace("login")
 
   }

@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 import { useNavigation, useRouter } from "expo-router";
-import React from "react";
+import React, { useContext } from "react";
 import {
   View,
   Text,
@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-
+import { ItemsContext } from "../../../src/context/ItemContext";
 const foodData = [
   {
     id: "1",
@@ -44,13 +44,15 @@ const foodData = [
 ];
 
 const AvailableFoodScreen = () => {
+  const { items, loading, fetchItems } = useContext(ItemsContext);
+  console.log(items)
   const router = useRouter();
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Available Food</Text>
       <FlatList
-        data={foodData}
-        keyExtractor={(item) => item.id}
+        data={items}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.card} onPress={()=>router.push({pathname:"/(tabs)/${item.id}"})}>
             <Image source={{ uri: item.image }} style={styles.image} />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -10,15 +10,18 @@ import {
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
+import axios from "axios";
 
 const DonateFoodScreen = () => {
+
   const [images, setImages] = useState([]);
-  const [foodType, setFoodType] = useState("");
+  const [foodName, setFoodName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [quantity, setQuantity] = useState("");
   const pickImages = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -53,22 +56,50 @@ const DonateFoodScreen = () => {
     }
   };
 
-  const handleSubmit = () => {
-    if (
-      images.length === 0 ||
-      !foodType ||
-      !category ||
-      !description ||
-      !location ||
-      !phone
-    ) {
+
+  const handleSubmit = async () => {
+    if (!foodName || !category || !description || !location || !phone) {
       Alert.alert("Missing Fields", "Please fill all details");
       return;
     }
+  
+    const formData = new FormData();
+    formData.append("foodName", foodName);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("phone", phone);
+    formData.append("quantity", quantity);
+    try {
+      console.log(formData);
 
-    Alert.alert("Success", "Food donation submitted successfully!");
-    // Here you can add API call to submit the data
+      const response = await axios.post(
+        "http://192.168.29.119:5000/api/food/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      if (response.status === 201) {
+        Alert.alert("Success", "Food donation submitted successfully!");
+        setFoodName("");
+        setCategory("");
+        setDescription("");
+        setLocation("");
+        setPhone("");
+        setQuantity("");
+      } else {
+        Alert.alert("Error", "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting donation:", error.response?.data || error);
+      Alert.alert("Error", "Failed to submit donation. Please try again.");
+    }
   };
+  
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
@@ -103,9 +134,9 @@ const DonateFoodScreen = () => {
       </ScrollView>
 
       <TextInput
-        placeholder="Food Type"
-        value={foodType}
-        onChangeText={setFoodType}
+        placeholder="Food Name"
+        value={foodName}
+        onChangeText={setFoodName}
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
       <TextInput
@@ -118,6 +149,13 @@ const DonateFoodScreen = () => {
         placeholder="Description"
         value={description}
         onChangeText={setDescription}
+        multiline
+        style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+      />
+      <TextInput
+        placeholder="Quantity"
+        value={quantity}
+        onChangeText={setQuantity}
         multiline
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
@@ -165,3 +203,5 @@ const DonateFoodScreen = () => {
 };
 
 export default DonateFoodScreen;
+
+
