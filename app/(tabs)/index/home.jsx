@@ -1,3 +1,110 @@
+// import { useRoute } from "@react-navigation/native";
+// import { useNavigation, useRouter } from "expo-router";
+// import React, { useContext } from "react";
+// import {
+//   View,
+//   Text,
+//   Image,
+//   FlatList,
+//   TouchableOpacity,
+//   StyleSheet,
+// } from "react-native";
+// import { ItemsContext } from "../../../src/context/ItemContext";
+// import foodImage from "../../../assets/images/food.png"
+
+
+
+
+// const AvailableFoodScreen = () => {
+//   const { items, loading, fetchItems } = useContext(ItemsContext);
+//   const handleDetails=(item)=>{
+//     console.log(item)
+//     router.push({
+//       pathname: "/(tabs)/food-details",
+//       params: { 
+//         _id: String(item._id),
+//         name: String(item.name),
+//         quantity: String(item.quantity),
+//         category: String(item.category),
+//         dateTime: String(item.dateTime),
+//         location: String(item.location),
+//         status: String(item.status)
+//       },
+//     });
+    
+//   }
+//   const router = useRouter();
+//   return (
+//     <View style={styles.container}>
+//       <Text style={styles.header}>Available Food</Text>
+//       <FlatList
+//         data={items}
+//         keyExtractor={(item) => item._id}
+//         renderItem={({ item }) => (
+//           <TouchableOpacity style={styles.card} onPress={()=>handleDetails(item)}
+// >
+//             <Image source={foodImage} style={styles.image} />
+//             <View style={styles.info}>
+//               <Text style={styles.foodName}>{item.name}</Text>
+//               <Text style={styles.foodDetails}>{item.quantity}</Text>
+//               <Text style={styles.foodCategory}>Category: {item.category}</Text>
+//               <Text style={styles.foodDateTime}>
+//                 Date & Time: {item.dateTime}
+//               </Text>
+//               <TouchableOpacity
+//                 style={styles.claimButton}
+//                 onPress={() =>
+//                   router.push({
+//                     pathname: "/(tabs)/index/2",
+//                     params: { id: item._id }
+//                   })
+//                 }
+//               >
+//                 <Text style={styles.claimText}>Claim</Text>
+//               </TouchableOpacity>
+//             </View>
+//           </TouchableOpacity>
+//         )}
+//       />
+//     </View>
+//   );
+  
+// };
+
+// const styles = StyleSheet.create({
+//   container: { flex: 1, backgroundColor: "#fff", padding: 20 },
+//   header: {
+//     fontSize: 24,
+//     fontWeight: "bold",
+//     textAlign: "center",
+//     marginBottom: 20,
+//   },
+//   card: {
+//     flexDirection: "row",
+//     backgroundColor: "#f8f8f8",
+//     borderRadius: 10,
+//     marginBottom: 15,
+//     padding: 10,
+//     alignItems: "center",
+//   },
+//   image: { width: 80, height: 80, borderRadius: 10, marginRight: 15 },
+//   info: { flex: 1 },
+//   foodName: { fontSize: 18, fontWeight: "bold" },
+//   foodDetails: { fontSize: 14, color: "gray" },
+//   foodCategory: { fontSize: 14, color: "blue" },
+//   foodDateTime: { fontSize: 14, color: "darkgray" },
+//   claimButton: {
+//     backgroundColor: "green",
+//     padding: 8,
+//     borderRadius: 5,
+//     marginTop: 5,
+//     alignItems: "center",
+//   },
+//   claimText: { color: "white", fontSize: 14, fontWeight: "bold" },
+// });
+
+// export default AvailableFoodScreen;
+
 import { useRoute } from "@react-navigation/native";
 import { useNavigation, useRouter } from "expo-router";
 import React, { useContext } from "react";

@@ -12,7 +12,7 @@ export default function Donated() {
     // ... existing code ...
     <Stack.Navigator>
       <Stack.Screen
-        name="index"
+        name="home"
         options={{ title: "Claimed" ,headerShown: false}}
         component={index}
        

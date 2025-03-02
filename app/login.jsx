@@ -126,12 +126,11 @@ export default function LoginScreen() {
         email,
         password,
       });
-console.log(response.status)
       if (response.data && response.data.token) {
         console.log(response.data.token)
         await SecureStore.setItemAsync("userToken", response.data.token);
         alert("Logged In Successfully");
-        router.push("/home");
+        router.push("/(tabs)/home");
       } else {
         alert("Invalid credentials. Please try again.");
       }

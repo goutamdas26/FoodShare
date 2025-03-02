@@ -3,11 +3,11 @@ import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 
 export default function ClaimDetailsScreen() {
-  const { id } = useLocalSearchParams();
-
+  const params = useLocalSearchParams();
+console.log(params)
   // Mock data - replace with your actual data fetching logic
   const claimDetails = {
-    id,
+    id:params.id,
     foodName: "Mixed Vegetables Curry",
     quantity: "5 servings",
     claimedDate: "2024-03-15 14:30",
@@ -149,4 +149,4 @@ const styles = StyleSheet.create({
     color: "#666",
     lineHeight: 24,
   },
-});
+})

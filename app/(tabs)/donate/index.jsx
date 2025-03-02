@@ -11,7 +11,7 @@ import {
 import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import axios from "axios";
-
+import * as SecureStore from "expo-secure-store";
 const DonateFoodScreen = () => {
 
   const [images, setImages] = useState([]);
@@ -57,49 +57,105 @@ const DonateFoodScreen = () => {
   };
 
 
-  const handleSubmit = async () => {
-    if (!foodName || !category || !description || !location || !phone) {
-      Alert.alert("Missing Fields", "Please fill all details");
-      return;
-    }
+  // const handleSubmit = async () => {
+  //   if (!foodName || !category || !description || !location || !phone) {
+  //     Alert.alert("Missing Fields", "Please fill all details");
+  //     return;
+  //   }
   
-    const formData = new FormData();
-    formData.append("foodName", foodName);
-    formData.append("category", category);
-    formData.append("description", description);
-    formData.append("location", location);
-    formData.append("phone", phone);
-    formData.append("quantity", quantity);
-    try {
-      console.log(formData);
+  //   const formData = new FormData();
+  //   formData.append("foodName", foodName);
+  //   formData.append("category", category);
+  //   formData.append("description", description);
+  //   formData.append("location", location);
+  //   formData.append("phone", phone);
+  //   formData.append("quantity", quantity);
+  //   try {
+  //     console.log(formData);
 
-      const response = await axios.post(
-        "http://192.168.29.119:5000/api/food/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+  //     const response = await axios.post(
+  //       "http://192.168.29.119:5000/api/food/add",
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
   
-      if (response.status === 201) {
-        Alert.alert("Success", "Food donation submitted successfully!");
-        setFoodName("");
-        setCategory("");
-        setDescription("");
-        setLocation("");
-        setPhone("");
-        setQuantity("");
-      } else {
-        Alert.alert("Error", "Something went wrong. Please try again.");
+  //     if (response.status === 201) {
+  //       Alert.alert("Success", "Food donation submitted successfully!");
+  //       setFoodName("");
+  //       setCategory("");
+  //       setDescription("");
+  //       setLocation("");
+  //       setPhone("");
+  //       setQuantity("");
+  //     } else {
+  //       Alert.alert("Error", "Something went wrong. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting donation:", error.response?.data || error);
+  //     Alert.alert("Error", "Failed to submit donation. Please try again.");
+  //   }
+  // };
+
+
+const handleSubmit = async () => {
+ 
+  if (!foodName || !category || !description || !location || !phone) {
+    Alert.alert("Missing Fields", "Please fill all details");
+    return;
+  }
+
+  
+  const token =await  SecureStore.getItemAsync("userToken");
+
+  if (!token) {
+    Alert.alert("Authentication Error", "Please log in again.");
+    return;
+  }
+
+
+  const formData = new FormData();
+  formData.append("foodName", foodName);
+  formData.append("category", category);
+  formData.append("description", description);
+  formData.append("location", location);
+  formData.append("phone", phone);
+  formData.append("quantity", quantity);
+
+  try {
+   
+
+    const response = await axios.post(
+      "http://192.168.29.119:5000/api/food/add",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`, // Include JWT token
+        },
       }
-    } catch (error) {
-      console.error("Error submitting donation:", error.response?.data || error);
-      Alert.alert("Error", "Failed to submit donation. Please try again.");
+    );
+
+    if (response.status === 201) {
+      Alert.alert("Success", "Food donation submitted successfully!");
+      setFoodName("");
+      setCategory("");
+      setDescription("");
+      setLocation("");
+      setPhone("");
+      setQuantity("");
+    } else {
+      Alert.alert("Error", "Something went wrong. Please try again.");
     }
-  };
-  
+  } catch (error) {
+    console.error("Error submitting donation:", error.response?.data || error);
+    Alert.alert("Error", "Failed to submit donation. Please try again.");
+  }
+};
+
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>

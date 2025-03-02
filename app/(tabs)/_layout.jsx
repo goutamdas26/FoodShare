@@ -5,7 +5,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { ItemsProvider } from "../../src/context/ItemContext";
 export default function Layout() {
   return (
- <ItemsProvider>
+
      <Tabs screenOptions={{ tabBarShowLabel: false, headerShown: false }}>
       <Tabs.Screen
         name="index"
@@ -61,7 +61,7 @@ export default function Layout() {
         }}
       />
     </Tabs>
- </ItemsProvider>
+
   );
 }
 

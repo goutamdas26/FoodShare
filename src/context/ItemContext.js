@@ -11,7 +11,7 @@ export const ItemsProvider = ({ children }) => {
   // Fetch items from the backend
   const fetchItems = async () => {
     try {
-      console.log(process.env.API_URL);
+     
       setLoading(true);
       const response = await axios.get("http://192.168.29.119:5000/api/food/available");
       setItems(response.data);
