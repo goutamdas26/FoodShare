@@ -5,7 +5,9 @@ import React from "react";
 import { View, Text } from "react-native";
 import index from "./home";
 
-import ClaimDetailsScreen from "./[id]";
+
+
+import Details from "./food-details";
 const Stack=createNativeStackNavigator()
 export default function Donated() {
   return (
@@ -18,7 +20,8 @@ export default function Donated() {
        
       />
 
-      <Stack.Screen name="[id]" options={{ title: "Ho" }} component={ClaimDetailsScreen} />
+      {/* <Stack.Screen name="[id]" options={{ title: "Ho" }} component={ClaimDetailsScreen} /> */}
+      <Stack.Screen name="food-details" component={Details}/>
     </Stack.Navigator>
     // ... existing code ...
   );

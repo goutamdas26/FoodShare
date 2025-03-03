@@ -5,7 +5,7 @@ import React from "react";
 import { View, Text } from "react-native";
 
 import Ho from "./Ho";
-import DonationDetails from "./[id]";
+import DonationDetails from "./donation-details";
 import DonatedScreen from "./index";
 const Stack = createNativeStackNavigator();
 export default function Donated() {
@@ -18,7 +18,7 @@ export default function Donated() {
         component={DonatedScreen}
       />
       <Stack.Screen name="Ho" options={{ title: "Ho" }} component={Ho} />
-      <Stack.Screen name="[id]" options={{ title: "Ho" }} component={DonationDetails} />
+      <Stack.Screen name="donation-details" options={{ title: "Details" }} component={DonationDetails} />
     </Stack.Navigator>
     // ... existing code ...
   );

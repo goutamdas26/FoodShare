@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 // Mock data - replace with your actual data
 const CLAIMED_ITEMS = [
@@ -34,11 +35,14 @@ const CLAIMED_ITEMS = [
 
 export default function ClaimedScreen() {
   const router = useRouter();
+  const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
+    //  onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
+    onPress={() => navigation.navigate("claimed-details", item)}  // Pass params
+
     >
       <Image
         source={{ uri: item.image }}

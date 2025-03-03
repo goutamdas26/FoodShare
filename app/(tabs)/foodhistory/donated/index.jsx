@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
 
 // Mock data - replace with your actual data
 const DONATED_ITEMS = [
@@ -36,7 +37,7 @@ const DONATED_ITEMS = [
 
 export default function DonatedScreen() {
   const router = useRouter();
-
+  const navigation = useNavigation();
   const getStatusColor = (status) => {
     switch (status) {
       case "Available":
@@ -53,7 +54,9 @@ export default function DonatedScreen() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => router.push(`/(tabs)/foodhistory/donated/${item.id}`)}
+     // onPress={() => router.push(`/(tabs)/foodhistory/donated/${item.id}`)}
+     onPress={() => navigation.navigate("donation-details", item)}  // Pass params
+
     >
       <Image
         source={{ uri: item.image }}

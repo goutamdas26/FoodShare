@@ -1,32 +1,34 @@
 import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useRoute } from "@react-navigation/native";
 
-export default function ClaimDetailsScreen() {
-  const { id } = useLocalSearchParams();
+export default function DetailsScreen() {
 
+  const route = useRoute();
+  const claimDetails = route.params || {}; 
   // Mock data - replace with your actual data fetching logic
-  const claimDetails = {
-    id,
-    foodName: "Mixed Vegetables Curry",
-    quantity: "5 servings",
-    claimedDate: "2024-03-15 14:30",
-    pickupDate: "2024-03-15 16:45",
-    donorName: "Restaurant ABC",
-    donorAddress: "123 Food Street, City",
-    donorContact: "+1234567890",
-    status: "Picked Up",
-    description:
-      "Fresh vegetable curry with rice. Packed in disposable containers.",
-    image: "https://example.com/food1.jpg", // Replace with your image
-  };
+  // const claimDetails = {
+  //   id:params.id,
+  //   foodName: "Mixed Vegetables Curry",
+  //   quantity: "5 servings",
+  //   claimedDate: "2024-03-15 14:30",
+  //   pickupDate: "2024-03-15 16:45",
+  //   donorName: "Restaurant ABC",
+  //   donorAddress: "123 Food Street, City",
+  //   donorContact: "+1234567890",
+  //   status: "Picked Up",
+  //   description:
+  //     "Fresh vegetable curry with rice. Packed in disposable containers.",
+  //   image: "https://example.com/food1.jpg", // Replace with your image
+  // };
 
   return (
     <ScrollView style={styles.container}>
       <Image
         source={{ uri: claimDetails.image }}
         style={styles.image}
-        defaultSource={require("../../../../assets/images/icon.png")}
+        defaultSource={require("../../../assets/images/icon.png")}
       />
 
       <View style={styles.content}>
@@ -149,4 +151,4 @@ const styles = StyleSheet.create({
     color: "#666",
     lineHeight: 24,
   },
-});
+})

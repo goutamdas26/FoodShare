@@ -105,8 +105,8 @@
 
 // export default AvailableFoodScreen;
 
-import { useRoute } from "@react-navigation/native";
-import { useNavigation, useRouter } from "expo-router";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import {  useRouter } from "expo-router";
 import React, { useContext } from "react";
 import {
   View,
@@ -154,6 +154,8 @@ const AvailableFoodScreen = () => {
   const { items, loading, fetchItems } = useContext(ItemsContext);
   console.log(items)
   const router = useRouter();
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Available Food</Text>
@@ -161,7 +163,7 @@ const AvailableFoodScreen = () => {
         data={items}
         keyExtractor={(item) => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.card} onPress={()=>router.push({pathname:"/(tabs)/${item.id}"})}>
+          <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate("food-details",item)}>
             <Image source={{ uri: item.image }} style={styles.image} />
             <View style={styles.info}>
               <Text style={styles.foodName}>{item.name}</Text>
@@ -172,11 +174,7 @@ const AvailableFoodScreen = () => {
               </Text>
               <TouchableOpacity
                 style={styles.claimButton}
-                onPress={() =>
-                  router.push({
-                    pathname: "/(tabs)/2",
-                  })
-                }
+                onPress={()=>navigation.navigate("food-details",item)}
               >
                 <Text style={styles.claimText}>Claim</Text>
               </TouchableOpacity>
