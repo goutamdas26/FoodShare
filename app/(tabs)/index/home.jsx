@@ -1,6 +1,8 @@
-// import { useRoute } from "@react-navigation/native";
-// import { useNavigation, useRouter } from "expo-router";
-// import React, { useContext } from "react";
+
+
+// import { useNavigation, useRoute } from "@react-navigation/native";
+// import {  useRouter } from "expo-router";
+// import React, { useContext, useEffect } from "react";
 // import {
 //   View,
 //   Text,
@@ -10,30 +12,52 @@
 //   StyleSheet,
 // } from "react-native";
 // import { ItemsContext } from "../../../src/context/ItemContext";
-// import foodImage from "../../../assets/images/food.png"
+// import Constants from "expo-constants";
 
-
-
+// const foodData = [
+//   {
+//     id: "1",
+//     name: "Veg Biryani",
+//     image: "https://via.placeholder.com/150",
+//     quantity: "2 plates",
+//     category: "Human",
+//     location: "Sector 22, Chandigarh",
+//     donor: "John Doe",
+//     dateTime: "2025-02-10 14:30",
+//   },
+//   {
+//     id: "2",
+//     name: "Chicken Rice",
+//     image: "https://via.placeholder.com/150",
+//     quantity: "1 plate",
+//     category: "Pet",
+//     location: "MG Road, Bangalore",
+//     donor: "Jane Smith",
+//     dateTime: "2025-02-10 16:00",
+//   },
+//   {
+//     id: "3",
+//     name: "Dal & Roti",
+//     image: "https://via.placeholder.com/150",
+//     quantity: "3 plates",
+//     category: "Human",
+//     location: "Connaught Place, Delhi",
+//     donor: "Raj Kumar",
+//     dateTime: "2025-02-10 18:15",
+//   },
+// ];
 
 // const AvailableFoodScreen = () => {
 //   const { items, loading, fetchItems } = useContext(ItemsContext);
-//   const handleDetails=(item)=>{
-//     console.log(item)
-//     router.push({
-//       pathname: "/(tabs)/food-details",
-//       params: { 
-//         _id: String(item._id),
-//         name: String(item.name),
-//         quantity: String(item.quantity),
-//         category: String(item.category),
-//         dateTime: String(item.dateTime),
-//         location: String(item.location),
-//         status: String(item.status)
-//       },
-//     });
-    
-//   }
+//   const API_URL = Constants.expoConfig.extra.API_URL;
+//   console.log(API_URL)
+// console.log(items)
 //   const router = useRouter();
+//   const navigation = useNavigation();
+// useEffect(() => {
+//   console.log("Component re-rendered");
+// }, []);
+
 //   return (
 //     <View style={styles.container}>
 //       <Text style={styles.header}>Available Food</Text>
@@ -41,9 +65,8 @@
 //         data={items}
 //         keyExtractor={(item) => item._id}
 //         renderItem={({ item }) => (
-//           <TouchableOpacity style={styles.card} onPress={()=>handleDetails(item)}
-// >
-//             <Image source={foodImage} style={styles.image} />
+//           <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate("food-details",item)}>
+//             <Image source={{ uri: item.image }} style={styles.image} />
 //             <View style={styles.info}>
 //               <Text style={styles.foodName}>{item.name}</Text>
 //               <Text style={styles.foodDetails}>{item.quantity}</Text>
@@ -53,12 +76,7 @@
 //               </Text>
 //               <TouchableOpacity
 //                 style={styles.claimButton}
-//                 onPress={() =>
-//                   router.push({
-//                     pathname: "/(tabs)/index/2",
-//                     params: { id: item._id }
-//                   })
-//                 }
+//                 onPress={()=>navigation.navigate("food-details",item)}
 //               >
 //                 <Text style={styles.claimText}>Claim</Text>
 //               </TouchableOpacity>
@@ -68,7 +86,6 @@
 //       />
 //     </View>
 //   );
-  
 // };
 
 // const styles = StyleSheet.create({
@@ -104,10 +121,9 @@
 // });
 
 // export default AvailableFoodScreen;
-
-import { useNavigation, useRoute } from "@react-navigation/native";
-import {  useRouter } from "expo-router";
-import React, { useContext, useEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
+import React, { useContext, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -115,49 +131,26 @@ import {
   FlatList,
   TouchableOpacity,
   StyleSheet,
+  RefreshControl,
 } from "react-native";
 import { ItemsContext } from "../../../src/context/ItemContext";
-const foodData = [
-  {
-    id: "1",
-    name: "Veg Biryani",
-    image: "https://via.placeholder.com/150",
-    quantity: "2 plates",
-    category: "Human",
-    location: "Sector 22, Chandigarh",
-    donor: "John Doe",
-    dateTime: "2025-02-10 14:30",
-  },
-  {
-    id: "2",
-    name: "Chicken Rice",
-    image: "https://via.placeholder.com/150",
-    quantity: "1 plate",
-    category: "Pet",
-    location: "MG Road, Bangalore",
-    donor: "Jane Smith",
-    dateTime: "2025-02-10 16:00",
-  },
-  {
-    id: "3",
-    name: "Dal & Roti",
-    image: "https://via.placeholder.com/150",
-    quantity: "3 plates",
-    category: "Human",
-    location: "Connaught Place, Delhi",
-    donor: "Raj Kumar",
-    dateTime: "2025-02-10 18:15",
-  },
-];
+import Constants from "expo-constants";
 
 const AvailableFoodScreen = () => {
   const { items, loading, fetchItems } = useContext(ItemsContext);
-console.log(items)
-  const router = useRouter();
+  const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
-useEffect(() => {
-  console.log("Component re-rendered");
-}, []);
+  const API_URL = Constants.expoConfig.extra.API_URL;
+  
+  useEffect(() => {
+    console.log("Component re-rendered");
+  }, []);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchItems();
+    setRefreshing(false);
+  };
 
   return (
     <View style={styles.container}>
@@ -165,19 +158,18 @@ useEffect(() => {
       <FlatList
         data={items}
         keyExtractor={(item) => item._id}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.card} onPress={()=>navigation.navigate("food-details",item)}>
+          <TouchableOpacity style={styles.card} onPress={() => navigation.navigate("food-details", item)}>
             <Image source={{ uri: item.image }} style={styles.image} />
             <View style={styles.info}>
               <Text style={styles.foodName}>{item.name}</Text>
               <Text style={styles.foodDetails}>{item.quantity}</Text>
               <Text style={styles.foodCategory}>Category: {item.category}</Text>
-              <Text style={styles.foodDateTime}>
-                Date & Time: {item.dateTime}
-              </Text>
+              <Text style={styles.foodDateTime}>Date & Time: {item.dateTime}</Text>
               <TouchableOpacity
                 style={styles.claimButton}
-                onPress={()=>navigation.navigate("food-details",item)}
+                onPress={() => navigation.navigate("food-details", item)}
               >
                 <Text style={styles.claimText}>Claim</Text>
               </TouchableOpacity>

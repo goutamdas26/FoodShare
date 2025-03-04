@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import Constants from "expo-constants";
 
 const Details = () => {
     const route = useRoute();

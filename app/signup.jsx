@@ -5,6 +5,9 @@ import { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import axios from "axios";
+import Constants from "expo-constants";
+const API_URL = Constants.expoConfig.extra.API_URL;
+
 export default function SignupScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -16,8 +19,8 @@ export default function SignupScreen() {
       alert("Please fill all fields");
       return;
     }
-    const response = await axios.post(
-      "http://192.168.91.165:5000/api/auth/register",
+    const response = await axios.post(API_URL+
+      "/api/auth/register",
       {
         name,
         email,

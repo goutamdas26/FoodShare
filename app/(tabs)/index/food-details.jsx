@@ -102,7 +102,7 @@ import { useRoute } from "@react-navigation/native";
 
 const Details = () => {
     const route = useRoute();
-    const { name, image, quantity, category, location, donor, dateTime } = route.params;
+    const { name, image, quantity, category, location,  dateTime,donarName,donorContact } = route.params;
 
 
     return (
@@ -144,7 +144,7 @@ const Details = () => {
               <Text style={styles.sectionTitle}>Donor Information</Text>
               <View style={styles.detailRow}>
                 <MaterialIcons name="store" size={20} color="#666" />
-                <Text style={styles.detailText}>{donor}</Text>
+                <Text style={styles.detailText}>{donarName}</Text>
               </View>
               <View style={styles.detailRow}>
                 <MaterialIcons name="location-on" size={20} color="#666" />
@@ -152,7 +152,7 @@ const Details = () => {
               </View>
               <View style={styles.detailRow}>
                 <MaterialIcons name="phone" size={20} color="#666" />
-                <Text style={styles.detailText}>{}</Text>
+                <Text style={styles.detailText}>{donorContact}</Text>
               </View>
             </View>
     

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -12,16 +12,19 @@ import * as ImagePicker from "expo-image-picker";
 import * as Location from "expo-location";
 import axios from "axios";
 import * as SecureStore from "expo-secure-store";
-const DonateFoodScreen = () => {
+import Constants from "expo-constants";
+const API_URL = Constants.expoConfig.extra.API_URL;
 
+
+const DonateFoodScreen = () => {
   const [images, setImages] = useState([]);
   const [foodName, setFoodName] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState("Human"); // Default category
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const [quantity, setQuantity] = useState("");
+
   const pickImages = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -56,106 +59,55 @@ const DonateFoodScreen = () => {
     }
   };
 
-
-  // const handleSubmit = async () => {
-  //   if (!foodName || !category || !description || !location || !phone) {
-  //     Alert.alert("Missing Fields", "Please fill all details");
-  //     return;
-  //   }
-  
-  //   const formData = new FormData();
-  //   formData.append("foodName", foodName);
-  //   formData.append("category", category);
-  //   formData.append("description", description);
-  //   formData.append("location", location);
-  //   formData.append("phone", phone);
-  //   formData.append("quantity", quantity);
-  //   try {
-
-
-  //     const response = await axios.post(
-  //       "http://192.168.29.119:5000/api/food/add",
-  //       formData,
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-  
-  //     if (response.status === 201) {
-  //       Alert.alert("Success", "Food donation submitted successfully!");
-  //       setFoodName("");
-  //       setCategory("");
-  //       setDescription("");
-  //       setLocation("");
-  //       setPhone("");
-  //       setQuantity("");
-  //     } else {
-  //       Alert.alert("Error", "Something went wrong. Please try again.");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error submitting donation:", error.response?.data || error);
-  //     Alert.alert("Error", "Failed to submit donation. Please try again.");
-  //   }
-  // };
-
-
-const handleSubmit = async () => {
- 
-  if (!foodName || !category || !description || !location || !phone) {
-    Alert.alert("Missing Fields", "Please fill all details");
-    return;
-  }
-
-  
-  const token =await  SecureStore.getItemAsync("userToken");
-
-  if (!token) {
-    Alert.alert("Authentication Error", "Please log in again.");
-    return;
-  }
-
-
-  const formData = new FormData();
-  formData.append("foodName", foodName);
-  formData.append("category", category);
-  formData.append("description", description);
-  formData.append("location", location);
-  formData.append("phone", phone);
-  formData.append("quantity", quantity);
-
-  try {
-   
-
-    const response = await axios.post(
-      "http://192.168.91.165:5000/api/food/add",
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`, // Include JWT token
-        },
-      }
-    );
-
-    if (response.status === 201) {
-      Alert.alert("Success", "Food donation submitted successfully!");
-      setFoodName("");
-      setCategory("");
-      setDescription("");
-      setLocation("");
-      setPhone("");
-      setQuantity("");
-    } else {
-      Alert.alert("Error", "Something went wrong. Please try again.");
+  const handleSubmit = async () => {
+    if (!foodName || !category || !description || !location || !phone) {
+      Alert.alert("Missing Fields", "Please fill all details");
+      return;
     }
-  } catch (error) {
-    console.error("Error submitting donation:", error.response?.data || error);
-    Alert.alert("Error", "Failed to submit donation. Please try again.");
-  }
-};
 
+    const token = await SecureStore.getItemAsync("userToken");
+
+    if (!token) {
+      Alert.alert("Authentication Error", "Please log in again.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("foodName", foodName);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("location", location);
+    formData.append("phone", phone);
+    formData.append("quantity", quantity);
+
+    try {
+      const response = await axios.post(API_URL+
+        "/api/food/add",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        Alert.alert("Success", "Food donation submitted successfully!");
+        setFoodName("");
+        setCategory("Human"); // Reset category
+        setDescription("");
+        setLocation("");
+        setPhone("");
+        setQuantity("");
+      } else {
+        Alert.alert("Error", "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error submitting donation:", error.response?.data || error);
+      Alert.alert("Error", "Failed to submit donation. Please try again.");
+    }
+  };
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
@@ -175,6 +127,7 @@ const handleSubmit = async () => {
       >
         <Text>📸 Upload Images</Text>
       </TouchableOpacity>
+
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -195,12 +148,38 @@ const handleSubmit = async () => {
         onChangeText={setFoodName}
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
-      <TextInput
-        placeholder="Category"
-        value={category}
-        onChangeText={setCategory}
-        style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
-      />
+
+      {/* Category Selection Toggle */}
+      <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
+        <TouchableOpacity
+          onPress={() => setCategory("Human")}
+          style={{
+            flex: 1,
+            backgroundColor: category === "Human" ? "#ff5733" : "#ccc",
+            padding: 10,
+            borderRadius: 10,
+            alignItems: "center",
+            marginRight: 5,
+          }}
+        >
+          <Text style={{ color: category === "Human" ? "white" : "black" }}>🍽️ Human</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => setCategory("Pet")}
+          style={{
+            flex: 1,
+            backgroundColor: category === "Pet" ? "#ff5733" : "#ccc",
+            padding: 10,
+            borderRadius: 10,
+            alignItems: "center",
+            marginLeft: 5,
+          }}
+        >
+          <Text style={{ color: category === "Pet" ? "white" : "black" }}>🐶 Pet</Text>
+        </TouchableOpacity>
+      </View>
+
       <TextInput
         placeholder="Description"
         value={description}
@@ -208,11 +187,12 @@ const handleSubmit = async () => {
         multiline
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
+
       <TextInput
         placeholder="Quantity"
         value={quantity}
         onChangeText={setQuantity}
-        multiline
+        keyboardType="numeric"
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
 
@@ -222,6 +202,7 @@ const handleSubmit = async () => {
         onChangeText={setLocation}
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
+
       <TouchableOpacity
         onPress={getLocation}
         style={{
@@ -259,5 +240,3 @@ const handleSubmit = async () => {
 };
 
 export default DonateFoodScreen;
-
-

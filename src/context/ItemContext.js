@@ -1,20 +1,21 @@
 // src/context/ItemsContext.js
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
+import Constants from "expo-constants";
 
 export const ItemsContext = createContext();
 
 export const ItemsProvider = ({ children }) => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const API_URL = Constants.expoConfig.extra.API_URL;
+ 
   // Fetch items from the backend
   const fetchItems = async () => {
     try {
      
       setLoading(true);
-      const response = await axios.get(
-        "http://192.168.91.165:5000/api/food/available"
+      const response = await axios.get(API_URL+"/api/food/available"
       );
       setItems(response.data);
       
@@ -59,6 +60,8 @@ export const ItemsProvider = ({ children }) => {
   };
 
   useEffect(() => {
+  
+
     fetchItems();
   }, []);
 
