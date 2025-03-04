@@ -16,14 +16,15 @@ export default function SignupScreen() {
       alert("Please fill all fields");
       return;
     }
-    const response=await axios.post("http://localhost:5000/api/auth/register", {
-      name,
-      email,
-      password,
-    });
-    console.log(response
-
-    )
+    const response = await axios.post(
+      "http://192.168.91.165:5000/api/auth/register",
+      {
+        name,
+        email,
+        password,
+      }
+    );
+   
     alert("Signed Up Successfully");
     router.push("/home");
   };

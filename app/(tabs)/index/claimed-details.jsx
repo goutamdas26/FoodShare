@@ -7,21 +7,6 @@ export default function DetailsScreen() {
 
   const route = useRoute();
   const claimDetails = route.params || {}; 
-  // Mock data - replace with your actual data fetching logic
-  // const claimDetails = {
-  //   id:params.id,
-  //   foodName: "Mixed Vegetables Curry",
-  //   quantity: "5 servings",
-  //   claimedDate: "2024-03-15 14:30",
-  //   pickupDate: "2024-03-15 16:45",
-  //   donorName: "Restaurant ABC",
-  //   donorAddress: "123 Food Street, City",
-  //   donorContact: "+1234567890",
-  //   status: "Picked Up",
-  //   description:
-  //     "Fresh vegetable curry with rice. Packed in disposable containers.",
-  //   image: "https://example.com/food1.jpg", // Replace with your image
-  // };
 
   return (
     <ScrollView style={styles.container}>
@@ -78,7 +63,7 @@ export default function DetailsScreen() {
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.donorAddress}</Text>
+            <Text style={styles.detailText}>{claimDetails.donor.name}</Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />

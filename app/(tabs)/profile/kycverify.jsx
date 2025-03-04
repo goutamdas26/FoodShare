@@ -53,7 +53,7 @@ const KYCVerificationScreen = () => {
     setLoading(true);
     try {
       // Add your API call here
-      console.log('Submitting KYC data:', kycData);
+   
       Alert.alert('Success', 'KYC details submitted successfully');
     } catch (error) {
       Alert.alert('Error', 'Failed to submit KYC details');
@@ -64,7 +64,7 @@ const KYCVerificationScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={styles.header}>KYC Verification</Text>
+      <Text style={styles.header}>Verification</Text>
       
       <View style={styles.formContainer}>
         <Text style={styles.label}>Full Name (as per ID)</Text>

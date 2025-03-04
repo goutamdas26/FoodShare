@@ -9,7 +9,7 @@ export default function ClaimDetailsScreen() {
   const claimDetails = route.params || {}; 
   // Mock data - replace with your actual data fetching logic
 
-
+console.log(claimDetails)
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -65,11 +65,13 @@ export default function ClaimDetailsScreen() {
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.donorAddress}</Text>
+            <Text style={styles.detailText}>
+              {claimDetails.pickupLocation}
+            </Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.donorContact}</Text>
+            <Text style={styles.detailText}>{claimDetails.contactNumber}</Text>
           </View>
         </View>
 

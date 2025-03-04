@@ -122,12 +122,15 @@ export default function LoginScreen() {
     }
 
     try {
-      const response = await axios.post("http://192.168.29.119:5000/api/auth/login", {
-        email,
-        password,
-      });
+      const response = await axios.post(
+        "http://192.168.91.165:5000/api/auth/login",
+        {
+          email,
+          password,
+        }
+      );
       if (response.data && response.data.token) {
-        console.log(response.data.token)
+       
         await SecureStore.setItemAsync("userToken", response.data.token);
         alert("Logged In Successfully");
         router.push("/(tabs)/home");

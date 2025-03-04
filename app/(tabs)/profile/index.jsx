@@ -21,7 +21,7 @@ const SettingsScreen = () => {
 const router=useRouter()
   const toggleLanguage = () => {
     setLanguage((prevLang) => prevLang === "English" ? "हिंदी" : "English");
-    console.log(language)
+    
     changeLanguage(language);
   };
 

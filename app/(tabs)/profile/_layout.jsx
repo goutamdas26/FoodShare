@@ -13,7 +13,7 @@ export default function ProfileLayout() {
       />
       <Stack.Screen
         name="kycverify"
-        options={{ title: "KYC Verification", headerShown: true }}
+        options={{ title: "Verification", headerShown: true }}
       />
     </Stack>
   );

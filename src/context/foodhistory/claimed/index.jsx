@@ -8,52 +8,37 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
-
 
 // Mock data - replace with your actual data
 const CLAIMED_ITEMS = [
   {
     id: "1",
-    foodName: "Dal",
-    quantity: "20 servings",
-    claimedDate: "2024-03-15 14:30",
-    expiryTime: "2024-03-15 20:00",
-    status: "Claimed",
-    donorName: "NGO Foundation",
-    claimedAt: "2024-03-15 15:45",
-    description:"Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-    pickupLocation: "123 Restaurant Lane, City",
-    contactNumber: "+123456789",
-    image: "https://example.com/food1.jpg",
+    foodName: "Mixed Vegetables Curry",
+    quantity: "5 servings",
+    claimedDate: "2024-03-15",
+    donorName: "Restaurant ABC",
+    status: "Picked Up",
+    image: "https://example.com/food1.jpg", // Replace with your image
   },
   {
     id: "2",
-    foodName: "Vegetable Biryani",
-    quantity: "20 servings",
-    claimedDate: "2024-03-15 14:30",
-    expiryTime: "2024-03-15 20:00",
-    status: "Claimed",
-    donorName: "NGO Foundation",
-    claimedAt: "2024-03-15 15:45",
-    description:
-      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-    pickupLocation: "123 Restaurant Lane, City",
-    contactNumber: "+123456789",
-    image: "https://example.com/food1.jpg",
+    foodName: "Rice and Dal",
+    quantity: "10 servings",
+    claimedDate: "2024-03-14",
+    donorName: "Hotel XYZ",
+    status: "Ready for Pickup",
+    image: "https://example.com/food2.jpg", // Replace with your image
   },
+  // Add more items
 ];
 
 export default function ClaimedScreen() {
   const router = useRouter();
-  const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-    //  onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
-    onPress={() => navigation.navigate("claimed-details", item)}  // Pass params
-
+      onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
     >
       <Image
         source={{ uri: item.image }}

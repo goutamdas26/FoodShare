@@ -12,27 +12,35 @@ import { useNavigation } from "@react-navigation/native";
 
 // Mock data - replace with your actual data
 const DONATED_ITEMS = [
-  {
-    id: "1",
+ {
+    id:"1",
     foodName: "Vegetable Biryani",
     quantity: "20 servings",
-    donationDate: "2024-03-15",
+    donationDate: "2024-03-15 14:30",
     expiryTime: "2024-03-15 20:00",
     status: "Claimed",
     claimedBy: "NGO Foundation",
+    claimedAt: "2024-03-15 15:45",
+    description: "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
+    pickupAddress: "123 Restaurant Lane, City",
+    contactNumber: "+1234567890",
     image: "https://example.com/food1.jpg",
   },
   {
-    id: "2",
-    foodName: "Mixed Curry & Rice",
-    quantity: "15 servings",
-    donationDate: "2024-03-14",
-    expiryTime: "2024-03-14 21:00",
-    status: "Available",
-    claimedBy: null,
-    image: "https://example.com/food2.jpg",
-  },
-  // Add more items
+    id:"2",
+    foodName: "Vegetable Biryani",
+    quantity: "20 servings",
+    donationDate: "2024-03-15 14:30",
+    expiryTime: "2024-03-15 20:00",
+    status: "Claimed",
+    claimedBy: "NGO Foundation",
+    claimedAt: "2024-03-15 15:45",
+    description: "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
+    pickupAddress: "123 Restaurant Lane, City",
+    contactNumber: "+1234567890",
+    image: "https://example.com/food1.jpg",
+  }
+  
 ];
 
 export default function DonatedScreen() {

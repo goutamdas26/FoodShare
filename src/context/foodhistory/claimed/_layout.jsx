@@ -4,10 +4,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { View, Text } from "react-native";
 import index from "./index";
-import Jo from "./Jo";
-import ClaimDetailsScreen from "./claimed-details";
+
+import ClaimDetailsScreen from "./[id]";
 const Stack=createNativeStackNavigator()
-export default function Donated() {
+export default function ClaimedStackLayout() {
   return (
     // ... existing code ...
     <Stack.Navigator>
@@ -17,8 +17,8 @@ export default function Donated() {
         component={index}
        
       />
-      <Stack.Screen name="Jo" options={{ title: "Details" }} component={Jo} />
-      <Stack.Screen name="claimed-details" options={{ title: "Ho" }} component={ClaimDetailsScreen} />
+     
+      <Stack.Screen name="[id]" options={{ title: "Ho" }} component={ClaimDetailsScreen} />
     </Stack.Navigator>
     // ... existing code ...
   );

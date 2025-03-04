@@ -107,7 +107,7 @@
 
 import { useNavigation, useRoute } from "@react-navigation/native";
 import {  useRouter } from "expo-router";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   View,
   Text,
@@ -152,9 +152,12 @@ const foodData = [
 
 const AvailableFoodScreen = () => {
   const { items, loading, fetchItems } = useContext(ItemsContext);
-  console.log(items)
+console.log(items)
   const router = useRouter();
   const navigation = useNavigation();
+useEffect(() => {
+  console.log("Component re-rendered");
+}, []);
 
   return (
     <View style={styles.container}>

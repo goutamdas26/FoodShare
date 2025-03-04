@@ -71,7 +71,7 @@ const DonateFoodScreen = () => {
   //   formData.append("phone", phone);
   //   formData.append("quantity", quantity);
   //   try {
-  //     console.log(formData);
+
 
   //     const response = await axios.post(
   //       "http://192.168.29.119:5000/api/food/add",
@@ -129,7 +129,7 @@ const handleSubmit = async () => {
    
 
     const response = await axios.post(
-      "http://192.168.29.119:5000/api/food/add",
+      "http://192.168.91.165:5000/api/food/add",
       formData,
       {
         headers: {

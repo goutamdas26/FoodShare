@@ -13,7 +13,9 @@ export const ItemsProvider = ({ children }) => {
     try {
      
       setLoading(true);
-      const response = await axios.get("http://192.168.29.119:5000/api/food/available");
+      const response = await axios.get(
+        "http://192.168.91.165:5000/api/food/available"
+      );
       setItems(response.data);
       
       setLoading(false);

@@ -46,7 +46,7 @@ const Details = () => {
               <Text style={styles.sectionTitle}>Donor Information</Text>
               <View style={styles.detailRow}>
                 <MaterialIcons name="store" size={20} color="#666" />
-                <Text style={styles.detailText}>{donor}</Text>
+                <Text style={styles.detailText}>{donor.name}</Text>
               </View>
               <View style={styles.detailRow}>
                 <MaterialIcons name="location-on" size={20} color="#666" />
