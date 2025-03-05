@@ -11,12 +11,12 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
-  const API_URL = Constants.expoConfig.extra.API_URL;
+const API_URL = Constants.expoConfig.extra.API_URL;
 import axios from "axios";
 // Mock data - replace with your actual data
 const DONATED_ITEMS = [
- {
-    id:"1",
+  {
+    id: "1",
     foodName: "Vegetable Biryani",
     quantity: "20 servings",
     donationDate: "2024-03-15 14:30",
@@ -24,13 +24,14 @@ const DONATED_ITEMS = [
     status: "Claimed",
     claimedBy: "NGO Foundation",
     claimedAt: "2024-03-15 15:45",
-    description: "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
+    description:
+      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
     pickupAddress: "123 Restaurant Lane, City",
     contactNumber: "+1234567890",
     image: "https://example.com/food1.jpg",
   },
   {
-    id:"2",
+    id: "2",
     foodName: "Vegetable Biryani",
     quantity: "20 servings",
     donationDate: "2024-03-15 14:30",
@@ -38,40 +39,39 @@ const DONATED_ITEMS = [
     status: "Claimed",
     claimedBy: "NGO Foundation",
     claimedAt: "2024-03-15 15:45",
-    description: "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
+    description:
+      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
     pickupAddress: "123 Restaurant Lane, City",
     contactNumber: "+1234567890",
     image: "https://example.com/food1.jpg",
-  }
-  
+  },
 ];
 
 export default function DonatedScreen() {
-
-const fetchDonatedFood = async () => {
-  try {
-    const userToken = await SecureStore.getItemAsync("userToken");
-    if (!userToken) {
-      console.error("No token found");
-      return;
-    }
-
-    const response = await axios.post(
-      `${API_URL}/api/food/getDonatedFood`,
-      {}, // Empty body if not required
-      {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
+  const fetchDonatedFood = async () => {
+    try {
+      const userToken = await SecureStore.getItemAsync("userToken");
+      if (!userToken) {
+        console.error("No token found");
+        return;
       }
-    );
 
-    console.log("Donated Food:", response.data);
-    // Process response.data as needed
-  } catch (error) {
-    console.error("Error fetching donated food:", error);
-  }
-};
+      const response = await axios.post(
+        `${API_URL}/api/food/getClaimedFood`,
+        {}, // Empty body if not required
+        {
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+
+      console.log("Donated Food:", response.data);
+      // Process response.data as needed
+    } catch (error) {
+      console.error("Error fetching donated food:", error);
+    }
+  };
 
   const router = useRouter();
   const navigation = useNavigation();
@@ -91,9 +91,8 @@ const fetchDonatedFood = async () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-     // onPress={() => router.push(`/(tabs)/foodhistory/donated/${item.id}`)}
-     onPress={() => navigation.navigate("donation-details", item)}  // Pass params
-
+      // onPress={() => router.push(`/(tabs)/foodhistory/donated/${item.id}`)}
+      onPress={() => navigation.navigate("donation-details", item)} // Pass params
     >
       <Image
         source={{ uri: item.image }}
@@ -130,7 +129,6 @@ const fetchDonatedFood = async () => {
             <Text style={styles.statusText}>{item.status}</Text>
           </View>
         </View>
-      
       </View>
 
       <MaterialIcons
