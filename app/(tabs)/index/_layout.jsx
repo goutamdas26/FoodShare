@@ -21,7 +21,7 @@ export default function Donated() {
       />
 
       {/* <Stack.Screen name="[id]" options={{ title: "Ho" }} component={ClaimDetailsScreen} /> */}
-      <Stack.Screen name="food-details" component={Details}/>
+      <Stack.Screen name="food-details" component={Details} options={{title:"Food Details"}}/>
     </Stack.Navigator>
     // ... existing code ...
   );
