@@ -9,7 +9,10 @@ import {
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
+import * as SecureStore from "expo-secure-store";
+import Constants from "expo-constants";
+  const API_URL = Constants.expoConfig.extra.API_URL;
+import axios from "axios";
 // Mock data - replace with your actual data
 const DONATED_ITEMS = [
  {
@@ -44,6 +47,32 @@ const DONATED_ITEMS = [
 ];
 
 export default function DonatedScreen() {
+
+const fetchDonatedFood = async () => {
+  try {
+    const userToken = await SecureStore.getItemAsync("userToken");
+    if (!userToken) {
+      console.error("No token found");
+      return;
+    }
+
+    const response = await axios.post(
+      `${API_URL}/api/food/getDonatedFood`,
+      {}, // Empty body if not required
+      {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      }
+    );
+
+    console.log("Donated Food:", response.data);
+    // Process response.data as needed
+  } catch (error) {
+    console.error("Error fetching donated food:", error);
+  }
+};
+
   const router = useRouter();
   const navigation = useNavigation();
   const getStatusColor = (status) => {
@@ -101,6 +130,7 @@ export default function DonatedScreen() {
             <Text style={styles.statusText}>{item.status}</Text>
           </View>
         </View>
+      
       </View>
 
       <MaterialIcons
@@ -131,6 +161,9 @@ export default function DonatedScreen() {
           </Text>
         </View>
       )}
+      <TouchableOpacity onPress={fetchDonatedFood}>
+        <Text>sfdsdf</Text>
+      </TouchableOpacity>
     </View>
   );
 }
