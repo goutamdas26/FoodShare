@@ -10,60 +10,22 @@ import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ItemsContext } from "../../../../src/context/ItemContext";
-import { useContext, useEffect } from "react";
-import * as SecureStore from "expo-secure-store";
-
-// Mock data - replace with your actual data
-const CLAIMED_ITEMS = [
-  {
-    id: "1",
-    foodName: "Dal",
-    quantity: "20 servings",
-    claimedDate: "2024-03-15 14:30",
-    expiryTime: "2024-03-15 20:00",
-    status: "Claimed",
-    donorName: "NGO Foundation",
-    claimedAt: "2024-03-15 15:45",
-    description:
-      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-    pickupLocation: "123 Restaurant Lane, City",
-    contactNumber: "+123456789",
-    image: "https://example.com/food1.jpg",
-  },
-  {
-    id: "2",
-    foodName: "Vegetable Biryani",
-    quantity: "20 servings",
-    claimedDate: "2024-03-15 14:30",
-    expiryTime: "2024-03-15 20:00",
-    status: "Claimed",
-    donorName: "NGO Foundation",
-    claimedAt: "2024-03-15 15:45",
-    description:
-      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-    pickupLocation: "123 Restaurant Lane, City",
-    contactNumber: "+123456789",
-    image: "https://example.com/food1.jpg",
-  },
-];
+import { useContext } from "react";
 
 export default function ClaimedScreen() {
   const router = useRouter();
   const navigation = useNavigation();
-  const { fetchClaimedFood,  claimedFood } =
-    useContext(ItemsContext);
-
+  const { fetchClaimedFood, claimedFood } = useContext(ItemsContext);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      //  onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
       onPress={() => navigation.navigate("claimed-details", item)} // Pass params
     >
       <Image
         source={{ uri: item.foodItemId.image }}
         style={styles.foodImage}
-        defaultSource={require("../../../../assets/images/icon.png")} // Add a default image
+        defaultSource={require("../../../../assets/images/icon.png")} // Default image
       />
 
       <View style={styles.cardContent}>
@@ -74,7 +36,11 @@ export default function ClaimedScreen() {
         </Text>
 
         <View style={styles.bottomRow}>
-          <Text style={styles.date}>Claimed: {item.claimedAt}</Text>
+          <View style={styles.dateContainer}>
+            <Text style={styles.date}>
+              Claimed: {new Date(item.claimedAt).toLocaleString()}
+            </Text>
+          </View>
           <View
             style={[
               styles.statusBadge,
@@ -172,9 +138,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
   },
+  dateContainer: {
+    flex: 1, // Ensures the date text takes available space
+  },
   date: {
     fontSize: 12,
     color: "#888",
+    flexWrap: "wrap", // Allows wrapping if text is long
   },
   statusBadge: {
     paddingHorizontal: 8,

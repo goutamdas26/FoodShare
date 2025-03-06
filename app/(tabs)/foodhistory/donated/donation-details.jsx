@@ -12,13 +12,13 @@ export default function DonationDetailsScreen() {
   return (
     <ScrollView style={styles.container}>
       <Image
-        source={{ uri: donationDetails.image }}
+        source={{ uri: donationDetails.foodItemId.image }}
         style={styles.image}
         defaultSource={require("../../../../assets/images/icon.png")}
       />
 
       <View style={styles.content}>
-        <Text style={styles.title}>{donationDetails.foodName}</Text>
+        <Text style={styles.title}>{donationDetails.foodItemId.foodName}</Text>
 
         <View style={styles.statusContainer}>
           <View
@@ -26,13 +26,13 @@ export default function DonationDetailsScreen() {
               styles.statusBadge,
               {
                 backgroundColor:
-                  donationDetails.status === "Available"
+                  donationDetails.foodItemId.status === "Available"
                     ? "#4CAF50"
                     : "#FFA000",
               },
             ]}
           >
-            <Text style={styles.statusText}>{donationDetails.status}</Text>
+            <Text style={styles.statusText}>{donationDetails.foodItemId.status}</Text>
           </View>
         </View>
 
@@ -41,7 +41,7 @@ export default function DonationDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Posted: {donationDetails.donationDate}
+              Posted: {donationDetails.foodItemId.postedAt}
             </Text>
           </View>
           <View style={styles.detailRow}>
@@ -53,17 +53,17 @@ export default function DonationDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="restaurant" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Quantity: {donationDetails.quantity}
+              Quantity: {donationDetails.foodItemId.quantity}
             </Text>
           </View>
         </View>
 
-        {donationDetails.claimedBy && (
+        {donationDetails.foodItemId.claimedBy && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>Claimed By</Text>
             <View style={styles.detailRow}>
               <MaterialIcons name="group" size={20} color="#666" />
-              <Text style={styles.detailText}>{donationDetails.claimedBy}</Text>
+              <Text style={styles.detailText}>{donationDetails.foodItemId.claimedBy.name}</Text>
             </View>
             <View style={styles.detailRow}>
               <MaterialIcons name="access-time" size={20} color="#666" />
@@ -79,13 +79,13 @@ export default function DonationDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
             <Text style={styles.detailText}>
-              {donationDetails.pickupAddress}
+              {donationDetails.foodItemId.location}
             </Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
             <Text style={styles.detailText}>
-              {donationDetails.contactNumber}
+              {donationDetails.foodItemId.donorContactNo}
             </Text>
           </View>
         </View>

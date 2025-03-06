@@ -34,7 +34,7 @@ export const ItemsProvider = ({ children }) => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");
       if (!userToken) {
-        console.error("No token found");
+        
         return;
       }
 
@@ -56,7 +56,7 @@ export const ItemsProvider = ({ children }) => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");
       if (!userToken) {
-        console.error("No token found");
+        
         return;
       }
 

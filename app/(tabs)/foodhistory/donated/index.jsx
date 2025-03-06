@@ -15,45 +15,13 @@ const API_URL = Constants.expoConfig.extra.API_URL;
 import axios from "axios";
 import { useContext } from "react";
 import { ItemsContext } from "../../../../src/context/ItemContext";
-// Mock data - replace with your actual data
-const DONATED_ITEMS = [
-  {
-    id: "1",
-    foodName: "Vegetable Biryani",
-    quantity: "20 servings",
-    donationDate: "2024-03-15 14:30",
-    expiryTime: "2024-03-15 20:00",
-    status: "Claimed",
-    claimedBy: "NGO Foundation",
-    claimedAt: "2024-03-15 15:45",
-    description:
-      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-    pickupAddress: "123 Restaurant Lane, City",
-    contactNumber: "+1234567890",
-    image: "https://example.com/food1.jpg",
-  },
-  {
-    id: "2",
-    foodName: "Vegetable Biryani",
-    quantity: "20 servings",
-    donationDate: "2024-03-15 14:30",
-    expiryTime: "2024-03-15 20:00",
-    status: "Claimed",
-    claimedBy: "NGO Foundation",
-    claimedAt: "2024-03-15 15:45",
-    description:
-      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-    pickupAddress: "123 Restaurant Lane, City",
-    contactNumber: "+1234567890",
-    image: "https://example.com/food1.jpg",
-  },
-];
 
 export default function DonatedScreen() {
   const { fetchDonatedFood, donatedFood } = useContext(ItemsContext);
 
   const router = useRouter();
   const navigation = useNavigation();
+console.log(donatedFood)
   const getStatusColor = (status) => {
     switch (status) {
       case "Available":
@@ -70,62 +38,49 @@ export default function DonatedScreen() {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      // onPress={() => router.push(`/(tabs)/foodhistory/donated/${item.id}`)}
       onPress={() => navigation.navigate("donation-details", item)} // Pass params
     >
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: item.foodItemId.image }}
         style={styles.foodImage}
         defaultSource={require("../../../../assets/images/icon.png")}
       />
 
       <View style={styles.cardContent}>
-        <Text style={styles.foodName}>{item.foodName}</Text>
-        <Text style={styles.quantity}>Quantity: {item.quantity}</Text>
-
-        <View style={styles.detailsRow}>
-          <MaterialIcons name="schedule" size={16} color="#666" />
-          <Text style={styles.timeText}>Expires: {item.expiryTime}</Text>
-        </View>
+        <Text style={styles.foodName}>{item.foodItemId.name}</Text>
+        <Text style={styles.quantity}>Quantity: {item.foodItemId.quantity}</Text>
 
         {item.claimedBy && (
           <View style={styles.detailsRow}>
             <MaterialIcons name="group" size={16} color="#666" />
-            <Text style={styles.claimedByText}>
-              Claimed by: {item.claimedBy}
-            </Text>
+            <Text style={styles.claimedByText}>Claimed by: {item.claimedBy}</Text>
           </View>
         )}
 
         <View style={styles.bottomRow}>
-          <Text style={styles.date}>Posted: {item.donationDate}</Text>
+          <Text style={styles.date}>Posted: {item.foodItemId.postedAt}</Text>
           <View
             style={[
               styles.statusBadge,
-              { backgroundColor: getStatusColor(item.status) },
+              { backgroundColor: getStatusColor(item.foodItemId.status) },
             ]}
           >
-            <Text style={styles.statusText}>{item.status}</Text>
+            <Text style={styles.statusText}>{item.foodItemId.status}</Text>
           </View>
         </View>
       </View>
 
-      <MaterialIcons
-        name="chevron-right"
-        size={24}
-        color="#666"
-        style={styles.arrow}
-      />
+      <MaterialIcons name="chevron-right" size={24} color="#666" style={styles.arrow} />
     </TouchableOpacity>
   );
 
   return (
     <View style={styles.container}>
-      {DONATED_ITEMS.length > 0 ? (
+      {donatedFood.length > 0 ? (
         <FlatList
-          data={DONATED_ITEMS}
+          data={donatedFood}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.foodItemId._id}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
         />
@@ -138,9 +93,6 @@ export default function DonatedScreen() {
           </Text>
         </View>
       )}
-      <TouchableOpacity onPress={fetchDonatedFood}>
-        <Text>sfdsdf</Text>
-      </TouchableOpacity>
     </View>
   );
 }
@@ -194,11 +146,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 4,
   },
-  timeText: {
-    fontSize: 13,
-    color: "#666",
-    marginLeft: 4,
-  },
   claimedByText: {
     fontSize: 13,
     color: "#666",
@@ -207,17 +154,23 @@ const styles = StyleSheet.create({
   bottomRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "flex-start", // Allows wrapping of long text without affecting status position
     marginTop: 4,
   },
   date: {
     fontSize: 12,
     color: "#888",
+    flex: 1, // Takes available space
+    flexWrap: "wrap", // Ensures text wraps if long
+    marginRight: 8, // Adds spacing from the status badge
   },
   statusBadge: {
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 12,
+    minWidth: 70, // Prevents excessive shrinking
+    alignItems: "center",
+    justifyContent: "center",
   },
   statusText: {
     color: "white",

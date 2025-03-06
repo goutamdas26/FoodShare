@@ -8,7 +8,6 @@ export default function ClaimDetailsScreen() {
   const route = useRoute();
   const claimDetails = route.params || {}; 
   // Mock data - replace with your actual data fetching logic
-console.log(claimDetails)
 
   return (
     <ScrollView style={styles.container}>
@@ -49,7 +48,7 @@ console.log(claimDetails)
           <View style={styles.detailRow}>
             <MaterialIcons name="restaurant" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Quantity: {claimDetails.quantity}
+              Quantity: {claimDetails.foodItemId.quantity}
             </Text>
           </View>
         </View>
@@ -70,7 +69,7 @@ console.log(claimDetails)
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.foodItemId.contactNumber}</Text>
+            <Text style={styles.detailText}>{claimDetails.foodItemId.donorContact}</Text>
           </View>
         </View>
 
