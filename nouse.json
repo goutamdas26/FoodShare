@@ -1,0 +1,60 @@
+[
+  {
+    "_id": "67c7defbfa06a555901f46ca",
+    "claimedAt": "2025-03-05T05:19:55.878Z",
+    "foodItemId": {
+      "_id": "67c729aa0df8b74514b90cc2",
+      "category": "Human",
+      "donorContact": "6230150199",
+      "image": "sdfsdf",
+      "location": "WRFJ+37X, null, Barotiwala, Himachal Pradesh, India",
+      "name": "Dal Chawal ",
+      "quantity": 294,
+      "status": "claimed"
+    }
+  },
+  {
+    "_id": "67c7df16fa06a555901f46d4",
+    "claimedAt": "2025-03-05T05:20:22.162Z",
+    "foodItemId": {
+      "_id": "67c7d4d8d55822964897cabb",
+      "category": "Human",
+      "donorContact": "199",
+      "donorName": "Goutam Das",
+      "image": "sdfsdf",
+      "location": "Ramunujan Academics Block, Internal University Road, Solan, Himachal Pradesh, India",
+      "name": "Surplus ",
+      "quantity": 2,
+      "status": "claimed"
+    }
+  },
+  {
+    "_id": "67c7df6b99229ef532e6cc60",
+    "claimedAt": "2025-03-05T05:21:47.200Z",
+    "foodItemId": {
+      "_id": "67c69b37689c010558a2442b",
+      "category": "Human",
+      "donor": "67c1bf319d2d86b28e9ce78a",
+      "image": "sdfsdf",
+      "location": "Chitkara University, null, Solan, Himachal Pradesh, India",
+      "name": "Dal ",
+      "quantity": 6,
+      "status": "claimed"
+    }
+  },
+  {
+    "_id": "67c7e8eea14cb2bae9764472",
+    "claimedAt": "2025-03-05T06:02:22.505Z",
+    "foodItemId": {
+      "_id": "67c7e1024be6ce7d5f6a0870",
+      "category": "Human",
+      "donorContact": "6230150199",
+      "donorName": "Goutam Das",
+      "image": "sdfsdf",
+      "location": "Chitkara University, null, Solan, Himachal Pradesh, India",
+      "name": "Halwa",
+      "quantity": 20,
+      "status": "claimed"
+    }
+  }
+]

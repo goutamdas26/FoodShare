@@ -4,7 +4,7 @@
 
 // export default function DonationDetailsScreen() {
 //   const { id } = useLocalSearchParams();
-// console.log("GG")
+
 //   // Mock data - replace with your actual data fetching logic
 //   const donationDetails = {
 //     id,

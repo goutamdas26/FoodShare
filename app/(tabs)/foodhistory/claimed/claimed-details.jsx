@@ -8,8 +8,8 @@ export default function ClaimDetailsScreen() {
   const route = useRoute();
   const claimDetails = route.params || {}; 
   // Mock data - replace with your actual data fetching logic
-
 console.log(claimDetails)
+
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -19,7 +19,7 @@ console.log(claimDetails)
       />
 
       <View style={styles.content}>
-        <Text style={styles.title}>{claimDetails.foodName}</Text>
+        <Text style={styles.title}>{claimDetails.foodItemId.name}</Text>
 
         <View style={styles.statusContainer}>
           <View
@@ -31,7 +31,9 @@ console.log(claimDetails)
               },
             ]}
           >
-            <Text style={styles.statusText}>{claimDetails.status}</Text>
+            <Text style={styles.statusText}>
+              {claimDetails.foodItemId.status}
+            </Text>
           </View>
         </View>
 
@@ -40,15 +42,10 @@ console.log(claimDetails)
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Claimed: {claimDetails.claimedDate}
+              Claimed: {claimDetails.claimedAt}
             </Text>
           </View>
-          <View style={styles.detailRow}>
-            <MaterialIcons name="access-time" size={20} color="#666" />
-            <Text style={styles.detailText}>
-              Pickup: {claimDetails.pickupDate}
-            </Text>
-          </View>
+
           <View style={styles.detailRow}>
             <MaterialIcons name="restaurant" size={20} color="#666" />
             <Text style={styles.detailText}>
@@ -61,17 +58,19 @@ console.log(claimDetails)
           <Text style={styles.sectionTitle}>Donor Information</Text>
           <View style={styles.detailRow}>
             <MaterialIcons name="store" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.donorName}</Text>
+            <Text style={styles.detailText}>
+              {claimDetails.foodItemId.donorName}
+            </Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
             <Text style={styles.detailText}>
-              {claimDetails.pickupLocation}
+              {claimDetails.foodItemId.location}
             </Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.contactNumber}</Text>
+            <Text style={styles.detailText}>{claimDetails.foodItemId.contactNumber}</Text>
           </View>
         </View>
 

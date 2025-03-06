@@ -9,7 +9,9 @@ import {
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-
+import { ItemsContext } from "../../../../src/context/ItemContext";
+import { useContext, useEffect } from "react";
+import * as SecureStore from "expo-secure-store";
 
 // Mock data - replace with your actual data
 const CLAIMED_ITEMS = [
@@ -22,7 +24,8 @@ const CLAIMED_ITEMS = [
     status: "Claimed",
     donorName: "NGO Foundation",
     claimedAt: "2024-03-15 15:45",
-    description:"Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
+    description:
+      "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
     pickupLocation: "123 Restaurant Lane, City",
     contactNumber: "+123456789",
     image: "https://example.com/food1.jpg",
@@ -47,27 +50,31 @@ const CLAIMED_ITEMS = [
 export default function ClaimedScreen() {
   const router = useRouter();
   const navigation = useNavigation();
+  const { fetchClaimedFood,  claimedFood } =
+    useContext(ItemsContext);
+
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-    //  onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
-    onPress={() => navigation.navigate("claimed-details", item)}  // Pass params
-
+      //  onPress={() => router.push(`/foodhistory/claimed/${item.id}`)}
+      onPress={() => navigation.navigate("claimed-details", item)} // Pass params
     >
       <Image
-        source={{ uri: item.image }}
+        source={{ uri: item.foodItemId.image }}
         style={styles.foodImage}
         defaultSource={require("../../../../assets/images/icon.png")} // Add a default image
       />
 
       <View style={styles.cardContent}>
-        <Text style={styles.foodName}>{item.foodName}</Text>
-        <Text style={styles.donorName}>From: {item.donorName}</Text>
-        <Text style={styles.quantity}>Quantity: {item.quantity}</Text>
+        <Text style={styles.foodName}>{item.foodItemId.name}</Text>
+        <Text style={styles.donorName}>From: {item.foodItemId.donorName}</Text>
+        <Text style={styles.quantity}>
+          Quantity: {item.foodItemId.quantity}
+        </Text>
 
         <View style={styles.bottomRow}>
-          <Text style={styles.date}>Claimed: {item.claimedDate}</Text>
+          <Text style={styles.date}>Claimed: {item.claimedAt}</Text>
           <View
             style={[
               styles.statusBadge,
@@ -77,7 +84,7 @@ export default function ClaimedScreen() {
               },
             ]}
           >
-            <Text style={styles.statusText}>{item.status}</Text>
+            <Text style={styles.statusText}>{item.foodItemId.status}</Text>
           </View>
         </View>
       </View>
@@ -93,11 +100,11 @@ export default function ClaimedScreen() {
 
   return (
     <View style={styles.container}>
-      {CLAIMED_ITEMS.length > 0 ? (
+      {claimedFood.length > 0 ? (
         <FlatList
-          data={CLAIMED_ITEMS}
+          data={claimedFood}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.foodItemId._id}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
         />

@@ -18,7 +18,7 @@ export default function LoginScreen() {
   const [password, setPassword] = useState("");
   const router = useRouter();
   const API_URL = Constants.expoConfig.extra.API_URL;
-  console.log(API_URL)
+
   const handleLogin = async () => {
     if (!email || !password) {
       alert("Please fill all fields");
@@ -37,7 +37,7 @@ export default function LoginScreen() {
        
         await SecureStore.setItemAsync("userToken", response.data.token);
         alert("Logged In Successfully");
-        router.push("/(tabs)/home");
+        router.replace("/(tabs)/home");
       } else {
         alert("Invalid credentials. Please try again.");
       }

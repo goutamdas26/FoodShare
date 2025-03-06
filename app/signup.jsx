@@ -29,7 +29,8 @@ export default function SignupScreen() {
     );
    
     alert("Signed Up Successfully");
-    router.push("/home");
+    router.replace("/login");
+
   };
 
   return (

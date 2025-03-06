@@ -1,6 +1,4 @@
-
 import { useNavigation } from "@react-navigation/native";
-import { useRouter } from "expo-router";
 import React, { useContext, useEffect, useState } from "react";
 import {
   View,
@@ -20,37 +18,36 @@ const AvailableFoodScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
   const API_URL = Constants.expoConfig.extra.API_URL;
-  
+
   useEffect(() => {
     console.log("Component re-rendered");
   }, []);
 
-const handleClaim = async (food) => {
-  try {
-    const userToken = await SecureStore.getItemAsync("userToken");
+  const handleClaim = async (food) => {
+    try {
+      const userToken = await SecureStore.getItemAsync("userToken");
 
-    const response = await fetch(`${API_URL}/api/food/claim/${food._id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${userToken}`, // Ensure userToken is retrieved from your auth state
-      },
-    });
+      const response = await fetch(`${API_URL}/api/food/claim/${food._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to claim food");
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to claim food");
+      }
+
+      alert("Food claimed successfully!");
+      await fetchItems(); // Refresh the food list
+    } catch (error) {
+      console.error("Error claiming food:", error.message);
+      alert(error.message);
     }
-
-    alert("Food claimed successfully!");
-    await fetchItems(); // Refresh the food list
-  } catch (error) {
-    console.error("Error claiming food:", error.message);
-    alert(error.message);
-  }
-};
-
+  };
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -61,35 +58,41 @@ const handleClaim = async (food) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Available Food</Text>
-      <FlatList
-        data={items}
-        keyExtractor={(item) => item._id}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-        renderItem={({ item }) => (
-          <TouchableOpacity
-            style={styles.card}
-            onPress={() => navigation.navigate("food-details", item)}
-          >
-            <Image source={{ uri: item.image }} style={styles.image} />
-            <View style={styles.info}>
-              <Text style={styles.foodName}>{item.name}</Text>
-              <Text style={styles.foodDetails}>{item.quantity}</Text>
-              <Text style={styles.foodCategory}>Category: {item.category}</Text>
-              <Text style={styles.foodDateTime}>
-                Date & Time: {item.postedAt}
-              </Text>
-              <TouchableOpacity
-                style={styles.claimButton}
-                onPress={() => handleClaim(item)}
-              >
-                <Text style={styles.claimText}>Claim</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        )}
-      />
+      {items.length === 0 ? (
+        <Text style={styles.noFoodText}>No food available right now</Text>
+      ) : (
+        <FlatList
+          data={items}
+          keyExtractor={(item) => item._id}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={styles.card}
+              onPress={() => navigation.navigate("food-details", item)}
+            >
+              <Image source={{ uri: item.image }} style={styles.image} />
+              <View style={styles.info}>
+                <Text style={styles.foodName}>{item.name}</Text>
+                <Text style={styles.foodDetails}>{item.quantity}</Text>
+                <Text style={styles.foodCategory}>
+                  Category: {item.category}
+                </Text>
+                <Text style={styles.foodDateTime}>
+                  Date & Time: {item.postedAt}
+                </Text>
+                <TouchableOpacity
+                  style={styles.claimButton}
+                  onPress={() => handleClaim(item)}
+                >
+                  <Text style={styles.claimText}>Claim</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          )}
+        />
+      )}
     </View>
   );
 };
@@ -101,6 +104,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
+  },
+  noFoodText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginTop: 20,
+    color: "gray",
   },
   card: {
     flexDirection: "row",

@@ -18,7 +18,7 @@ export default function Donated() {
         component={DonatedScreen}
       />
       <Stack.Screen name="Ho" options={{ title: "Ho" }} component={Ho} />
-      <Stack.Screen name="donation-details" options={{ title: "Details" }} component={DonationDetails} />
+      <Stack.Screen name="donation-details" options={{ title: "Food Details" }} component={DonationDetails} />
     </Stack.Navigator>
     // ... existing code ...
   );

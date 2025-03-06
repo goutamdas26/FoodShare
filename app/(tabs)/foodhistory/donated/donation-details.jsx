@@ -2,27 +2,12 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import { useContext } from "react";
 
 export default function DonationDetailsScreen() {
   const route = useRoute();
-  const donationDetails = route.params || {}; 
+  const donationDetails = route.params || {};
 
-
-  // const donationDetails = {
-  //   id:id,
-  //   foodName: "Vegetable Biryani",
-  //   quantity: "20 servings",
-  //   donationDate: "2024-03-15 14:30",
-  //   expiryTime: "2024-03-15 20:00",
-  //   status: "Claimed",
-  //   claimedBy: "NGO Foundation",
-  //   claimedAt: "2024-03-15 15:45",
-  //   description:
-  //     "Freshly prepared vegetable biryani. Contains rice, mixed vegetables, and mild spices.",
-  //   pickupAddress: "123 Restaurant Lane, City",
-  //   contactNumber: "+1234567890",
-  //   image: "https://example.com/food1.jpg",
-  // };
 
   return (
     <ScrollView style={styles.container}>

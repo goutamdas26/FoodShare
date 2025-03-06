@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Switch,
   StyleSheet,
+  DevSettings,
 } from "react-native";
 import { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -28,7 +29,8 @@ const router=useRouter()
   const handleLogout=async()=>{
 
       const token =await  SecureStore.deleteItemAsync("userToken");
-router.replace("login")
+      DevSettings.reload();
+// router.replace("login")
 
   }
 
