@@ -58,41 +58,42 @@ const AvailableFoodScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Available Food</Text>
-      {items.length === 0 ? (
-        <Text style={styles.noFoodText}>No food available right now</Text>
-      ) : (
-        <FlatList
-          data={items}
-          keyExtractor={(item) => item._id}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          renderItem={({ item }) => (
-            <TouchableOpacity
-              style={styles.card}
-              onPress={() => navigation.navigate("food-details", item)}
-            >
-              <Image source={{ uri: item.image }} style={styles.image} />
-              <View style={styles.info}>
-                <Text style={styles.foodName}>{item.name}</Text>
-                <Text style={styles.foodDetails}>{item.quantity}</Text>
-                <Text style={styles.foodCategory}>
-                  Category: {item.category}
-                </Text>
-                <Text style={styles.foodDateTime}>
-                  Date & Time: {item.postedAt}
-                </Text>
-                <TouchableOpacity
-                  style={styles.claimButton}
-                  onPress={() => handleClaim(item)}
-                >
-                  <Text style={styles.claimText}>Claim</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-          )}
-        />
-      )}
+      <FlatList
+        data={items}
+        keyExtractor={(item) => item._id}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListEmptyComponent={
+          <View>
+            <Text style={styles.noFoodText}>No food available right now</Text>
+          </View>
+        }
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.card}
+            onPress={() => navigation.navigate("food-details", item)}
+          >
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <View style={styles.info}>
+              <Text style={styles.foodName}>{item.name}</Text>
+              <Text style={styles.foodDetails}>{item.quantity}</Text>
+              <Text style={styles.foodCategory}>
+                Category: {item.category}
+              </Text>
+              <Text style={styles.foodDateTime}>
+                Date & Time: {item.postedAt}
+              </Text>
+              <TouchableOpacity
+                style={styles.claimButton}
+                onPress={() => handleClaim(item)}
+              >
+                <Text style={styles.claimText}>Claim</Text>
+              </TouchableOpacity>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };

@@ -5,17 +5,19 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  RefreshControl, // Import RefreshControl
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ItemsContext } from "../../../../src/context/ItemContext";
-import { useContext } from "react";
+import { useContext, useState } from "react"; // Import useState
 
 export default function ClaimedScreen() {
   const router = useRouter();
   const navigation = useNavigation();
   const { fetchClaimedFood, claimedFood } = useContext(ItemsContext);
+  const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
@@ -64,6 +66,12 @@ export default function ClaimedScreen() {
     </TouchableOpacity>
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchClaimedFood(); // Fetch claimed food again
+    setRefreshing(false);
+  };
+
   return (
     <View style={styles.container}>
       {claimedFood.length > 0 ? (
@@ -73,6 +81,9 @@ export default function ClaimedScreen() {
           keyExtractor={(item) => item.foodItemId._id}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Add RefreshControl
+          }
         />
       ) : (
         <View style={styles.emptyContainer}>

@@ -1,12 +1,26 @@
 import { View, Text } from 'react-native'
 import React from 'react'
-import { Stack } from 'expo-router'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import LiveBhandaraScreen from './index';
+import BDetails from './bhandara-details';
+import ListBhandara from './list-bhandara';
+
 
 const BhandaraStack = () => {
+  const Stack = createNativeStackNavigator();
+
   return (
-<Stack>
-<Stack.Screen name='index' options={{headerShown:false}} />
-</Stack>
+<Stack.Navigator>
+  <Stack.Screen name='index' component={LiveBhandaraScreen} options={{
+    title:"Bhandara"
+  }}/>
+  <Stack.Screen name='bhandara-details' component={BDetails} options={{
+    title:"Details"
+  }}/>
+  <Stack.Screen name='list-bhandara' component={ListBhandara} options={{
+    title:"List Bhandara"
+  }}/>
+</Stack.Navigator>
   )
 }
 

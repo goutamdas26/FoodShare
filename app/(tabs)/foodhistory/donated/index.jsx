@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  RefreshControl, // Import RefreshControl
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -13,15 +14,20 @@ import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 const API_URL = Constants.expoConfig.extra.API_URL;
 import axios from "axios";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react"; // Import useState and useEffect
 import { ItemsContext } from "../../../../src/context/ItemContext";
 
 export default function DonatedScreen() {
   const { fetchDonatedFood, donatedFood } = useContext(ItemsContext);
+  const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
   const router = useRouter();
   const navigation = useNavigation();
-console.log(donatedFood)
+
+  useEffect(() => {
+    console.log(donatedFood); // Log donatedFood only when it changes
+  }, [donatedFood]);
+
   const getStatusColor = (status) => {
     switch (status) {
       case "Available":
@@ -74,6 +80,12 @@ console.log(donatedFood)
     </TouchableOpacity>
   );
 
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchDonatedFood(); // Fetch donated food again
+    setRefreshing(false);
+  };
+
   return (
     <View style={styles.container}>
       {donatedFood.length > 0 ? (
@@ -83,6 +95,9 @@ console.log(donatedFood)
           keyExtractor={(item) => item.foodItemId._id}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Add RefreshControl
+          }
         />
       ) : (
         <View style={styles.emptyContainer}>
