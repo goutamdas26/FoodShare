@@ -3,6 +3,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { ItemsProvider } from "../../src/context/ItemContext";
+import { Image } from "react-native";
+import charityIcon from '../../assets/images/charity.png'
 export default function Layout() {
   return (
 
@@ -48,6 +50,18 @@ export default function Layout() {
 
 <FontAwesome5 name="hand-holding-heart" size={size} color={color} />
 
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="livebhandara"
+        options={{
+          title: "Live Bhandara",
+          tabBarIcon: () => (
+            <Image
+              source={charityIcon} // Replace with your image URL
+              style={{ width: 24, height: 24 }} // Adjust size as needed
+            />
           ),
         }}
       />

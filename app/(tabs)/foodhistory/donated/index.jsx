@@ -53,7 +53,7 @@ console.log(donatedFood)
         {item.claimedBy && (
           <View style={styles.detailsRow}>
             <MaterialIcons name="group" size={16} color="#666" />
-            <Text style={styles.claimedByText}>Claimed by: {item.claimedBy}</Text>
+            <Text style={styles.claimedByText}>Claimed by: {item.claimedBy.name}</Text>
           </View>
         )}
 
