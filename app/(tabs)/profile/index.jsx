@@ -39,7 +39,7 @@ const router=useRouter()
       {/* Profile Section */}
       <View style={styles.profileContainer}>
         <Image
-          source={{ uri: "https://via.placeholder.com/100" }}
+          source={require("../../../assets/images/profilea.png")}
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>John Doe</Text>
@@ -61,7 +61,7 @@ const router=useRouter()
 
         <TouchableOpacity style={styles.menuItem} onPress={()=>router.push("/profile/kycverify")}>
           <Ionicons name="document-text-outline" size={24} color="black" />
-          <Text style={styles.menuText}>KYC Verification</Text>
+          <Text style={styles.menuText}>Verification</Text>
         </TouchableOpacity>
 
         <View style={styles.menuItem}>

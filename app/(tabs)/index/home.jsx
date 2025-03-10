@@ -57,7 +57,8 @@ const AvailableFoodScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Available Food</Text>
+      <Text style={styles.header}>FoodShare</Text> {/* Added header here */}
+      <Text style={styles.subHeader}>Food Available</Text>
       <FlatList
         data={items}
         keyExtractor={(item) => item._id}
@@ -74,7 +75,7 @@ const AvailableFoodScreen = () => {
             style={styles.card}
             onPress={() => navigation.navigate("food-details", item)}
           >
-            <Image source={{ uri: item.image }} style={styles.image} />
+            <Image source={ {uri:"https://res.cloudinary.com/dl92zh3w0/image/upload/v1741443893/raw-veg_r8toib.png"}} style={styles.image} />
             <View style={styles.info}>
               <Text style={styles.foodName}>{item.name}</Text>
               <Text style={styles.foodDetails}>{item.quantity}</Text>
@@ -101,6 +102,12 @@ const AvailableFoodScreen = () => {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff", padding: 20 },
   header: {
+    fontSize: 28, // Increased font size for header
+    fontWeight: "bold",
+    textAlign: "",
+    marginBottom: 10,
+  },
+  subHeader: {
     fontSize: 24,
     fontWeight: "bold",
     textAlign: "center",

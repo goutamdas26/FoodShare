@@ -25,7 +25,7 @@ export default function ClaimedScreen() {
       onPress={() => navigation.navigate("claimed-details", item)} // Pass params
     >
       <Image
-        source={{ uri: item.foodItemId.image }}
+        source={{ uri: item.foodItemId.imageUrl }} // Use dynamic image URL from item
         style={styles.foodImage}
         defaultSource={require("../../../../assets/images/icon.png")} // Default image
       />
