@@ -23,7 +23,7 @@ const DonateFoodScreen = () => {
   const [location, setLocation] = useState("");
   const [phone, setPhone] = useState("");
   const [quantity, setQuantity] = useState("");
-
+const [expiry,setExpiry]=useState("")
   const pickImages = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -59,7 +59,7 @@ const DonateFoodScreen = () => {
   };
 
   const handleSubmit = async () => {
-    if (!foodName || !category || !description || !location || !phone) {
+    if (!foodName || !category || !description || !location || !phone ||!expiry) {
       Alert.alert("Missing Fields", "Please fill all details");
       return;
     }
@@ -78,6 +78,7 @@ const DonateFoodScreen = () => {
     formData.append("location", location);
     formData.append("phone", phone);
     formData.append("quantity", quantity);
+    formData.append("expiry", expiry);
 
     try {
       const response = await axios.post(API_URL +
@@ -192,6 +193,13 @@ const DonateFoodScreen = () => {
         value={quantity}
         onChangeText={setQuantity}
         keyboardType="numeric"
+        style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
+      />
+      <TextInput
+        placeholder="Expiry: Date & Time "
+        value={expiry}
+        onChangeText={setExpiry}
+        keyboardType="String"
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
 

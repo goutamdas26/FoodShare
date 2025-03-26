@@ -11,7 +11,7 @@ export const ItemsProvider = ({ children }) => {
   const [donatedFood, setDonatedFood] = useState([]);
   const [claimedFood, setClaimedFood] = useState([]);
   const [loading, setLoading] = useState(true);
-
+const [user,setUser]=useState({})
   const API_URL = Constants.expoConfig.extra.API_URL;
 
   // Fetch available items
@@ -90,6 +90,8 @@ export const ItemsProvider = ({ children }) => {
         fetchItems,
         fetchDonatedFood,
         fetchClaimedFood,
+        setUser,
+        user
       }}
     >
       {children}

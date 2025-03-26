@@ -114,7 +114,7 @@
 //     fontWeight: "bold",
 //   },
 // });
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -126,13 +126,14 @@ import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import Constants from "expo-constants";
+import { ItemsContext } from "../src/context/ItemContext";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
   const API_URL = Constants.expoConfig.extra.API_URL;
-
+ const {user,setUser}=useContext(ItemsContext)
   const handleLogin = async () => {
     if (!email || !password) {
       alert("Please fill all fields");
@@ -145,7 +146,7 @@ export default function LoginScreen() {
         email,
         password,
       });
-      console.log("object")
+      
       if (response.data && response.data.token) {
         await SecureStore.setItemAsync("userToken", response.data.token);
         alert("Logged In Successfully");
