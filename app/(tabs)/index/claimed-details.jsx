@@ -79,7 +79,7 @@ export default function DetailsScreen() {
     </ScrollView>
   );
 }
-
+  
 const styles = StyleSheet.create({
   container: {
     flex: 1,

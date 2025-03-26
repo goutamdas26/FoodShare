@@ -15,7 +15,6 @@ import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 const API_URL = Constants.expoConfig.extra.API_URL;
 
-
 const DonateFoodScreen = () => {
   const [images, setImages] = useState([]);
   const [foodName, setFoodName] = useState("");
@@ -81,7 +80,7 @@ const DonateFoodScreen = () => {
     formData.append("quantity", quantity);
 
     try {
-      const response = await axios.post(API_URL+
+      const response = await axios.post(API_URL +
         "/api/food/add",
         formData,
         {
@@ -118,14 +117,14 @@ const DonateFoodScreen = () => {
       <TouchableOpacity
         onPress={pickImages}
         style={{
-          backgroundColor: "#ffcc00",
+          backgroundColor: "#3F51B5", // Indigo 500
           padding: 10,
           borderRadius: 10,
           alignItems: "center",
           marginBottom: 10,
         }}
       >
-        <Text>📸 Upload Images</Text>
+        <Text style={{ color: "white" }}>📸 Upload Images</Text>
       </TouchableOpacity>
 
       <ScrollView
@@ -155,7 +154,7 @@ const DonateFoodScreen = () => {
           onPress={() => setCategory("Human")}
           style={{
             flex: 1,
-            backgroundColor: category === "Human" ? "#ff5733" : "#ccc",
+            backgroundColor: category === "Human" ? "#3F51B5" : "#ccc", // Indigo 500
             padding: 10,
             borderRadius: 10,
             alignItems: "center",
@@ -169,7 +168,7 @@ const DonateFoodScreen = () => {
           onPress={() => setCategory("Pet")}
           style={{
             flex: 1,
-            backgroundColor: category === "Pet" ? "#ff5733" : "#ccc",
+            backgroundColor: category === "Pet" ? "#3F51B5" : "#ccc", // Indigo 500
             padding: 10,
             borderRadius: 10,
             alignItems: "center",
@@ -206,14 +205,14 @@ const DonateFoodScreen = () => {
       <TouchableOpacity
         onPress={getLocation}
         style={{
-          backgroundColor: "#00cc99",
+          backgroundColor: "#3F51B5", // Indigo 500
           padding: 10,
           borderRadius: 10,
           alignItems: "center",
           marginBottom: 10,
         }}
       >
-        <Text>📍 Get Current Location</Text>
+        <Text style={{ color: "white" }}>📍 Get Current Location</Text>
       </TouchableOpacity>
 
       <TextInput
@@ -227,7 +226,7 @@ const DonateFoodScreen = () => {
       <TouchableOpacity
         onPress={handleSubmit}
         style={{
-          backgroundColor: "#ff5733",
+          backgroundColor: "#3F51B5", // Indigo 500
           padding: 10,
           borderRadius: 10,
           alignItems: "center",

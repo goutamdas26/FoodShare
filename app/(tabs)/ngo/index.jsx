@@ -9,7 +9,7 @@ const NGODetailsScreen = () => {
       <Text style={styles.title}>🏢 FoodShare</Text>
 
       <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>NGO Members</Text>
+        <Text style={styles.sectionTitle}>About Us</Text>
         <Text style={styles.text}>• Eshaan Tripathi</Text>
         <Text style={styles.text}>• Goutam Das</Text>
         <Text style={styles.text}>• Aryan</Text>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
     marginBottom: 20,
-    color: "#333",
+    color: "#3F51B5", // Indigo 500
   },
   sectionContainer: {
     backgroundColor: "#fff",
@@ -65,7 +65,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginBottom: 10,
-    color: "#555",
+    color: "#3F51B5", // Indigo 500
   },
   text: {
     fontSize: 16,

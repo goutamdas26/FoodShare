@@ -73,7 +73,7 @@ export const ItemsProvider = ({ children }) => {
     }
   };
 
-  // Fetch data when the provider is mounted
+
   useEffect(() => {
     fetchItems();
     fetchClaimedFood();

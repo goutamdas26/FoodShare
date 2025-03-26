@@ -11,7 +11,7 @@ import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ItemsContext } from "../../../../src/context/ItemContext";
-import { useContext, useState } from "react"; // Import useState
+import { useContext, useEffect, useState } from "react"; // Import useState
 
 export default function ClaimedScreen() {
   const router = useRouter();
@@ -71,10 +71,12 @@ export default function ClaimedScreen() {
     await fetchClaimedFood(); // Fetch claimed food again
     setRefreshing(false);
   };
-
+useEffect(()=>{
+fetchClaimedFood()
+},[])
   return (
     <View style={styles.container}>
-      {claimedFood.length > 0 ? (
+      {claimedFood.length > 0 ?  (
         <FlatList
           data={claimedFood}
           renderItem={renderItem}
@@ -131,17 +133,17 @@ const styles = StyleSheet.create({
   foodName: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#333",
+    color: "#3F51B5", // Changed to indigo 500
     marginBottom: 4,
   },
   donorName: {
     fontSize: 14,
-    color: "#666",
+    color: "#3F51B5", // Changed to indigo 500
     marginBottom: 2,
   },
   quantity: {
     fontSize: 14,
-    color: "#666",
+    color: "#3F51B5", // Changed to indigo 500
     marginBottom: 4,
   },
   bottomRow: {
@@ -179,6 +181,6 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: 12,
     fontSize: 16,
-    color: "#666",
+    color: "#3F51B5", // Changed to indigo 500
   },
 });

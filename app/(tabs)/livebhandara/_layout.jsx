@@ -12,10 +12,10 @@ const BhandaraStack = () => {
   return (
 <Stack.Navigator>
   <Stack.Screen name='index' component={LiveBhandaraScreen} options={{
-    title:"Food Charity Events"
+    title:"Food Charity Events",headerShown:false
   }}/>
   <Stack.Screen name='bhandara-details' component={BDetails} options={{
-    title:"Details"
+    title:"Event Details"
   }}/>
   <Stack.Screen name='list-bhandara' component={ListBhandara} options={{
     title:"List Bhandara"

@@ -1,3 +1,4 @@
+
 import {
   View,
   Text,
@@ -25,8 +26,8 @@ export default function DonatedScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    console.log(donatedFood); // Log donatedFood only when it changes
-  }, [donatedFood]);
+    fetchDonatedFood() // Log donatedFood only when it changes
+  }, []);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   foodName: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#333",
+    color: "#3F51B5", // Changed to indigo 500
     marginBottom: 4,
   },
   quantity: {
