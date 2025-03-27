@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
   View,
   Text,
@@ -8,16 +8,18 @@ import {
   Image,
   ScrollView,
 } from 'react-native';
+import { ItemsContext } from '../../../src/context/ItemContext';
 
 const UpdateProfileScreen = () => {
+  const {user}=useContext(ItemsContext)
+  const{name,email,phone}=user
   const [formData, setFormData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
+    name: name,
+    email: email,
+    phone: phone || "none",
     address: '',
     profileImage: null,
   });
-
   const handleUpdateProfile = () => {
     // Add your API call or update logic here
     console.log('Profile Update Data:', formData);
@@ -39,8 +41,8 @@ const UpdateProfileScreen = () => {
         <Text style={styles.label}>Full Name</Text>
         <TextInput
           style={styles.input}
-          value={formData.fullName}
-          onChangeText={(text) => setFormData({...formData, fullName: text})}
+          value={formData.name}
+          onChangeText={(text) => setFormData({...formData, name: text})}
           placeholder="Enter your full name"
         />
 

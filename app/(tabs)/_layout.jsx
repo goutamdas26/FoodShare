@@ -14,7 +14,11 @@ export default function Layout() {
         options={{
           title: "Home",
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name="home" size={size} color={focused ? '#3F51B5' : color} />
+            <Ionicons
+              name="home"
+              size={size}
+              color={focused ? "#3F51B5" : color}
+            />
           ),
         }}
       />
@@ -23,7 +27,11 @@ export default function Layout() {
         options={{
           title: "FoodHistory",
           tabBarIcon: ({ color, size, focused }) => (
-            <FontAwesome5 name="clipboard-list" size={size} color={focused ? '#3F51B5' : color} />
+            <FontAwesome5
+              name="clipboard-list"
+              size={size}
+              color={focused ? "#3F51B5" : color}
+            />
           ),
         }}
       />
@@ -35,7 +43,7 @@ export default function Layout() {
             <MaterialCommunityIcons
               name="food-variant"
               size={size}
-              color={focused ? '#3F51B5' : color}
+              color={focused ? "#3F51B5" : color}
             />
           ),
         }}
@@ -45,14 +53,18 @@ export default function Layout() {
         options={{
           title: "About Us",
           tabBarIcon: ({ color, size, focused }) => (
-            <FontAwesome5 name="hand-holding-heart" size={size} color={focused ? '#3F51B5' : color} />
+            <FontAwesome5
+              name="hand-holding-heart"
+              size={size}
+              color={focused ? "#3F51B5" : color}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="livebhandara"
+        name="charityevent"
         options={{
-          title: "Live Bhandara",
+          title: "Charity Events",
           tabBarIcon: () => (
             <Image
               source={charityIcon} // Replace with your image URL
@@ -66,7 +78,11 @@ export default function Layout() {
         options={{
           title: "Profile",
           tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons name="person" size={size} color={focused ? '#3F51B5' : color} />
+            <Ionicons
+              name="person"
+              size={size}
+              color={focused ? "#3F51B5" : color}
+            />
           ),
         }}
       />

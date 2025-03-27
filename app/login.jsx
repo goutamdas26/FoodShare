@@ -146,7 +146,8 @@ export default function LoginScreen() {
         email,
         password,
       });
-      
+      setUser(response.data.user)
+    
       if (response.data && response.data.token) {
         await SecureStore.setItemAsync("userToken", response.data.token);
         alert("Logged In Successfully");
@@ -157,6 +158,9 @@ export default function LoginScreen() {
     } catch (error) {
       console.error("Login Error:", error);
       alert("Something went wrong. Please try again later.");
+    }
+    finally{
+      console.log(user)
     }
   };
 

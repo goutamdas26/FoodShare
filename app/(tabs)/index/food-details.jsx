@@ -15,9 +15,11 @@ const Details = () => {
     dateTime,
     donorName,
     donorContact,
+    donor,
+    expiry,
     postedAt,
   } = route.params;
-
+console.log(donor)
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -36,6 +38,10 @@ const Details = () => {
             <Text style={styles.detailText}>Posted At: {postedAt}</Text>
           </View>
           <View style={styles.detailRow}>
+            <MaterialIcons name="event" size={20} color="#666" />
+            <Text style={styles.detailText}>Expire At: {expiry}</Text>
+          </View>
+          <View style={styles.detailRow}>
             <MaterialIcons name="access-time" size={20} color="#666" />
             <Text style={styles.detailText}>Category: {category}</Text>
           </View>
@@ -49,7 +55,7 @@ const Details = () => {
           <Text style={styles.sectionTitle}>Donor Information</Text>
           <View style={styles.detailRow}>
             <MaterialIcons name="store" size={20} color="#666" />
-            <Text style={styles.detailText}>{donorName}</Text>
+            <Text style={styles.detailText}>{donor?.name}</Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
@@ -57,7 +63,7 @@ const Details = () => {
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{donorContact}</Text>
+            <Text style={styles.detailText}>{donor?.phone}</Text>
           </View>
         </View>
 
