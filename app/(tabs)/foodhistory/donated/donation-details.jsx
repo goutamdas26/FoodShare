@@ -7,7 +7,7 @@ import { useContext } from "react";
 export default function DonationDetailsScreen() {
   const route = useRoute();
   const donationDetails = route.params || {};
-
+console.log(donationDetails)
 
   return (
     <ScrollView style={styles.container}>
@@ -18,7 +18,7 @@ export default function DonationDetailsScreen() {
       />
 
       <View style={styles.content}>
-        <Text style={styles.title}>{donationDetails.foodItemId.foodName}</Text>
+        <Text style={styles.title}>{donationDetails.foodItemId?.name}</Text>
 
         <View style={styles.statusContainer}>
           <View
@@ -47,7 +47,7 @@ export default function DonationDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="schedule" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Expires at: {donationDetails.expiryTime}
+              Expires at: {donationDetails.foodItemId.expiry}
             </Text>
           </View>
           <View style={styles.detailRow}>
@@ -85,7 +85,7 @@ export default function DonationDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
             <Text style={styles.detailText}>
-              {donationDetails.foodItemId.donorContactNo}
+              {donationDetails.foodItemId.donor.phone}
             </Text>
           </View>
         </View>

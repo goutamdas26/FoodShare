@@ -146,10 +146,11 @@ export default function LoginScreen() {
         email,
         password,
       });
-      setUser(response.data.user)
+      const { token, user } = response.data;
     
       if (response.data && response.data.token) {
-        await SecureStore.setItemAsync("userToken", response.data.token);
+        await SecureStore.setItemAsync("userToken", token);
+        setUser(user)
         alert("Logged In Successfully");
         router.replace("/(tabs)/home");
       } else {
