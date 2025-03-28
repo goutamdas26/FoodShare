@@ -7,7 +7,7 @@ import { useContext } from "react";
 export default function DonationDetailsScreen() {
   const route = useRoute();
   const donationDetails = route.params || {};
-console.log(donationDetails)
+
 
   return (
     <ScrollView style={styles.container}>
@@ -32,12 +32,20 @@ console.log(donationDetails)
               },
             ]}
           >
-            <Text style={styles.statusText}>{donationDetails.foodItemId.status}</Text>
+            <Text style={styles.statusText}>
+              {donationDetails.foodItemId.status}
+            </Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Donation Details</Text>
+          <View style={styles.detailRow}>
+            <MaterialIcons name="event" size={20} color="#666" />
+            <Text style={styles.detailText}>
+              Donated By: {donationDetails.foodItemId.donorDetails?.name}
+            </Text>
+          </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
             <Text style={styles.detailText}>
@@ -56,6 +64,12 @@ console.log(donationDetails)
               Quantity: {donationDetails.foodItemId.quantity}
             </Text>
           </View>
+          <View style={styles.detailRow}>
+            <MaterialIcons name="restaurant" size={20} color="#666" />
+            <Text style={styles.detailText}>
+              For: {donationDetails.foodItemId.category}s
+            </Text>
+          </View>
         </View>
 
         {donationDetails.foodItemId.claimedBy && (
@@ -63,12 +77,14 @@ console.log(donationDetails)
             <Text style={styles.sectionTitle}>Claimed By</Text>
             <View style={styles.detailRow}>
               <MaterialIcons name="group" size={20} color="#666" />
-              <Text style={styles.detailText}>{donationDetails.foodItemId.claimedBy.name}</Text>
+              <Text style={styles.detailText}>
+                {donationDetails.foodItemId.claimedBy.name}
+              </Text>
             </View>
             <View style={styles.detailRow}>
               <MaterialIcons name="access-time" size={20} color="#666" />
               <Text style={styles.detailText}>
-                Claimed at: {donationDetails.claimedAt}
+                Claimed at: {donationDetails.foodItemId.createdAt}
               </Text>
             </View>
           </View>
@@ -85,14 +101,14 @@ console.log(donationDetails)
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
             <Text style={styles.detailText}>
-              {donationDetails.foodItemId.donor.phone}
+              {donationDetails.foodItemId.donorDetails.phone}
             </Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.description}>{donationDetails.description}</Text>
+          <Text style={styles.description}>{donationDetails.foodItemId.description}</Text>
         </View>
       </View>
     </ScrollView>

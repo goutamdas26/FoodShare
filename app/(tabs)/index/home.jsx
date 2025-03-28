@@ -26,7 +26,7 @@ const AvailableFoodScreen = () => {
   useEffect(() => {
     fetchItems();
   }, []);
-console.log(items)
+
   const handleClaim = async (food) => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");

@@ -127,6 +127,26 @@ export const ItemsProvider = ({ children }) => {
     }
   };
 
+  const fetchUser = async () => {
+    try {
+      const token = await SecureStore.getItemAsync("userToken");
+      if (!token) return;
+
+      const response = await axios.get(`${API_URL}/api/user`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      setUser(response.data);
+      console.log(response.data)
+            await SecureStore.setItemAsync(
+              "userData",
+              JSON.stringify(response.data)
+            );
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+ 
   const loadUserData = async () => {
     try {
       const storedUser = await SecureStore.getItemAsync("userData");
@@ -166,6 +186,7 @@ export const ItemsProvider = ({ children }) => {
       );
 
       setDonatedFood(response.data || []);
+      console.log(JSON.stringify(response.data,null,2))
     } catch (error) {
       console.error("Error fetching donated food:", error);
     }
@@ -207,6 +228,7 @@ export const ItemsProvider = ({ children }) => {
         fetchClaimedFood,
         setUser: setUserAndStore,
         user,
+        fetchUser,
       }}
     >
       {children}

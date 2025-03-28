@@ -2,12 +2,12 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import { JsxEmit } from "typescript";
 
 export default function DetailsScreen() {
 
   const route = useRoute();
   const claimDetails = route.params || {}; 
-
   return (
     <ScrollView style={styles.container}>
       <Image

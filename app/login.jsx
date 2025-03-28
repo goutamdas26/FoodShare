@@ -141,7 +141,7 @@ export default function LoginScreen() {
     }
 
     try {
-      console.log(API_URL)
+    
       const response = await axios.post(API_URL + "/api/auth/login", {
         email,
         password,
@@ -161,7 +161,7 @@ export default function LoginScreen() {
       alert("Something went wrong. Please try again later.");
     }
     finally{
-      console.log(user)
+     
     }
   };
 

@@ -7,24 +7,46 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { ItemsContext } from '../../../src/context/ItemContext';
-
+import Constants  from 'expo-constants';
+import  * as SecureStore  from 'expo-secure-store';
+import axios from 'axios';
 const UpdateProfileScreen = () => {
-  const {user}=useContext(ItemsContext)
-  const{name,email,phone}=user
+  const { user, fetchUser } = useContext(ItemsContext);
+  const{name,email,phone,address}=user
+  const API_URL = Constants.expoConfig.extra.API_URL;
+
   const [formData, setFormData] = useState({
     name: name,
     email: email,
     phone: phone || "none",
-    address: '',
-    profileImage: null,
+    address: address,
+   
   });
-  const handleUpdateProfile = () => {
-    // Add your API call or update logic here
-    console.log('Profile Update Data:', formData);
-  };
+  const handleUpdateProfile = async () => {
+    try {
+      const token = await SecureStore.getItemAsync("userToken");
+      const response = await axios.put(`${API_URL}/api/user/update`, formData, {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
 
+
+      if (response.status == 200) {
+        fetchUser()
+Alert.alert("Profile Updated")
+      } else {
+        console.error('Failed to update profile:', response.status);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
+console.log(user)
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>

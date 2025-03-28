@@ -12,14 +12,14 @@ const Details = () => {
     quantity,
     category,
     location,
-    dateTime,
-    donorName,
-    donorContact,
+    donorDetails,
     donor,
     expiry,
     postedAt,
+    description,
   } = route.params;
-console.log(donor)
+ console.log(JSON.stringify(donor, null, 2));
+
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -63,13 +63,13 @@ console.log(donor)
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{donor?.phone}</Text>
+            <Text style={styles.detailText}>{donorDetails?.phone}</Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.description}>{}</Text>
+          <Text style={styles.description}>{description}</Text>
         </View>
       </View>
     </ScrollView>

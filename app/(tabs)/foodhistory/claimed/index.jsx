@@ -18,7 +18,7 @@ export default function ClaimedScreen() {
   const navigation = useNavigation();
   const { fetchClaimedFood, claimedFood } = useContext(ItemsContext);
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
-console.log(JSON.stringify(claimedFood[0],null,2))
+
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}

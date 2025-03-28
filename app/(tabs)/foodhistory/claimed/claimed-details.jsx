@@ -58,7 +58,7 @@ export default function ClaimDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="store" size={20} color="#666" />
             <Text style={styles.detailText}>
-              {claimDetails.foodItemId.donorName}
+              {claimDetails.foodItemId.donorDetails.name}
             </Text>
           </View>
           <View style={styles.detailRow}>
@@ -69,7 +69,7 @@ export default function ClaimDetailsScreen() {
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.foodItemId.donorContact}</Text>
+            <Text style={styles.detailText}>{claimDetails.foodItemId.donorDetails.phone}</Text>
           </View>
         </View>
 
