@@ -1,32 +1,70 @@
-// export default FoodDetailsScreen;
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import { useLocalSearchParams } from "expo-router";
-import { MaterialIcons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  Image,
+  Dimensions,
+} from "react-native";
 import { useRoute } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
+
+const { width } = Dimensions.get("window");
 
 const Details = () => {
   const route = useRoute();
   const {
     name,
-    image,
+    images = [], // Ensure it's an array
     quantity,
     category,
     location,
     donorDetails,
-    donor,
     expiry,
     postedAt,
     description,
-  } = route.params;
- console.log(JSON.stringify(donor, null, 2));
+  } = route.params || {};
+
+  // Handle missing images array
+  const validImages = Array.isArray(images) && images.length > 0 ? images : [
+    "https://via.placeholder.com/400", // Fallback image
+  ];
+
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
     <ScrollView style={styles.container}>
-      <Image
-        source={{ uri: image }}
-        style={styles.image}
-        defaultSource={require("../../../assets/images/icon.png")}
-      />
+      {/* Image Slider */}
+      <View>
+        <FlatList
+          data={validImages}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => index.toString()}
+          onScroll={(event) => {
+            const index = Math.round(event.nativeEvent.contentOffset.x / width);
+            setActiveIndex(index);
+          }}
+          renderItem={({ item }) => (
+            <Image source={{ uri: item }} style={styles.image} />
+          )}
+        />
+        {/* Pagination Dots */}
+        <View style={styles.pagination}>
+          {validImages.map((_, index) => (
+            <View
+              key={index}
+              style={[
+                styles.dot,
+                activeIndex === index ? styles.activeDot : null,
+              ]}
+            />
+          ))}
+        </View>
+      </View>
 
       <View style={styles.content}>
         <Text style={styles.title}>{name}</Text>
@@ -55,7 +93,7 @@ const Details = () => {
           <Text style={styles.sectionTitle}>Donor Information</Text>
           <View style={styles.detailRow}>
             <MaterialIcons name="store" size={20} color="#666" />
-            <Text style={styles.detailText}>{donor?.name}</Text>
+            <Text style={styles.detailText}>{donorDetails?.name}</Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
@@ -77,14 +115,33 @@ const Details = () => {
 };
 
 export default Details;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#fff",
   },
   image: {
-    width: "100%",
-    height: 200,
+    width: width,
+    height: 250,
+    resizeMode: "cover",
+  },
+  pagination: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#ccc",
+    marginHorizontal: 4,
+  },
+  activeDot: {
+    backgroundColor: "#333",
+    width: 10,
+    height: 10,
   },
   content: {
     padding: 16,
@@ -94,20 +151,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#333",
     marginBottom: 8,
-  },
-  statusContainer: {
-    marginBottom: 16,
-  },
-  statusBadge: {
-    alignSelf: "flex-start",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 16,
-  },
-  statusText: {
-    color: "white",
-    fontSize: 14,
-    fontWeight: "500",
   },
   section: {
     marginBottom: 24,

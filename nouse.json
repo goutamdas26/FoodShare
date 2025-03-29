@@ -1,28 +1,11 @@
-[
-  {
-    "foodItemId": {
-      "donorDetails": {
-        "name": "Goutam Das ",
-        "phone": "6230150199"
-      },
-      "_id": "67e62fe8c1ec16370fb82363",
-      "name": "H",
-      "category": "Human",
-      "quantity": 6,
-      "location": "Unnamed Road, Unnamed Road, Kalka, Haryana, India",
-      "image": "https://via.placeholder.com/150",
-      "donor": "67e62fcac1ec16370fb8235c",
-      "status": "Claimed",
-      "expiry": "Fggg",
-      "postedAt": "2025-03-28T05:13:12.417Z",
-      "createdAt": "2025-03-28T05:13:12.418Z",
-      "updatedAt": "2025-03-28T05:16:23.620Z",
-      "__v": 0,
-      "claimedBy": {
-        "_id": "67e6309d8646433874295baf",
-        "name": "Gdas"
-      }
-    },
-    "_id": "67e62fe8c1ec16370fb82365"
-  }
-]
+{"__v": 0, "_id": "67e6309d8646433874295baf",
+ "address": "Hello", 
+ "claimed": [{"_id": "67e630a78646433874295bb6",
+  "claimedAt": "2025-03-28T05:16:23.799Z",
+   "foodItemId": "67e62fe8c1ec16370fb82363"}],
+    "createdAt": "2025-03-28T05:16:13.347Z", 
+    "donated": [], "email": "1",
+     "image": "https://via.placeholder.com/150", "name": "Goutam 
+Das ", 
+"password": "$2b$10$8YKonmpG2W7Gd0jsbpyiX.C5DY4gfIb6ULhJvzoGkbDkl0AkkXOFy", 
+"phone": 6230150199, "updatedAt": "2025-03-28T14:20:13.886Z"}

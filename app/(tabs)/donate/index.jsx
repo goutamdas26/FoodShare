@@ -58,48 +58,115 @@ const [expiry,setExpiry]=useState("")
     }
   };
 
+  // const handleSubmit = async () => {
+  //   if (!foodName || !category || !description || !location || !phone ||!expiry) {
+  //     Alert.alert("Missing Fields", "Please fill all details");
+  //     return;
+  //   }
+
+  //   const token = await SecureStore.getItemAsync("userToken");
+
+  //   if (!token) {
+  //     Alert.alert("Authentication Error", "Please log in again.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("foodName", foodName);
+  //   formData.append("category", category);
+  //   formData.append("description", description);
+  //   formData.append("location", location);
+  //   formData.append("phone", phone);
+  //   formData.append("quantity", quantity);
+  //   formData.append("expiry", expiry);
+
+  //   try {
+  //     const response = await axios.post(API_URL +
+  //       "/api/food/add",
+  //       formData,
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status === 201) {
+  //       Alert.alert("Success", "Food donation submitted successfully!");
+  //       setFoodName("");
+  //       setCategory("Human"); // Reset category
+  //       setDescription("");
+  //       setLocation("");
+  //       setPhone("");
+  //       setQuantity("");
+  //     } else {
+  //       Alert.alert("Error", "Something went wrong. Please try again.");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error submitting donation:", error.response?.data || error);
+  //     Alert.alert("Error", "Failed to submit donation. Please try again.");
+  //   }
+  // };
   const handleSubmit = async () => {
-    if (!foodName || !category || !description || !location || !phone ||!expiry) {
-      Alert.alert("Missing Fields", "Please fill all details");
+    if (!foodName || !category || !description || !location || !phone || !expiry || images.length === 0) {
+      Alert.alert("Missing Fields", "Please fill all details and upload at least one image.");
       return;
     }
-
+  
     const token = await SecureStore.getItemAsync("userToken");
-
     if (!token) {
       Alert.alert("Authentication Error", "Please log in again.");
       return;
     }
-
-    const formData = new FormData();
-    formData.append("foodName", foodName);
-    formData.append("category", category);
-    formData.append("description", description);
-    formData.append("location", location);
-    formData.append("phone", phone);
-    formData.append("quantity", quantity);
-    formData.append("expiry", expiry);
-
+  
+    const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload";
+    const uploadPreset = "foodshare_upload"; // Set up an unsigned upload preset in Cloudinary
+  
     try {
-      const response = await axios.post(API_URL +
-        "/api/food/add",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      // Upload all images to Cloudinary
+      const imageUrls = await Promise.all(
+        images.map(async (imageUri) => {
+          const formData = new FormData();
+          formData.append("file", { uri: imageUri, type: "image/jpeg", name: "upload.jpg" });
+          formData.append("upload_preset", uploadPreset);
+  
+          const response = await axios.post(cloudinaryUploadUrl, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+  
+          return response.data.secure_url; // Cloudinary URL of the uploaded image
+        })
       );
-
+  
+      // Send form data with Cloudinary image URLs to backend
+      const formData = new FormData();
+      formData.append("foodName", foodName);
+      formData.append("category", category);
+      formData.append("description", description);
+      formData.append("location", location);
+      formData.append("phone", phone);
+      formData.append("quantity", quantity);
+      formData.append("expiry", expiry);
+      imageUrls.forEach((url) => formData.append("images", url)); // Append all image URLs
+  
+      const response = await axios.post(API_URL + "/api/food/add", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
       if (response.status === 201) {
         Alert.alert("Success", "Food donation submitted successfully!");
         setFoodName("");
-        setCategory("Human"); // Reset category
+        setCategory("Human");
         setDescription("");
         setLocation("");
         setPhone("");
         setQuantity("");
+        setExpiry("");
+        setImages([]);
       } else {
         Alert.alert("Error", "Something went wrong. Please try again.");
       }
@@ -108,7 +175,8 @@ const [expiry,setExpiry]=useState("")
       Alert.alert("Error", "Failed to submit donation. Please try again.");
     }
   };
-
+  
+  
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>

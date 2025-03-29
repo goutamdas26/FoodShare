@@ -9,22 +9,46 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { ItemsContext } from '../../../src/context/ItemContext';
-import Constants  from 'expo-constants';
-import  * as SecureStore  from 'expo-secure-store';
+import Constants from 'expo-constants';
+import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
+
 const UpdateProfileScreen = () => {
   const { user, fetchUser } = useContext(ItemsContext);
-  const{name,email,phone,address}=user
+  const { name, email, phone, address, profileImage } = user;
   const API_URL = Constants.expoConfig.extra.API_URL;
 
   const [formData, setFormData] = useState({
-    name: name,
-    email: email,
-    phone: phone || "none",
-    address: address,
-   
+    name,
+    email,
+    phone: phone ? phone.toString() : '', // Ensure phone is a string
+    address,
+    profileImage,
   });
+
+  // Image Picker Function
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Denied', 'Allow access to select an image.');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaType.IMAGES, // Updated for Expo 49+
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      setFormData({ ...formData, profileImage: result.assets[0].uri });
+    }
+  };
+
+  // Handle Profile Update
   const handleUpdateProfile = async () => {
     try {
       const token = await SecureStore.getItemAsync("userToken");
@@ -35,10 +59,9 @@ const UpdateProfileScreen = () => {
         },
       });
 
-
       if (response.status == 200) {
-        fetchUser()
-Alert.alert("Profile Updated")
+        fetchUser();
+        Alert.alert("Profile Updated");
       } else {
         console.error('Failed to update profile:', response.status);
       }
@@ -46,15 +69,15 @@ Alert.alert("Profile Updated")
       console.error('Error updating profile:', error);
     }
   };
-console.log(user)
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={formData.profileImage || require('../../../assets/images/icon.png')}
+          source={formData.profileImage ? { uri: formData.profileImage } : require('../../../assets/images/icon.png')}
           style={styles.profileImage}
         />
-        <TouchableOpacity style={styles.imageButton}>
+        <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
           <Text style={styles.imageButtonText}>Change Photo</Text>
         </TouchableOpacity>
       </View>
@@ -64,7 +87,7 @@ console.log(user)
         <TextInput
           style={styles.input}
           value={formData.name}
-          onChangeText={(text) => setFormData({...formData, name: text})}
+          onChangeText={(text) => setFormData({ ...formData, name: text })}
           placeholder="Enter your full name"
         />
 
@@ -72,7 +95,7 @@ console.log(user)
         <TextInput
           style={styles.input}
           value={formData.email}
-          onChangeText={(text) => setFormData({...formData, email: text})}
+          onChangeText={(text) => setFormData({ ...formData, email: text })}
           placeholder="Enter your email"
           keyboardType="email-address"
         />
@@ -81,7 +104,7 @@ console.log(user)
         <TextInput
           style={styles.input}
           value={formData.phone}
-          onChangeText={(text) => setFormData({...formData, phone: text})}
+          onChangeText={(text) => setFormData({ ...formData, phone: text })}
           placeholder="Enter your phone number"
           keyboardType="phone-pad"
         />
@@ -90,15 +113,12 @@ console.log(user)
         <TextInput
           style={[styles.input, styles.addressInput]}
           value={formData.address}
-          onChangeText={(text) => setFormData({...formData, address: text})}
+          onChangeText={(text) => setFormData({ ...formData, address: text })}
           placeholder="Enter your address"
           multiline
         />
 
-        <TouchableOpacity 
-          style={styles.updateButton}
-          onPress={handleUpdateProfile}
-        >
+        <TouchableOpacity style={styles.updateButton} onPress={handleUpdateProfile}>
           <Text style={styles.updateButtonText}>Update Profile</Text>
         </TouchableOpacity>
       </View>
