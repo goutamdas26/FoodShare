@@ -82,7 +82,7 @@ const AvailableFoodScreen = () => {
             >
               <Image
                 source={{
-                  uri: "https://res.cloudinary.com/dl92zh3w0/image/upload/v1741443893/raw-veg_r8toib.png",
+                  uri: item.images[0],
                 }}
                 style={styles.image}
               />

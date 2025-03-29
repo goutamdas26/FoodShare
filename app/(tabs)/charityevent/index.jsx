@@ -44,7 +44,7 @@ const FoodCharityScreen = () => {
   };
 
   const handleAddBhandara = () => {
-    navigation.navigate("list-bhandara");
+    navigation.navigate("list");
   };
 
   const renderItem = ({ item }) => (

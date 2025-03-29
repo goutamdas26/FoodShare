@@ -17,7 +17,7 @@ const Details = () => {
   const route = useRoute();
   const {
     name,
-    images = [], // Ensure it's an array
+    images , // Ensure it's an array
     quantity,
     category,
     location,
@@ -26,7 +26,7 @@ const Details = () => {
     postedAt,
     description,
   } = route.params || {};
-
+console.log(images)
   // Handle missing images array
   const validImages = Array.isArray(images) && images.length > 0 ? images : [
     "https://via.placeholder.com/400", // Fallback image

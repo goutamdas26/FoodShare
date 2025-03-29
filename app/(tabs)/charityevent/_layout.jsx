@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LiveBhandaraScreen from './index';
 import BDetails from './bhandara-details';
 import ListBhandara from './list-bhandara';
+import AddFoodCharityEvent from './list';
 
 
 const BhandaraStack = () => {
@@ -18,6 +19,9 @@ const BhandaraStack = () => {
     title:"Event Details"
   }}/>
   <Stack.Screen name='list-bhandara' component={ListBhandara} options={{
+    title:"List Bhandara"
+  }}/>
+  <Stack.Screen name='list' component={AddFoodCharityEvent} options={{
     title:"List Bhandara"
   }}/>
 </Stack.Navigator>
