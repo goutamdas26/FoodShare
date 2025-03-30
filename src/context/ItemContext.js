@@ -116,6 +116,7 @@ export const ItemsProvider = ({ children }) => {
   const [claimedFood, setClaimedFood] = useState([]);
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
+  const[events,setEvents]=useState([])
   const API_URL = Constants.expoConfig.extra.API_URL;
 
   const setUserAndStore = async (userData) => {
@@ -173,7 +174,16 @@ export const ItemsProvider = ({ children }) => {
       setLoading(false);
     }
   };
-
+  const fetchEvents=async()=>{
+    console.log("object")
+    try {
+     const response=await axios.get(`${API_URL}/api/events/`) 
+     console.log(response.data,"dsfs")
+     setEvents(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const fetchDonatedFood = async () => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");
@@ -229,6 +239,9 @@ export const ItemsProvider = ({ children }) => {
         setUser: setUserAndStore,
         user,
         fetchUser,
+        events,
+        fetchEvents
+
       }}
     >
       {children}

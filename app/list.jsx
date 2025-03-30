@@ -1,6 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, Alert } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import axios from 'axios'; // Make sure to import axios at the top of your file
+import * as SecureStore from "expo-secure-store"
+import Constants from "expo-constants";
+const API_URL = Constants.expoConfig.extra.API_URL;
 
 const AddFoodCharityEvent = () => {
   const [event, setEvent] = useState({
@@ -17,7 +21,7 @@ const AddFoodCharityEvent = () => {
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
   const [showEndTimePicker, setShowEndTimePicker] = useState(false);
-console.log(event.startTime.toLocaleTimeString())
+
   const handleInputChange = (name, value) => {
     setEvent({ ...event, [name]: value });
   };
@@ -28,8 +32,19 @@ console.log(event.startTime.toLocaleTimeString())
     }
   };
 
-  const handleSubmit = () => {
-    console.log("Event Data:", event);
+
+  const handleSubmit = async () => {
+    try {
+      const token=await SecureStore.getItemAsync("userToken")
+      const response = await axios.post(`${API_URL}/api/events/create`, event, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Replace with your JWT token
+        },
+      });
+Alert.alert("","Event Added")
+    } catch (error) {
+      console.error("Error submitting event data:", error);
+    }
   };
 
   return (

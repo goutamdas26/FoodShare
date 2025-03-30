@@ -5,7 +5,18 @@ import bimage from '../../../assets/images/food.png';
 
 const BDetails = () => {
     const route = useRoute();
-    const { name, date, location, description, image, cdate } = route.params;
+    const { title, startDate, endDate,startTime,endTime, location, description, image, cdate } = route.params;
+
+    // Function to format date to local date string
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString(); // Local date format
+    };
+    const formatTime = (timeString) => {
+        const date = new Date(timeString);
+     
+        return date.toLocaleTimeString(); // Local date format
+    };
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -15,16 +26,19 @@ const BDetails = () => {
             {/* Details Section */}
             <View style={styles.detailsContainer}>
                 <Text style={styles.label}>Event Name:</Text>
-                <Text style={styles.title}>{name}</Text>
+                <Text style={styles.title}>{title}</Text>
 
                 <View style={styles.row}>
                     <View style={styles.halfWidth}>
                         <Text style={styles.label}>Start Timing:</Text>
-                        <Text style={styles.date}>📅 {date}</Text>
+                        <Text style={styles.date}>📅 {formatDate(startDate)}</Text>
+                        <Text style={styles.date}>⏳ {formatTime(startTime)}</Text>
+                        
                     </View>
                     <View style={styles.halfWidth}>
                         <Text style={styles.label}>End Timing:</Text>
-                        <Text style={styles.date}>⏳ {cdate}</Text>
+                        <Text style={styles.date}>📅 {formatDate(endDate)}</Text>
+                        <Text style={styles.date}>⏳ {formatTime(endTime)}</Text>
                     </View>
                 </View>
 

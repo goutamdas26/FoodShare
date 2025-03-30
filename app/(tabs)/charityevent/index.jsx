@@ -6,8 +6,10 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
+import { router } from "expo-router";
+import { ItemsContext } from "../../../src/context/ItemContext";
 
 const liveBhandaraData = [
   {
@@ -38,21 +40,24 @@ const liveBhandaraData = [
 
 const FoodCharityScreen = () => {
   const navigation = useNavigation();
-
+const {events,fetchEvents}=useContext(ItemsContext)
   const handlePress = (item) => {
     navigation.navigate("bhandara-details", item);
   };
-
   const handleAddBhandara = () => {
-    navigation.navigate("list");
+    router.push("list");
   };
+useEffect(()=>{
+  fetchEvents()
 
+
+},[])
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
-      <Image source={{ uri: item.image }} style={styles.image} />
+      <Image source={{ uri: "item.image" }} style={styles.image} />
       <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.name}</Text>
-        <Text style={styles.detail}>📅 {item.date}</Text>
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.detail}>📅 {item.startDate}</Text>
         <Text style={styles.detail}>📍 {item.location}</Text>
       </View>
     </TouchableOpacity>
@@ -62,9 +67,9 @@ const FoodCharityScreen = () => {
     <View style={styles.container}>
       <Text style={styles.header}>Charity Events</Text>
       <FlatList
-        data={liveBhandaraData}
+        data={events}
         renderItem={renderItem}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         showsVerticalScrollIndicator={false}
       />
       <TouchableOpacity style={styles.addButton} onPress={handleAddBhandara}>
