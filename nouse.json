@@ -1,11 +1,26 @@
-{"__v": 0, "_id": "67e6309d8646433874295baf",
- "address": "Hello", 
- "claimed": [{"_id": "67e630a78646433874295bb6",
-  "claimedAt": "2025-03-28T05:16:23.799Z",
-   "foodItemId": "67e62fe8c1ec16370fb82363"}],
-    "createdAt": "2025-03-28T05:16:13.347Z", 
-    "donated": [], "email": "1",
-     "image": "https://via.placeholder.com/150", "name": "Goutam 
-Das ", 
-"password": "$2b$10$8YKonmpG2W7Gd0jsbpyiX.C5DY4gfIb6ULhJvzoGkbDkl0AkkXOFy", 
-"phone": 6230150199, "updatedAt": "2025-03-28T14:20:13.886Z"}
+{
+  "_id": "67ea50e8fb89b03842291ff5",
+  "claimedAt": "2025-03-31T08:23:04.055Z",
+  "foodItemId": {
+    "__v": 0,
+    "_id": "67e81c39bce41883bf5e482a",
+    "category": "Human",
+    "claimedBy": "67e81c49bce41883bf5e482e",
+    "createdAt": "2025-03-29T16:13:45.536Z",
+    "description": "Hh",
+    "donor": { "_id": "67e81c1dbce41883bf5e4825", "name": "Goutam Das" },
+    "donorDetails": { "name": "Goutam Das", "phone": "25" },
+    "expiry": "G",
+    "image": "https://via.placeholder.com/150",
+    "images": [
+      "https://res.cloudinary.com/dl92zh3w0/image/upload/v1743264824/t2jfdfwonwts86bxhvmk.png",
+      "https://res.cloudinary.com/dl92zh3w0/image/upload/v1743264824/ertjqx70o1ojbbqgbvx5.png"
+    ],
+    "location": "Gy",
+    "name": "Halwa khao",
+    "postedAt": "2025-03-29T16:13:45.535Z",
+    "quantity": 2,
+    "status": "Claimed",
+    "updatedAt": "2025-03-31T08:23:03.972Z"
+  }
+}

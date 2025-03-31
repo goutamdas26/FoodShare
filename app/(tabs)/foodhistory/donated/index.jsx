@@ -1,4 +1,3 @@
-
 import {
   View,
   Text,
@@ -26,8 +25,8 @@ export default function DonatedScreen() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    fetchDonatedFood() // Log donatedFood only when it changes
-    console.log(JSON.stringify(donatedFood,null,2));
+    fetchDonatedFood(); // Log donatedFood only when it changes
+    console.log(JSON.stringify(donatedFood, null, 2));
   }, []);
 
   const getStatusColor = (status) => {
@@ -42,7 +41,10 @@ export default function DonatedScreen() {
         return "#999";
     }
   };
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // Local date format
+  };
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
@@ -56,17 +58,23 @@ export default function DonatedScreen() {
 
       <View style={styles.cardContent}>
         <Text style={styles.foodName}>{item.foodItemId.name}</Text>
-        <Text style={styles.quantity}>Quantity: {item.foodItemId.quantity}</Text>
+        <Text style={styles.quantity}>
+          Quantity: {item.foodItemId.quantity}
+        </Text>
 
         {item.claimedBy && (
           <View style={styles.detailsRow}>
             <MaterialIcons name="group" size={16} color="#666" />
-            <Text style={styles.claimedByText}>Claimed by: {item.claimedBy.name}</Text>
+            <Text style={styles.claimedByText}>
+              Claimed by: {item.claimedBy.name}
+            </Text>
           </View>
         )}
 
         <View style={styles.bottomRow}>
-          <Text style={styles.date}>Posted: {item.foodItemId.postedAt}</Text>
+          <Text style={styles.date}>
+            Posted: {formatDate(item.foodItemId.postedAt)}
+          </Text>
           <View
             style={[
               styles.statusBadge,
@@ -78,7 +86,12 @@ export default function DonatedScreen() {
         </View>
       </View>
 
-      <MaterialIcons name="chevron-right" size={24} color="#666" style={styles.arrow} />
+      <MaterialIcons
+        name="chevron-right"
+        size={24}
+        color="#666"
+        style={styles.arrow}
+      />
     </TouchableOpacity>
   );
 

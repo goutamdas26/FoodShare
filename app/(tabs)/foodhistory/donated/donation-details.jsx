@@ -8,7 +8,10 @@ export default function DonationDetailsScreen() {
   const route = useRoute();
   const donationDetails = route.params || {};
 
-
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString(); // Local date format
+    };
   return (
     <ScrollView style={styles.container}>
       <Image
@@ -49,13 +52,13 @@ export default function DonationDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Posted: {donationDetails.foodItemId.postedAt}
+              Posted at: {formatDate(donationDetails.foodItemId.postedAt)}
             </Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="schedule" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Expires at: {donationDetails.foodItemId.expiry}
+              Expires at: {formatDate(donationDetails.foodItemId.expiry)}
             </Text>
           </View>
           <View style={styles.detailRow}>
@@ -108,7 +111,9 @@ export default function DonationDetailsScreen() {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.description}>{donationDetails.foodItemId.description}</Text>
+          <Text style={styles.description}>
+            {donationDetails.foodItemId.description}
+          </Text>
         </View>
       </View>
     </ScrollView>

@@ -37,7 +37,10 @@ const liveBhandaraData = [
     cdate: "2023-10-01 08:00 PM",
   },
 ];
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // Local date format
+  };
 const FoodCharityScreen = () => {
   const navigation = useNavigation();
 const {events,fetchEvents}=useContext(ItemsContext)
@@ -57,7 +60,7 @@ useEffect(()=>{
       <Image source={{ uri: "item.image" }} style={styles.image} />
       <View style={styles.cardContent}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.detail}>📅 {item.startDate}</Text>
+        <Text style={styles.detail}>📅 {formatDate(item.startDate)}</Text>
         <Text style={styles.detail}>📍 {item.location}</Text>
       </View>
     </TouchableOpacity>

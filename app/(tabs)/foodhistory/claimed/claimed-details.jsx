@@ -8,6 +8,14 @@ export default function ClaimDetailsScreen() {
   const route = useRoute();
   const claimDetails = route.params || {}; 
   // Mock data - replace with your actual data fetching logic
+    const formatDate = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleDateString(); // Local date format
+    };
+    const formatTime = (dateString) => {
+      const date = new Date(dateString);
+      return date.toLocaleTimeString(); // Local date format
+    };
 
   return (
     <ScrollView style={styles.container}>
@@ -41,7 +49,8 @@ export default function ClaimDetailsScreen() {
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Claimed: {claimDetails.claimedAt}
+              Claimed at: {formatDate(claimDetails.claimedAt)} {" "}  
+              {formatTime(claimDetails.claimedAt)}
             </Text>
           </View>
 
@@ -69,13 +78,17 @@ export default function ClaimDetailsScreen() {
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
-            <Text style={styles.detailText}>{claimDetails.foodItemId.donorDetails.phone}</Text>
+            <Text style={styles.detailText}>
+              {claimDetails.foodItemId.donorDetails.phone}
+            </Text>
           </View>
         </View>
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Description</Text>
-          <Text style={styles.description}>{claimDetails.description}</Text>
+          <Text style={styles.description}>
+            {claimDetails.foodItemId.description}
+          </Text>
         </View>
       </View>
     </ScrollView>
