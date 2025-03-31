@@ -1,55 +1,50 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import {
   View,
   Text,
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { useRouter } from "expo-router";
-import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import Constants from "expo-constants";
-import { ItemsContext } from "../src/context/ItemContext";
-
-export default function LoginScreen() {
+import * as SecureStore from "expo-secure-store"
+export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const router = useRouter();
   const API_URL = Constants.expoConfig.extra.API_URL;
-  const { user, setUser } = useContext(ItemsContext);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      alert("Please fill all fields");
+  const handleForgotPassword = async () => {
+    if (!email) {
+      Alert.alert("Error", "Please enter your email");
       return;
     }
 
     try {
-      const response = await axios.post(API_URL + "/api/auth/login", {
-        email,
-        password,
+      const token = await SecureStore.getItemAsync("userToken"); // Retrieve the JWT token from SecureStore
+      const response = await axios.post(API_URL + "/api/auth/forgot-password", { email }, {
+        headers: {
+          Authorization: `Bearer ${token}` // Attach the token in the request headers
+        }
       });
-      const { token, user } = response.data;
-
-      if (response.data && response.data.token) {
-        await SecureStore.setItemAsync("userToken", token);
-        setUser(user);
-        alert("Logged In Successfully");
-        router.replace("/(tabs)/home");
+      if (response.status==200) {
+        Alert.alert("Success", response.data.message);
+        
       } else {
-        alert("Invalid credentials. Please try again.");
+        Alert.alert("Error", "Email not found. Please try again.");
       }
     } catch (error) {
-      console.error("Login Error:", error);
-      alert("Something went wrong. Please try again later.");
+      console.error("Forgot Password Error:", error);
+      Alert.alert("Error", "Something went wrong. Please try again later.");
     }
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome Back</Text>
-      <Text style={styles.subtitle}>Login to continue</Text>
+      <Text style={styles.title}>Forgot Password?</Text>
+      <Text style={styles.subtitle}>Enter your email to reset your password</Text>
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -58,22 +53,11 @@ export default function LoginScreen() {
         value={email}
         onChangeText={setEmail}
       />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        placeholderTextColor="#B0B0B0"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity style={styles.button} onPress={handleForgotPassword}>
+        <Text style={styles.buttonText}>Reset Password</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/signup")}> 
-        <Text style={styles.switchText}>Don't have an account? Sign Up</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.push("/forgot-password")}> 
-        <Text style={styles.forgotPassword}>Forgot Password?</Text>
+      <TouchableOpacity onPress={() => router.replace("/login")}>
+        <Text style={styles.switchText}>Back to Login</Text>
       </TouchableOpacity>
     </View>
   );
@@ -107,11 +91,6 @@ const styles = StyleSheet.create({
     color: "#FFF",
     fontSize: 16,
     marginBottom: 10,
-  },
-  forgotPassword: {
-    color: "#BBDEFB",
-    fontWeight: "bold",
-    marginBottom: 0,
   },
   button: {
     backgroundColor: "#5C6BC0", // Indigo 500 button
