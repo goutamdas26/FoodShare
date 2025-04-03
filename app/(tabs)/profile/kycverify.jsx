@@ -11,7 +11,7 @@ const Veriffy = () => {
   console.log(user);
   const Help = () => {
     if (user.kycStatus == "Verified") {
-      return <Verified isVerified={true}/>;
+      return <Verified userId={user._id}/>;
     } else {
       return <Verify />;
     }

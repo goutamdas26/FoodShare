@@ -16,7 +16,7 @@ import { ItemsContext } from "../../../src/context/ItemContext";
 
 const Verify = () => {
   const API_URL = Constants.expoConfig.extra.API_URL;
-  const { user } = useContext(ItemsContext);
+  const { user ,fetchUser} = useContext(ItemsContext);
   const [kycData, setKycData] = useState({
     fullName: "",
     idNumber: "",
@@ -78,7 +78,7 @@ const Verify = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-
+fetchUser()
       Alert.alert("Success", response.data.message);
     } catch (error) {
       Alert.alert(
