@@ -8,7 +8,7 @@ import  Constants  from 'expo-constants';
 const VerifyOtpScreen = ({ route, navigation }) => {
   const { email } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
-  console.log(email);
+ 
   const API_URL = Constants.expoConfig.extra.API_URL;
 
   const verifyOtp = async () => {
