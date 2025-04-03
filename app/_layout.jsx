@@ -113,6 +113,7 @@ const RootLayout = () => {
           <Stack.Screen name="(tabs)" />
           <Stack.Screen name="login" />
           <Stack.Screen name="signup" />
+          <Stack.Screen name="otp" />
           <Stack.Screen name="list" options={{headerShown:true,title:"Add Event"}}/>
         </Stack>
       </LanguageProvider>

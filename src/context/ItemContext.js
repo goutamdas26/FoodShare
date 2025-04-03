@@ -160,9 +160,14 @@ export const ItemsProvider = ({ children }) => {
   };
 
   const fetchItems = async () => {
+    const token = await SecureStore.getItemAsync("userToken");
+    if (!token) {
+      console.warn("User token not available. Skipping fetchItems.");
+      return;
+    }
+    
+    setLoading(true);
     try {
-      const token = await SecureStore.getItemAsync("userToken");
-      setLoading(true);
       const response = await axios.post(`${API_URL}/api/food/available`, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
