@@ -1,5 +1,5 @@
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { useContext } from "react";
@@ -7,7 +7,7 @@ import { useContext } from "react";
 export default function DonationDetailsScreen() {
   const route = useRoute();
   const donationDetails = route.params || {};
-
+console.log(JSON.stringify(donationDetails.foodItemId.claimedBy, null, 2));
     const formatDate = (dateString) => {
       const date = new Date(dateString);
       return date.toLocaleDateString(); // Local date format
@@ -80,9 +80,20 @@ export default function DonationDetailsScreen() {
             <Text style={styles.sectionTitle}>Claimed By</Text>
             <View style={styles.detailRow}>
               <MaterialIcons name="group" size={20} color="#666" />
-              <Text style={styles.detailText}>
-                {donationDetails.foodItemId.claimedBy.name}
-              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: "user-details",
+                    params: {
+                      userId: donationDetails.foodItemId.claimedBy._id,
+                    },
+                  })
+                }
+              >
+                <Text style={styles.detailText}>
+                  {donationDetails.foodItemId.claimedBy.name}
+                </Text>
+              </TouchableOpacity>
             </View>
             <View style={styles.detailRow}>
               <MaterialIcons name="access-time" size={20} color="#666" />
