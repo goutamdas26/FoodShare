@@ -16,6 +16,8 @@ import {
 import { ItemsContext } from "../../../src/context/ItemContext";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
+import axios from 'axios';
+import Toast from "react-native-toast-message";
 
 const AvailableFoodScreen = () => {
   const { items, loading, fetchItems } = useContext(ItemsContext);
@@ -27,28 +29,36 @@ const AvailableFoodScreen = () => {
     fetchItems();
   }, []);
 
+
   const handleClaim = async (food) => {
     try {
       const userToken = await SecureStore.getItemAsync("userToken");
 
-      const response = await fetch(`${API_URL}/api/food/claim/${food._id}`, {
-        method: "POST",
+      const response = await axios.post(`${API_URL}/api/food/claim/${food._id}`, {}, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${userToken}`,
         },
       });
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "Failed to claim food");
+      if (response.status !== 200) {
+        throw new Error(response.data.message || "Failed to claim food");
       }
 
       alert("Food claimed successfully!");
+      Toast.show({
+        type: "success",
+        text1: "Food claimed successfully!",
+   
+      });
       await fetchItems();
     } catch (error) {
-      alert(error.message);
+     
+      Toast.show({
+        type: "error",
+        text1: "Failed to claim food",
+   
+      });
     }
   };
 

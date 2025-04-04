@@ -5,6 +5,7 @@ import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
 
 import  Constants  from 'expo-constants';
+import Toast from "react-native-toast-message";
 const VerifyOtpScreen = ({ route, navigation }) => {
   const { email } = useLocalSearchParams();
   const [otp, setOtp] = useState("");
@@ -14,11 +15,27 @@ const VerifyOtpScreen = ({ route, navigation }) => {
   const verifyOtp = async () => {
     try {
       await axios.post(`${API_URL}/api/auth/verify-otp`, { email, otp });
-      Alert.alert("Success", "OTP verified");
+      Toast.show({
+        type: "success",
+        text1: "OTP verified!",
+        
+      });
             router.replace(`/reset-password?email=${email}`);
 
     } catch (error) {
-      Alert.alert("Error", error.response?.data?.message || "Invalid OTP");
+     
+      if(error.response?.status==400){
+      Toast.show({
+        type: "error",
+        text1: error.response?.data?.message,
+        
+      });
+      return }
+      Toast.show({
+        type: "error",
+        text1: "Something went wrong.",
+        
+      });
     }
   };
 

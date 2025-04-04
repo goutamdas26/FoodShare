@@ -10,6 +10,7 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import axios from "axios";
 import  Constants  from 'expo-constants';
+import Toast from "react-native-toast-message";
 
 const ResetPasswordScreen = () => {
   const { email } = useLocalSearchParams();
@@ -21,11 +22,21 @@ const ResetPasswordScreen = () => {
 
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
-      Alert.alert("Error", "Please fill in all fields");
+     
+      Toast.show({
+        type: "warning",
+        text1: "Please fill in all fields",
+        
+      });
       return;
     }
     if (password !== confirmPassword) {
-      Alert.alert("Error", "Passwords do not match");
+    
+      Toast.show({
+        type: "warning",
+        text1: "Passwords do not match",
+        
+      });
       return;
     }
 
@@ -35,9 +46,22 @@ const ResetPasswordScreen = () => {
         email,
         newPassword: password,
       });
-      Alert.alert("Success", "Password updated successfully!");
+   
+      Toast.show({
+        type: "success",
+        text1: "Password updated successfully!",
+        
+      });
       router.replace("/login");
     } catch (error) {
+     
+      if(error.response.status==404){
+        Alert.alert(
+          "Error",
+          error.response?.data?.message || "Failed to reset password"
+        );
+        return 
+      }
       Alert.alert(
         "Error",
         error.response?.data?.message || "Failed to reset password"

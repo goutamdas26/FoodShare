@@ -15,7 +15,7 @@ export default function Donated() {
     <Stack.Navigator>
       <Stack.Screen
         name="home"
-        options={{ title: "Claimed" ,headerShown: false}}
+        options={{ title: "Home" ,headerShown: false}}
         component={index}
        
       />

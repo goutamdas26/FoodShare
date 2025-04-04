@@ -11,6 +11,7 @@ import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import Constants from "expo-constants";
 import { ItemsContext } from "../src/context/ItemContext";
+import Toast from "react-native-toast-message";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -35,14 +36,23 @@ export default function LoginScreen() {
       if (response.data && response.data.token) {
         await SecureStore.setItemAsync("userToken", token);
         setUser(user);
-        alert("Logged In Successfully");
+        Toast.show({
+          type: "success",
+          text1: "Logged in!",
+          text2: "Redirecting to dashboard...",
+        });
         router.replace("/(tabs)/home");
       } else {
         alert("Invalid credentials. Please try again.");
       }
     } catch (error) {
-      console.error("Login Error:", error);
-      alert("Something went wrong. Please try again later.");
+      Toast.show({
+        type: "error",
+        text1: "Invalid credentials. Please try again.",
+        
+      });
+      // console.error("Login Error:", error);
+      // alert("Something went wrong. Please try again later.");
     }
   };
 

@@ -42,7 +42,7 @@ useEffect(()=>{
       {/* Profile Section */}
       <View style={styles.profileContainer}>
         <Image
-          source={require("../../../assets/images/profilea.png")}
+          source={{uri:user?.profileImage}}
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>{user?.name}</Text>

@@ -13,6 +13,7 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import axios from "axios";
 import { ItemsContext } from "../../../src/context/ItemContext";
+import Toast from "react-native-toast-message";
 
 const Verify = () => {
   const API_URL = Constants.expoConfig.extra.API_URL;
@@ -79,12 +80,22 @@ const Verify = () => {
         },
       });
 fetchUser()
-      Alert.alert("Success", response.data.message);
+    
+      Toast.show({
+        type: "success",
+        text1: response.data.message,
+        
+      });
     } catch (error) {
       Alert.alert(
         "Error",
         error.response?.data?.message || "Failed to submit KYC details"
       );
+      Toast.show({
+        type: "error",
+        text1: error.response?.data?.message || "Failed to submit KYC details"
+        
+      });
     } finally {
       setLoading(false);
     }

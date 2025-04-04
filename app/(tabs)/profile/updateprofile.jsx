@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -14,12 +14,13 @@ import { ItemsContext } from '../../../src/context/ItemContext';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
 const UpdateProfileScreen = () => {
   const { user, fetchUser } = useContext(ItemsContext);
   const { name, email, phone, address, profileImage } = user;
   // 1️⃣ Add this new state to track selected image URI
-  const [localImage, setLocalImage] = useState(null);
+  const [localImage, setLocalImage] = useState(profileImage);
 
   const API_URL = Constants.expoConfig.extra.API_URL;
 
@@ -28,9 +29,9 @@ const UpdateProfileScreen = () => {
     email,
     phone: phone ? phone.toString() : "", // Ensure phone is a string
     address: address ? address.toString() : "",
-    profileImage,
+    profileImage:localImage,
   });
-  console.log(user);
+
   // Image Picker Function
 const pickImage = async () => {
   const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -48,6 +49,7 @@ const pickImage = async () => {
 
   if (!result.canceled) {
     setLocalImage(result.assets[0].uri); // Just store local image
+    setFormData((prev) => ({ ...prev, profileImage: localImage }));
   }
 };
 const uploadImageToCloudinary = async () => {
@@ -77,15 +79,15 @@ const uploadImageToCloudinary = async () => {
     const data = await res.json();
     if (data.secure_url) {
       setFormData((prev) => ({ ...prev, profileImage: data.secure_url }));
-      setLocalImage(null); // Clear local image
-      Alert.alert("Success", "Image uploaded successfully.");
+      setLocalImage(data.secure_url)
+
     } else {
-      Alert.alert("Upload Failed", "Unable to upload image.");
+  
       console.error(data);
     }
   } catch (err) {
     console.error("Cloudinary Upload Error", err);
-    Alert.alert("Error", "Image upload failed.");
+
   }
 };
 
@@ -94,6 +96,8 @@ const uploadImageToCloudinary = async () => {
   const handleUpdateProfile = async () => {
     try {
       const token = await SecureStore.getItemAsync("userToken");
+      await uploadImageToCloudinary()
+      formData.profileImage=localImage
       const response = await axios.put(`${API_URL}/api/user/update`, formData, {
         headers: {
           "Content-Type": "application/json",
@@ -103,24 +107,38 @@ const uploadImageToCloudinary = async () => {
 
       if (response.status == 200) {
         fetchUser();
-        Alert.alert("Profile Updated");
+       
+        Toast.show({
+          type: "success",
+          text1: "Profile Updated",
+        
+        });
       } else {
         console.error("Failed to update profile:", response.status);
+        Toast.show({
+          type: "error",
+          text1: "Failed to update profile:",
+        
+        });
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
+   
+      Toast.show({
+        type: "error",
+        text1: "Error updating profile. Please try again later.",
+      
+      });
     }
   };
+useEffect(()=>{
 
+
+})
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={
-            formData.profileImage
-              ? { uri: formData.profileImage }
-              : require("../../../assets/images/icon.png")
-          }
+          source={localImage ? { uri: localImage } : require('../../../assets/images/icon.png')}
           style={styles.profileImage}
         />
         <TouchableOpacity style={styles.imageButton} onPress={pickImage}>

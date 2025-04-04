@@ -4,6 +4,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import axios from 'axios'; // Make sure to import axios at the top of your file
 import * as SecureStore from "expo-secure-store"
 import Constants from "expo-constants";
+import Toast from "react-native-toast-message";
 const API_URL = Constants.expoConfig.extra.API_URL;
 
 const AddFoodCharityEvent = () => {
@@ -52,8 +53,18 @@ const AddFoodCharityEvent = () => {
         },
       });
 Alert.alert("","Event Added")
+Toast.show({
+  type: "success",
+  text1: "Event added successfully",
+ 
+});
     } catch (error) {
-      console.error("Error submitting event data:", error);
+     
+      Toast.show({
+        type: "error",
+        text1: "Error submitting event",
+       
+      });
     }
   };
 

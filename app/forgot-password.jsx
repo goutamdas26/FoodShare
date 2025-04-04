@@ -12,6 +12,7 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
+import Toast from "react-native-toast-message";
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState("");
@@ -40,14 +41,30 @@ export default function ForgotPasswordScreen() {
       );
 
       if (response.status === 200) {
-        Alert.alert("Success", response.data.message);
+        Toast.show({
+          type: "success",
+          text1: `OTP sent to ${email}` ,
+          
+        });
         router.replace(`/otp?email=${email}`);
       } else {
         Alert.alert("Error", "Email not found. Please try again.");
       }
     } catch (error) {
-      console.error("Forgot Password Error:", error);
-      Alert.alert("Error", "Something went wrong. Please try again later.");
+      if(error.response.status==404){
+        Toast.show({
+          type: "error",
+          text1: `User not found.` ,
+          text2:"check your e-mail"
+        });
+        return 
+      }
+      Toast.show({
+        type: "error",
+        text1: `Something went wrong. Please try again later.` ,
+       
+      });
+      
     } finally {
       setLoading(false); // Stop loading
     }
