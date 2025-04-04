@@ -14,7 +14,7 @@ const Verified = ({ userId }) => {
     try {
       const response = await axios.post(`${API_URL}/api/kyc/status`, { id: userId });
       setUserData(response.data.kyc);
-      console.log(response.data.kyc);
+     
     } catch (error) {
       console.log(error);
       setError("Failed to load verification data.");
@@ -58,8 +58,7 @@ const Verified = ({ userId }) => {
           backgroundColor: "#FFF",
           padding: 20,
           borderRadius: 15,
-          alignItems: "center",
-          justifyContent: "center",
+        
           shadowColor: "#000",
           shadowOffset: { width: 0, height: 4 },
           shadowOpacity: 0.3,
@@ -68,16 +67,58 @@ const Verified = ({ userId }) => {
           width: "100%",
         }}
       >
-        <Text style={{ color: "#4B0082", fontSize: 22, fontWeight: "bold", marginBottom: 10 }}>
+        <Text
+          style={{
+            color: "#4B0082",
+            fontSize: 22,
+            fontWeight: "bold",
+            marginBottom: 10,
+            textAlign:"center"
+          }}
+        >
           ✅ You are Verified!
         </Text>
 
-        <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 15, color: "#333" }}>
-          {userData.fullName}
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "600",
+            marginBottom: 0,
+            color: "#333",
+          }}
+        >
+          Name- {userData.fullName}
+        </Text>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "600",
+            marginBottom: 0,
+            color: "#333",
+          }}
+        >
+          ID- {userData.idType}
+        </Text>
+        <Text
+          style={{
+            fontSize: 18,
+            fontWeight: "600",
+            marginBottom: 0,
+            color: "#333",
+          }}
+        >
+          No.- {userData.idNumber}
         </Text>
 
         <View style={{ width: "100%", alignItems: "center" }}>
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 8, color: "#555" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              marginBottom: 8,
+              color: "#555",
+            }}
+          >
             Front Side
           </Text>
           <Image
@@ -91,7 +132,14 @@ const Verified = ({ userId }) => {
             resizeMode="cover"
           />
 
-          <Text style={{ fontSize: 16, fontWeight: "bold", marginBottom: 8, color: "#555" }}>
+          <Text
+            style={{
+              fontSize: 16,
+              fontWeight: "bold",
+              marginBottom: 8,
+              color: "#555",
+            }}
+          >
             Back Side
           </Text>
           <Image

@@ -26,7 +26,7 @@ export default function DonatedScreen() {
 
   useEffect(() => {
     fetchDonatedFood(); // Log donatedFood only when it changes
-    console.log(JSON.stringify(donatedFood, null, 2));
+
   }, []);
 
   const getStatusColor = (status) => {

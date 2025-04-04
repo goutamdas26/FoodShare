@@ -138,7 +138,7 @@ export const ItemsProvider = ({ children }) => {
       });
 
       setUser(response.data);
-      console.log(response.data)
+    console.log(user)
             await SecureStore.setItemAsync(
               "userData",
               JSON.stringify(response.data)
@@ -180,10 +180,10 @@ export const ItemsProvider = ({ children }) => {
     }
   };
   const fetchEvents=async()=>{
-    console.log("object")
+
     try {
      const response=await axios.get(`${API_URL}/api/events/`) 
-     console.log(response.data,"dsfs")
+     
      setEvents(response.data)
     } catch (error) {
       console.log(error)
@@ -201,7 +201,7 @@ export const ItemsProvider = ({ children }) => {
       );
 
       setDonatedFood(response.data || []);
-      console.log(JSON.stringify(response.data,null,2))
+      
     } catch (error) {
       console.error("Error fetching donated food:", error);
     }
@@ -225,6 +225,7 @@ export const ItemsProvider = ({ children }) => {
   };
 
   useEffect(() => {
+
     loadUserData();
     fetchItems();
     fetchClaimedFood();

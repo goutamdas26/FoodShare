@@ -17,6 +17,10 @@ const AddFoodCharityEvent = () => {
     location: "",
     contact: "",
   });
+
+  const areFieldsNotEmpty = () => {
+    return Object.values(event).every(field => field !== "" && field !== null);
+  };
   const [showStartDatePicker, setShowStartDatePicker] = useState(false);
   const [showEndDatePicker, setShowEndDatePicker] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState(false);
@@ -34,8 +38,14 @@ const AddFoodCharityEvent = () => {
 
 
   const handleSubmit = async () => {
+
     try {
+    if(areFieldsNotEmpty){
+      Alert.alert("","Please fill all the fields")
+      return 
+    } 
       const token=await SecureStore.getItemAsync("userToken")
+
       const response = await axios.post(`${API_URL}/api/events/create`, event, {
         headers: {
           'Authorization': `Bearer ${token}`, // Replace with your JWT token

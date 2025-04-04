@@ -18,35 +18,77 @@ import axios from 'axios';
 const UpdateProfileScreen = () => {
   const { user, fetchUser } = useContext(ItemsContext);
   const { name, email, phone, address, profileImage } = user;
+  // 1️⃣ Add this new state to track selected image URI
+  const [localImage, setLocalImage] = useState(null);
+
   const API_URL = Constants.expoConfig.extra.API_URL;
 
   const [formData, setFormData] = useState({
     name,
     email,
-    phone: phone ? phone.toString() : '', // Ensure phone is a string
-    address,
+    phone: phone ? phone.toString() : "", // Ensure phone is a string
+    address: address ? address.toString() : "",
     profileImage,
   });
-
+  console.log(user);
   // Image Picker Function
-  const pickImage = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permission Denied', 'Allow access to select an image.');
-      return;
-    }
+const pickImage = async () => {
+  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+  if (status !== "granted") {
+    Alert.alert("Permission Denied", "Allow access to select an image.");
+    return;
+  }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaType.IMAGES, // Updated for Expo 49+
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    aspect: [1, 1],
+    quality: 1,
+  });
 
-    if (!result.canceled) {
-      setFormData({ ...formData, profileImage: result.assets[0].uri });
+  if (!result.canceled) {
+    setLocalImage(result.assets[0].uri); // Just store local image
+  }
+};
+const uploadImageToCloudinary = async () => {
+  if (!localImage) {
+    Alert.alert("No image selected", "Please select an image first.");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", {
+    uri: localImage,
+    name: "profile.jpg",
+    type: "image/jpeg",
+  });
+  formData.append("upload_preset", "foodshare_profileimage"); // 🔁 Replace
+  formData.append("cloud_name", "dl92zh3w0"); // 🔁 Replace
+
+  try {
+    const res = await fetch(
+      "https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const data = await res.json();
+    if (data.secure_url) {
+      setFormData((prev) => ({ ...prev, profileImage: data.secure_url }));
+      setLocalImage(null); // Clear local image
+      Alert.alert("Success", "Image uploaded successfully.");
+    } else {
+      Alert.alert("Upload Failed", "Unable to upload image.");
+      console.error(data);
     }
-  };
+  } catch (err) {
+    console.error("Cloudinary Upload Error", err);
+    Alert.alert("Error", "Image upload failed.");
+  }
+};
+
 
   // Handle Profile Update
   const handleUpdateProfile = async () => {
@@ -54,8 +96,8 @@ const UpdateProfileScreen = () => {
       const token = await SecureStore.getItemAsync("userToken");
       const response = await axios.put(`${API_URL}/api/user/update`, formData, {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -63,10 +105,10 @@ const UpdateProfileScreen = () => {
         fetchUser();
         Alert.alert("Profile Updated");
       } else {
-        console.error('Failed to update profile:', response.status);
+        console.error("Failed to update profile:", response.status);
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
+      console.error("Error updating profile:", error);
     }
   };
 
@@ -74,7 +116,11 @@ const UpdateProfileScreen = () => {
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={formData.profileImage ? { uri: formData.profileImage } : require('../../../assets/images/icon.png')}
+          source={
+            formData.profileImage
+              ? { uri: formData.profileImage }
+              : require("../../../assets/images/icon.png")
+          }
           style={styles.profileImage}
         />
         <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
@@ -118,7 +164,10 @@ const UpdateProfileScreen = () => {
           multiline
         />
 
-        <TouchableOpacity style={styles.updateButton} onPress={handleUpdateProfile}>
+        <TouchableOpacity
+          style={styles.updateButton}
+          onPress={handleUpdateProfile}
+        >
           <Text style={styles.updateButtonText}>Update Profile</Text>
         </TouchableOpacity>
       </View>

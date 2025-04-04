@@ -1,31 +1,35 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LiveBhandaraScreen from './index';
-import BDetails from './bhandara-details';
-import ListBhandara from './list-bhandara';
-import AddFoodCharityEvent from './list';
+import React from "react";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+import BDetails from "./bhandara-details";
 
 
-const BhandaraStack = () => {
+import FoodCharityScreen from "./index";
+
+const EventStack = () => {
   const Stack = createNativeStackNavigator();
 
   return (
-<Stack.Navigator>
-  <Stack.Screen name='index' component={LiveBhandaraScreen} options={{
-    title:"Food Charity Events",headerShown:false
-  }}/>
-  <Stack.Screen name='bhandara-details' component={BDetails} options={{
-    title:"Event Details"
-  }}/>
-  <Stack.Screen name='list-bhandara' component={ListBhandara} options={{
-    title:"List Bhandara"
-  }}/>
-  <Stack.Screen name='list' component={AddFoodCharityEvent} options={{
-    title:"List Bhandara"
-  }}/>
-</Stack.Navigator>
-  )
-}
+    <Stack.Navigator>
+      <Stack.Screen
+        name="index"
+        component={FoodCharityScreen}
+        options={{
+          title: "Food Charity Events",
+          headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="event-details"
+        component={BDetails}
+        options={{
+          title: "Event Details",
+        }}
+      />
 
-export default BhandaraStack
+  
+    </Stack.Navigator>
+  );
+};
+
+export default EventStack;

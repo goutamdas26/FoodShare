@@ -37,24 +37,22 @@ const liveBhandaraData = [
     cdate: "2023-10-01 08:00 PM",
   },
 ];
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString(); // Local date format
-  };
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(); // Local date format
+};
 const FoodCharityScreen = () => {
   const navigation = useNavigation();
-const {events,fetchEvents}=useContext(ItemsContext)
+  const { events, fetchEvents } = useContext(ItemsContext);
   const handlePress = (item) => {
-    navigation.navigate("bhandara-details", item);
+    navigation.navigate("event-details", item);
   };
   const handleAddBhandara = () => {
     router.push("list");
   };
-useEffect(()=>{
-  fetchEvents()
-
-
-},[])
+  useEffect(() => {
+    fetchEvents();
+  }, []);
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
       <Image source={{ uri: "item.image" }} style={styles.image} />
@@ -69,12 +67,16 @@ useEffect(()=>{
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Charity Events</Text>
-      <FlatList
-        data={events}
-        renderItem={renderItem}
-        keyExtractor={(item) => item._id}
-        showsVerticalScrollIndicator={false}
-      />
+      {events.length > 0 ? (
+        <FlatList
+          data={events}
+          renderItem={renderItem}
+          keyExtractor={(item) => item._id}
+          showsVerticalScrollIndicator={false}
+        />
+      ) : (
+        <Text style={styles.noEventsText}>No Events Available now</Text>
+      )}
       <TouchableOpacity style={styles.addButton} onPress={handleAddBhandara}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
@@ -105,6 +107,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: 200,
   },
+  noEventsText: {
+  fontSize: 16,
+  color: "#5C6BC0",
+  textAlign: "center",
+  marginTop: 50,
+}
+,
   cardContent: {
     padding: 12,
   },
