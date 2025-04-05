@@ -1,21 +1,22 @@
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Constants  from 'expo-constants';
 import axios from "axios";
 
 const UserDetailsScreen = () => {
-  const user = {
-    name: "Goutam Das",
-    email: "goutam@example.com",
-    profileImage: "https://i.pravatar.cc/150?img=12",
-  };
+  // const user = {
+  //   name: "Goutam Das",
+  //   email: "goutam@example.com",
+  //   profileImage: "https://i.pravatar.cc/150?img=12",
+  // };
+  const [user,setUser]=useState({})
   const API_URL=Constants.expoConfig.extra.API_URL
   const userDetails=async()=>{
 const response = await axios.post(`${API_URL}/api/user/details`, {
   userId: userId,
 });
-console.log(response.data)
+setUser(response.data)
   }
 const { userId } = useLocalSearchParams();
 useEffect(()=>{
@@ -31,6 +32,10 @@ userDetails()
 
         <Text style={styles.label}>Email</Text>
         <Text style={styles.value}>{user.email}</Text>
+        <Text style={styles.label}>Phone</Text>
+        <Text style={styles.value}>{user.phone}</Text>
+        <Text style={styles.label}>Address</Text>
+        <Text style={styles.value}>{user.address||"No address available"}</Text>
       </View>
 
 

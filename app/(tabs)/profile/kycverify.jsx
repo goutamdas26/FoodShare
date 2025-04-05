@@ -8,7 +8,7 @@ import Verified from "../../../src/Screens/Verified";
 
 const Veriffy = () => {
   const { user } = useContext(ItemsContext);
-
+console.log(user)
   const Help = () => {
     if (user.kycStatus == "Verified") {
       return <Verified userId={user._id}/>;

@@ -79,13 +79,14 @@ const Verify = () => {
           "Content-Type": "multipart/form-data",
         },
       });
-fetchUser()
-    
       Toast.show({
         type: "success",
         text1: response.data.message,
         
       });
+fetchUser()
+    
+      
     } catch (error) {
       Alert.alert(
         "Error",

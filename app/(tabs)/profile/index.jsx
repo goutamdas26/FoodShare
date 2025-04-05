@@ -14,6 +14,7 @@ import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { useLanguage } from "../../../src/context/LanguageContext";
 import { ItemsContext } from "../../../src/context/ItemContext";
+import Toast from "react-native-toast-message";
 
 const SettingsScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -32,6 +33,11 @@ const SettingsScreen = () => {
 
   const handleLogout = useCallback(async () => {
     await SecureStore.deleteItemAsync("userToken");
+    Toast.show({
+      type: "error",
+      text1: "You are logged out!",
+      
+    });
     router.replace("/login");
   }, [router]);
 useEffect(()=>{
