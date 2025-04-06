@@ -1,3 +1,4 @@
+
 // import React, { useState } from "react";
 // import {
 //   View,
@@ -7,23 +8,29 @@
 //   Image,
 //   ScrollView,
 //   Alert,
+//   Platform,
 // } from "react-native";
 // import * as ImagePicker from "expo-image-picker";
 // import * as Location from "expo-location";
 // import axios from "axios";
 // import * as SecureStore from "expo-secure-store";
 // import Constants from "expo-constants";
+// import DateTimePicker from "@react-native-community/datetimepicker";
+
 // const API_URL = Constants.expoConfig.extra.API_URL;
 
 // const DonateFoodScreen = () => {
 //   const [images, setImages] = useState([]);
 //   const [foodName, setFoodName] = useState("");
-//   const [category, setCategory] = useState("Human"); // Default category
+//   const [category, setCategory] = useState("Human");
 //   const [description, setDescription] = useState("");
 //   const [location, setLocation] = useState("");
 //   const [phone, setPhone] = useState("");
 //   const [quantity, setQuantity] = useState("");
-// const [expiry,setExpiry]=useState("")
+//   const [expiryDate, setExpiryDate] = useState(new Date());
+//   const [showDatePicker, setShowDatePicker] = useState(false);
+//   const [showTimePicker, setShowTimePicker] = useState(false);
+
 //   const pickImages = async () => {
 //     let result = await ImagePicker.launchImageLibraryAsync({
 //       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -58,88 +65,48 @@
 //     }
 //   };
 
-//   // const handleSubmit = async () => {
-//   //   if (!foodName || !category || !description || !location || !phone ||!expiry) {
-//   //     Alert.alert("Missing Fields", "Please fill all details");
-//   //     return;
-//   //   }
-
-//   //   const token = await SecureStore.getItemAsync("userToken");
-
-//   //   if (!token) {
-//   //     Alert.alert("Authentication Error", "Please log in again.");
-//   //     return;
-//   //   }
-
-//   //   const formData = new FormData();
-//   //   formData.append("foodName", foodName);
-//   //   formData.append("category", category);
-//   //   formData.append("description", description);
-//   //   formData.append("location", location);
-//   //   formData.append("phone", phone);
-//   //   formData.append("quantity", quantity);
-//   //   formData.append("expiry", expiry);
-
-//   //   try {
-//   //     const response = await axios.post(API_URL +
-//   //       "/api/food/add",
-//   //       formData,
-//   //       {
-//   //         headers: {
-//   //           "Content-Type": "multipart/form-data",
-//   //           Authorization: `Bearer ${token}`,
-//   //         },
-//   //       }
-//   //     );
-
-//   //     if (response.status === 201) {
-//   //       Alert.alert("Success", "Food donation submitted successfully!");
-//   //       setFoodName("");
-//   //       setCategory("Human"); // Reset category
-//   //       setDescription("");
-//   //       setLocation("");
-//   //       setPhone("");
-//   //       setQuantity("");
-//   //     } else {
-//   //       Alert.alert("Error", "Something went wrong. Please try again.");
-//   //     }
-//   //   } catch (error) {
-//   //     console.error("Error submitting donation:", error.response?.data || error);
-//   //     Alert.alert("Error", "Failed to submit donation. Please try again.");
-//   //   }
-//   // };
 //   const handleSubmit = async () => {
-//     if (!foodName || !category || !description || !location || !phone || !expiry || images.length === 0) {
+//     if (
+//       !foodName ||
+//       !category ||
+//       !description ||
+//       !location ||
+//       !phone ||
+//       !expiryDate ||
+//       images.length === 0
+//     ) {
 //       Alert.alert("Missing Fields", "Please fill all details and upload at least one image.");
 //       return;
 //     }
-  
+
 //     const token = await SecureStore.getItemAsync("userToken");
 //     if (!token) {
 //       Alert.alert("Authentication Error", "Please log in again.");
 //       return;
 //     }
-  
+
 //     const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload";
-//     const uploadPreset = "foodshare_upload"; // Set up an unsigned upload preset in Cloudinary
-  
+//     const uploadPreset = "foodshare_upload";
+
 //     try {
-//       // Upload all images to Cloudinary
 //       const imageUrls = await Promise.all(
 //         images.map(async (imageUri) => {
 //           const formData = new FormData();
-//           formData.append("file", { uri: imageUri, type: "image/jpeg", name: "upload.jpg" });
+//           formData.append("file", {
+//             uri: imageUri,
+//             type: "image/jpeg",
+//             name: "upload.jpg",
+//           });
 //           formData.append("upload_preset", uploadPreset);
-  
+
 //           const response = await axios.post(cloudinaryUploadUrl, formData, {
 //             headers: { "Content-Type": "multipart/form-data" },
 //           });
-  
-//           return response.data.secure_url; // Cloudinary URL of the uploaded image
+
+//           return response.data.secure_url;
 //         })
 //       );
-  
-//       // Send form data with Cloudinary image URLs to backend
+
 //       const formData = new FormData();
 //       formData.append("foodName", foodName);
 //       formData.append("category", category);
@@ -147,16 +114,16 @@
 //       formData.append("location", location);
 //       formData.append("phone", phone);
 //       formData.append("quantity", quantity);
-//       formData.append("expiry", expiry);
-//       imageUrls.forEach((url) => formData.append("images", url)); // Append all image URLs
-  
+//       formData.append("expiry", expiryDate.toISOString());
+//       imageUrls.forEach((url) => formData.append("images", url));
+
 //       const response = await axios.post(API_URL + "/api/food/add", formData, {
 //         headers: {
 //           "Content-Type": "multipart/form-data",
 //           Authorization: `Bearer ${token}`,
 //         },
 //       });
-  
+
 //       if (response.status === 201) {
 //         Alert.alert("Success", "Food donation submitted successfully!");
 //         setFoodName("");
@@ -165,7 +132,7 @@
 //         setLocation("");
 //         setPhone("");
 //         setQuantity("");
-//         setExpiry("");
+//         setExpiryDate(new Date());
 //         setImages([]);
 //       } else {
 //         Alert.alert("Error", "Something went wrong. Please try again.");
@@ -175,8 +142,7 @@
 //       Alert.alert("Error", "Failed to submit donation. Please try again.");
 //     }
 //   };
-  
-  
+
 //   return (
 //     <ScrollView style={{ flex: 1, padding: 20 }}>
 //       <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
@@ -186,7 +152,7 @@
 //       <TouchableOpacity
 //         onPress={pickImages}
 //         style={{
-//           backgroundColor: "#3F51B5", // Indigo 500
+//           backgroundColor: "#3F51B5",
 //           padding: 10,
 //           borderRadius: 10,
 //           alignItems: "center",
@@ -196,11 +162,7 @@
 //         <Text style={{ color: "white" }}>📸 Upload Images</Text>
 //       </TouchableOpacity>
 
-//       <ScrollView
-//         horizontal
-//         showsHorizontalScrollIndicator={false}
-//         style={{ flexDirection: "row", marginBottom: 10 }}
-//       >
+//       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 10 }}>
 //         {images.map((img, index) => (
 //           <Image
 //             key={index}
@@ -217,13 +179,13 @@
 //         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
 //       />
 
-//       {/* Category Selection Toggle */}
+//       {/* Category Selection */}
 //       <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
 //         <TouchableOpacity
 //           onPress={() => setCategory("Human")}
 //           style={{
 //             flex: 1,
-//             backgroundColor: category === "Human" ? "#3F51B5" : "#ccc", // Indigo 500
+//             backgroundColor: category === "Human" ? "#3F51B5" : "#ccc",
 //             padding: 10,
 //             borderRadius: 10,
 //             alignItems: "center",
@@ -237,7 +199,7 @@
 //           onPress={() => setCategory("Pet")}
 //           style={{
 //             flex: 1,
-//             backgroundColor: category === "Pet" ? "#3F51B5" : "#ccc", // Indigo 500
+//             backgroundColor: category === "Pet" ? "#3F51B5" : "#ccc",
 //             padding: 10,
 //             borderRadius: 10,
 //             alignItems: "center",
@@ -263,13 +225,64 @@
 //         keyboardType="numeric"
 //         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
 //       />
-//       <TextInput
-//         placeholder="Expiry: Date & Time "
-//         value={expiry}
-//         onChangeText={setExpiry}
-//         keyboardType="String"
-//         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
-//       />
+// <Text style={{ marginBottom: 5, fontWeight: "bold" }}>Expiry Date & Time</Text>
+//       {/* Expiry Picker */}
+//       <TouchableOpacity
+//         onPress={() => setShowDatePicker(true)}
+//         style={{
+//           borderBottomWidth: 1,
+//           padding: 10,
+//           marginBottom: 10,
+//         }}
+//       >
+//         <Text>📅 {expiryDate.toDateString()}</Text>
+//       </TouchableOpacity>
+
+//       <TouchableOpacity
+//         onPress={() => setShowTimePicker(true)}
+//         style={{
+//           borderBottomWidth: 1,
+//           padding: 10,
+//           marginBottom: 10,
+//         }}
+//       >
+//         <Text>⏰ {expiryDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+//       </TouchableOpacity>
+
+//       {showDatePicker && (
+//         <DateTimePicker
+//           value={expiryDate}
+//           mode="date"
+//           display="default"
+//           onChange={(event, selectedDate) => {
+//             setShowDatePicker(Platform.OS === "ios");
+//             if (selectedDate) {
+//               const updatedDate = new Date(expiryDate);
+//               updatedDate.setFullYear(selectedDate.getFullYear());
+//               updatedDate.setMonth(selectedDate.getMonth());
+//               updatedDate.setDate(selectedDate.getDate());
+//               setExpiryDate(updatedDate);
+//             }
+//           }}
+//         />
+//       )}
+
+//       {showTimePicker && (
+//         <DateTimePicker
+//           value={expiryDate}
+//           mode="time"
+//           display="default"
+//           onChange={(event, selectedTime) => {
+//             setShowTimePicker(Platform.OS === "ios");
+//             if (selectedTime) {
+//               const updatedDate = new Date(expiryDate);
+//               updatedDate.setHours(selectedTime.getHours());
+//               updatedDate.setMinutes(selectedTime.getMinutes());
+//               setExpiryDate(updatedDate);
+//             }
+//           }}
+//         />
+//       )}
 
 //       <TextInput
 //         placeholder="Enter Location"
@@ -281,7 +294,7 @@
 //       <TouchableOpacity
 //         onPress={getLocation}
 //         style={{
-//           backgroundColor: "#3F51B5", // Indigo 500
+//           backgroundColor: "#3F51B5",
 //           padding: 10,
 //           borderRadius: 10,
 //           alignItems: "center",
@@ -302,7 +315,7 @@
 //       <TouchableOpacity
 //         onPress={handleSubmit}
 //         style={{
-//           backgroundColor: "#3F51B5", // Indigo 500
+//           backgroundColor: "#3F51B5",
 //           padding: 10,
 //           borderRadius: 10,
 //           alignItems: "center",
@@ -315,7 +328,12 @@
 // };
 
 // export default DonateFoodScreen;
-import React, { useState } from "react";
+
+
+
+
+
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -323,7 +341,7 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
-  Alert,
+  ActivityIndicator,
   Platform,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
@@ -332,6 +350,7 @@ import axios from "axios";
 import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import Toast from "react-native-toast-message";
 
 const API_URL = Constants.expoConfig.extra.API_URL;
 
@@ -346,6 +365,28 @@ const DonateFoodScreen = () => {
   const [expiryDate, setExpiryDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [showTimePicker, setShowTimePicker] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  // Load saved draft
+  useEffect(() => {
+    (async () => {
+      const draft = await SecureStore.getItemAsync("donateDraft");
+      if (draft) {
+        const parsed = JSON.parse(draft);
+        setFoodName(parsed.foodName || "");
+        setCategory(parsed.category || "Human");
+        setDescription(parsed.description || "");
+        setLocation(parsed.location || "");
+        setPhone(parsed.phone || "");
+        setQuantity(parsed.quantity || "");
+        setExpiryDate(parsed.expiryDate ? new Date(parsed.expiryDate) : new Date());
+        setImages(parsed.images || []);
+      }
+    })();
+  }, []);
+
+  // Save draft
+
 
   const pickImages = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -355,14 +396,14 @@ const DonateFoodScreen = () => {
     });
 
     if (!result.canceled) {
-      setImages([...images, ...result.assets.map((asset) => asset.uri)]);
+      setImages([...images, ...result.assets.map((a) => a.uri)]);
     }
   };
 
   const getLocation = async () => {
     let { status } = await Location.requestForegroundPermissionsAsync();
     if (status !== "granted") {
-      Alert.alert("Permission Denied", "Allow location access to proceed");
+      Toast.show({ type: "error", text1: "Location permission denied" });
       return;
     }
     let loc = await Location.getCurrentPositionAsync({});
@@ -372,14 +413,15 @@ const DonateFoodScreen = () => {
     });
 
     if (addressResponse.length > 0) {
-      let address = addressResponse[0];
-      setLocation(
-        `${address.name}, ${address.street}, ${address.city}, ${address.region}, ${address.country}`
-      );
+      let a = addressResponse[0];
+      setLocation(`${a.name}, ${a.street}, ${a.city}, ${a.region}, ${a.country}`);
     } else {
-      Alert.alert("Error", "Could not fetch address");
+      Toast.show({ type: "error", text1: "Could not fetch address" });
     }
   };
+
+  const isPhoneValid = (num) => /^[0-9]{10}$/.test(num);
+  const isExpiryValid = () => new Date(expiryDate) > new Date();
 
   const handleSubmit = async () => {
     if (
@@ -391,35 +433,43 @@ const DonateFoodScreen = () => {
       !expiryDate ||
       images.length === 0
     ) {
-      Alert.alert("Missing Fields", "Please fill all details and upload at least one image.");
+      Toast.show({ type: "error", text1: "Please fill all fields and upload images" });
+      return;
+    }
+
+    if (!isPhoneValid(phone)) {
+      Toast.show({ type: "error", text1: "Invalid phone number" });
+      return;
+    }
+
+    if (!isExpiryValid()) {
+      Toast.show({ type: "error", text1: "Expiry must be a future date" });
       return;
     }
 
     const token = await SecureStore.getItemAsync("userToken");
     if (!token) {
-      Alert.alert("Authentication Error", "Please log in again.");
+      Toast.show({ type: "error", text1: "Please log in again" });
       return;
     }
 
-    const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload";
-    const uploadPreset = "foodshare_upload";
-
     try {
+      setLoading(true);
+
+      const cloudinaryUploadUrl = "https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload";
+      const uploadPreset = "foodshare_upload";
+
       const imageUrls = await Promise.all(
-        images.map(async (imageUri) => {
+        images.map(async (uri) => {
           const formData = new FormData();
-          formData.append("file", {
-            uri: imageUri,
-            type: "image/jpeg",
-            name: "upload.jpg",
-          });
+          formData.append("file", { uri, type: "image/jpeg", name: "upload.jpg" });
           formData.append("upload_preset", uploadPreset);
 
-          const response = await axios.post(cloudinaryUploadUrl, formData, {
+          const res = await axios.post(cloudinaryUploadUrl, formData, {
             headers: { "Content-Type": "multipart/form-data" },
           });
 
-          return response.data.secure_url;
+          return res.data.secure_url;
         })
       );
 
@@ -441,7 +491,7 @@ const DonateFoodScreen = () => {
       });
 
       if (response.status === 201) {
-        Alert.alert("Success", "Food donation submitted successfully!");
+        Toast.show({ type: "success", text1: "Food donation submitted!" });
         setFoodName("");
         setCategory("Human");
         setDescription("");
@@ -450,20 +500,21 @@ const DonateFoodScreen = () => {
         setQuantity("");
         setExpiryDate(new Date());
         setImages([]);
+        SecureStore.deleteItemAsync("donateDraft");
       } else {
-        Alert.alert("Error", "Something went wrong. Please try again.");
+        Toast.show({ type: "error", text1: "Submission failed" });
       }
     } catch (error) {
-      console.error("Error submitting donation:", error.response?.data || error);
-      Alert.alert("Error", "Failed to submit donation. Please try again.");
+      console.error("Submission error:", error);
+      Toast.show({ type: "error", text1: "Something went wrong" });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
-      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
-        Donate Food
-      </Text>
+      <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>Donate Food</Text>
 
       <TouchableOpacity
         onPress={pickImages}
@@ -479,11 +530,11 @@ const DonateFoodScreen = () => {
       </TouchableOpacity>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginBottom: 10 }}>
-        {images.map((img, index) => (
+        {images.map((img, idx) => (
           <Image
-            key={index}
+            key={idx}
             source={{ uri: img }}
-            style={{ width: 100, height: 100, marginRight: 10 }}
+            style={{ width: 100, height: 100, marginRight: 10, borderRadius: 8 }}
           />
         ))}
       </ScrollView>
@@ -495,35 +546,23 @@ const DonateFoodScreen = () => {
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
 
-      {/* Category Selection */}
-      <View style={{ flexDirection: "row", justifyContent: "space-between", marginBottom: 10 }}>
-        <TouchableOpacity
-          onPress={() => setCategory("Human")}
-          style={{
-            flex: 1,
-            backgroundColor: category === "Human" ? "#3F51B5" : "#ccc",
-            padding: 10,
-            borderRadius: 10,
-            alignItems: "center",
-            marginRight: 5,
-          }}
-        >
-          <Text style={{ color: category === "Human" ? "white" : "black" }}>🍽️ Human</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          onPress={() => setCategory("Pet")}
-          style={{
-            flex: 1,
-            backgroundColor: category === "Pet" ? "#3F51B5" : "#ccc",
-            padding: 10,
-            borderRadius: 10,
-            alignItems: "center",
-            marginLeft: 5,
-          }}
-        >
-          <Text style={{ color: category === "Pet" ? "white" : "black" }}>🐶 Pet</Text>
-        </TouchableOpacity>
+      <View style={{ flexDirection: "row", marginBottom: 10 }}>
+        {["Human", "Pet"].map((type) => (
+          <TouchableOpacity
+            key={type}
+            onPress={() => setCategory(type)}
+            style={{
+              flex: 1,
+              backgroundColor: category === type ? "#3F51B5" : "#ccc",
+              padding: 10,
+              marginHorizontal: 5,
+              borderRadius: 10,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ color: category === type ? "white" : "black" }}>{type=="Human"?"🍽️ ":"🐶 "}{type}</Text>
+          </TouchableOpacity>
+        ))}
       </View>
 
       <TextInput
@@ -541,28 +580,21 @@ const DonateFoodScreen = () => {
         keyboardType="numeric"
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
-<Text style={{ marginBottom: 5, fontWeight: "bold" }}>Expiry Date & Time</Text>
-      {/* Expiry Picker */}
+
+      <Text style={{ marginBottom: 5, fontWeight: "bold" }}>Expiry Date & Time</Text>
+
       <TouchableOpacity
         onPress={() => setShowDatePicker(true)}
-        style={{
-          borderBottomWidth: 1,
-          padding: 10,
-          marginBottom: 10,
-        }}
+        style={{ borderBottomWidth: 1, padding: 10, marginBottom: 10 }}
       >
         <Text>📅 {expiryDate.toDateString()}</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         onPress={() => setShowTimePicker(true)}
-        style={{
-          borderBottomWidth: 1,
-          padding: 10,
-          marginBottom: 10,
-        }}
+        style={{ borderBottomWidth: 1, padding: 10, marginBottom: 10 }}
       >
-        <Text>⏰ {expiryDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</Text>
+        <Text>⏰ {expiryDate.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</Text>
       </TouchableOpacity>
 
       {showDatePicker && (
@@ -570,14 +602,14 @@ const DonateFoodScreen = () => {
           value={expiryDate}
           mode="date"
           display="default"
-          onChange={(event, selectedDate) => {
+          onChange={(e, d) => {
             setShowDatePicker(Platform.OS === "ios");
-            if (selectedDate) {
-              const updatedDate = new Date(expiryDate);
-              updatedDate.setFullYear(selectedDate.getFullYear());
-              updatedDate.setMonth(selectedDate.getMonth());
-              updatedDate.setDate(selectedDate.getDate());
-              setExpiryDate(updatedDate);
+            if (d) {
+              const updated = new Date(expiryDate);
+              updated.setFullYear(d.getFullYear());
+              updated.setMonth(d.getMonth());
+              updated.setDate(d.getDate());
+              setExpiryDate(updated);
             }
           }}
         />
@@ -588,13 +620,13 @@ const DonateFoodScreen = () => {
           value={expiryDate}
           mode="time"
           display="default"
-          onChange={(event, selectedTime) => {
+          onChange={(e, t) => {
             setShowTimePicker(Platform.OS === "ios");
-            if (selectedTime) {
-              const updatedDate = new Date(expiryDate);
-              updatedDate.setHours(selectedTime.getHours());
-              updatedDate.setMinutes(selectedTime.getMinutes());
-              setExpiryDate(updatedDate);
+            if (t) {
+              const updated = new Date(expiryDate);
+              updated.setHours(t.getHours());
+              updated.setMinutes(t.getMinutes());
+              setExpiryDate(updated);
             }
           }}
         />
@@ -628,17 +660,29 @@ const DonateFoodScreen = () => {
         style={{ borderBottomWidth: 1, marginBottom: 10, padding: 8 }}
       />
 
-      <TouchableOpacity
-        onPress={handleSubmit}
-        style={{
-          backgroundColor: "#3F51B5",
-          padding: 10,
-          borderRadius: 10,
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ color: "white", fontWeight: "bold" }}>📤 Submit</Text>
-      </TouchableOpacity>
+      
+      
+
+        <TouchableOpacity
+          onPress={handleSubmit}
+          disabled={loading}
+          style={{
+            backgroundColor: "#3F51B5",
+            padding: 10,
+            borderRadius: 10,
+            flex: 0.48,
+            alignItems: "center",
+            marginBottom:25
+          }}
+        >
+          {loading ? (
+            <ActivityIndicator color="white" />
+          ) : (
+            <Text style={{ color: "white", fontWeight: "bold" }}>✅ Submit</Text>
+          )}
+        </TouchableOpacity>
+     
+
     </ScrollView>
   );
 };

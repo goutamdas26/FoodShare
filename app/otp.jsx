@@ -14,7 +14,7 @@ const VerifyOtpScreen = ({ route, navigation }) => {
 
   const verifyOtp = async () => {
     try {
-      await axios.post(`${API_URL}/api/auth/verify-otp`, { email, otp });
+      await axios.post(`${API_URL}/api/reset/verify-otp`, { email, otp });
       Toast.show({
         type: "success",
         text1: "OTP verified!",

@@ -36,7 +36,7 @@ const RootLayout = () => {
     if (!isMounted || isAuthenticated === null) return; // Ensure component is mounted
 
     if (isAuthenticated) {
-      router.replace("(tabs)");
+      router.replace("/(tabs)");
     } else {
       router.replace("/login");
     }

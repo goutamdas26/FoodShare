@@ -5,60 +5,51 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { router } from "expo-router";
 import { ItemsContext } from "../../../src/context/ItemContext";
 
-const liveBhandaraData = [
-  {
-    id: "1",
-    name: "Bhandara at Community Center",
-    date: "2023-10-01",
-    location: "Downtown",
-    image: "https://example.com/image1.jpg",
-    cdate: "2023-10-01 08:00 PM",
-  },
-  {
-    id: "2",
-    name: "Food Donation Drive",
-    date: "2023-10-05",
-    location: "City Park",
-    image: "https://example.com/image2.jpg",
-    cdate: "2023-10-01 08:00 PM",
-  },
-  {
-    id: "3",
-    name: "Charity Bhandara",
-    date: "2023-10-10",
-    location: "Old Town",
-    image: "https://example.com/image3.jpg",
-    cdate: "2023-10-01 08:00 PM",
-  },
-];
 const formatDate = (dateString) => {
   const date = new Date(dateString);
-  return date.toLocaleDateString(); // Local date format
+  return date.toLocaleDateString();
 };
+const formatTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString();
+};
+
 const FoodCharityScreen = () => {
   const navigation = useNavigation();
   const { events, fetchEvents } = useContext(ItemsContext);
+  const [refreshing, setRefreshing] = useState(false);
+
   const handlePress = (item) => {
     navigation.navigate("event-details", item);
   };
+
   const handleAddBhandara = () => {
     router.push("list");
   };
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchEvents();
+    setRefreshing(false);
+  }, []);
+
   useEffect(() => {
     fetchEvents();
   }, []);
+
   const renderItem = ({ item }) => (
     <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
-      <Image source={{ uri: "item.image" }} style={styles.image} />
+      <Image source={{ uri: item.imageUrl }} style={styles.image} />
       <View style={styles.cardContent}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.detail}>📅 {formatDate(item.startDate)}</Text>
+        <Text style={styles.detail}>📅 {formatDate(item.startDate)} {formatTime(item.startDate)}</Text>
         <Text style={styles.detail}>📍 {item.location}</Text>
       </View>
     </TouchableOpacity>
@@ -73,6 +64,8 @@ const FoodCharityScreen = () => {
           renderItem={renderItem}
           keyExtractor={(item) => item._id}
           showsVerticalScrollIndicator={false}
+          refreshing={refreshing}
+          onRefresh={onRefresh}
         />
       ) : (
         <Text style={styles.noEventsText}>No Events Available now</Text>
@@ -83,6 +76,7 @@ const FoodCharityScreen = () => {
     </View>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

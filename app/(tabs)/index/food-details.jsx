@@ -26,7 +26,15 @@ const Details = () => {
     postedAt,
     description,
   } = route.params || {};
-
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString(); // Local date format
+};
+const formatTime = (timeString) => {
+    const date = new Date(timeString);
+ 
+    return date.toLocaleTimeString(); // Local date format
+};
   // Handle missing images array
   const validImages = Array.isArray(images) && images.length > 0 ? images : [
     "https://via.placeholder.com/400", // Fallback image
@@ -73,11 +81,11 @@ const Details = () => {
           <Text style={styles.sectionTitle}>Food Details</Text>
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
-            <Text style={styles.detailText}>Posted At: {postedAt}</Text>
+            <Text style={styles.detailText}>Posted At: {formatDate(postedAt)} {formatTime(postedAt)}</Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
-            <Text style={styles.detailText}>Expire At: {expiry}</Text>
+            <Text style={styles.detailText}>Expire At: {formatDate(expiry)} {formatTime(expiry)}</Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="access-time" size={20} color="#666" />

@@ -8,14 +8,18 @@ export default function DonationDetailsScreen() {
   const route = useRoute();
   const donationDetails = route.params || {};
 console.log(JSON.stringify(donationDetails.foodItemId.claimedBy, null, 2));
-    const formatDate = (dateString) => {
-      const date = new Date(dateString);
-      return date.toLocaleDateString(); // Local date format
-    };
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(); // Local date format
+};
+const formatTime = (dateString) => {
+  const date = new Date(dateString);
+  return date.toLocaleTimeString(); // Local date format
+};
   return (
     <ScrollView style={styles.container}>
       <Image
-        source={{ uri: donationDetails.foodItemId.image }}
+        source={{ uri: donationDetails.foodItemId.images[0] }}
         style={styles.image}
         defaultSource={require("../../../../assets/images/icon.png")}
       />
@@ -98,7 +102,7 @@ console.log(JSON.stringify(donationDetails.foodItemId.claimedBy, null, 2));
             <View style={styles.detailRow}>
               <MaterialIcons name="access-time" size={20} color="#666" />
               <Text style={styles.detailText}>
-                Claimed at: {donationDetails.foodItemId.createdAt}
+                Claimed at: {formatDate(donationDetails.foodItemId.createdAt)} {formatTime(donationDetails.foodItemId.createdAt)}
               </Text>
             </View>
           </View>

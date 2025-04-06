@@ -50,7 +50,7 @@ export default function DonatedScreen() {
       onPress={() => navigation.navigate("donation-details", item)} // Pass params
     >
       <Image
-        source={{ uri: item.foodItemId.image }}
+        source={{ uri: item.foodItemId.images[0] }}
         style={styles.foodImage}
         defaultSource={require("../../../../assets/images/icon.png")}
       />
@@ -61,14 +61,19 @@ export default function DonatedScreen() {
           Quantity: {item.foodItemId.quantity}
         </Text>
 
-        {item.claimedBy && (
+        {item.foodItemId.claimedBy ? (
           <View style={styles.detailsRow}>
             <MaterialIcons name="group" size={16} color="#666" />
             <Text style={styles.claimedByText}>
-              Claimed by: {item.claimedBy.name}
+              Claimed by: {item.foodItemId.claimedBy.name}
             </Text>
           </View>
-        )}
+        ):(<View style={styles.detailsRow}>
+          <MaterialIcons name="group" size={16} color="#666" />
+          <Text style={styles.claimedByText}>
+            Claimed by: NA
+          </Text>
+        </View>)}
 
         <View style={styles.bottomRow}>
           <Text style={styles.date}>
@@ -110,20 +115,30 @@ export default function DonatedScreen() {
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={false}
           refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Add RefreshControl
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
           }
         />
       ) : (
-        <View style={styles.emptyContainer}>
-          <MaterialIcons name="volunteer-activism" size={64} color="#ccc" />
-          <Text style={styles.emptyText}>No donations yet</Text>
-          <Text style={styles.emptySubText}>
-            Your donated items will appear here
-          </Text>
-        </View>
+        <FlatList
+          data={[]} // empty data
+          ListEmptyComponent={
+            <View style={styles.emptyContainer}>
+              <MaterialIcons name="volunteer-activism" size={64} color="#ccc" />
+              <Text style={styles.emptyText}>No donations yet</Text>
+              <Text style={styles.emptySubText}>
+                Your donated items will appear here
+              </Text>
+            </View>
+          }
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          contentContainerStyle={{ flexGrow: 1 }}
+        />
       )}
     </View>
   );
+  
 }
 
 const styles = StyleSheet.create({

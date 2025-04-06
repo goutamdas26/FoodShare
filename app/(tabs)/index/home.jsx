@@ -1,6 +1,3 @@
-
-
-
 import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useEffect, useState } from "react";
 import {
@@ -16,49 +13,71 @@ import {
 import { ItemsContext } from "../../../src/context/ItemContext";
 import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
-import axios from 'axios';
+import axios from "axios";
 import Toast from "react-native-toast-message";
 
 const AvailableFoodScreen = () => {
   const { items, loading, fetchItems } = useContext(ItemsContext);
   const [refreshing, setRefreshing] = useState(false);
+  const [claimingItemId, setClaimingItemId] = useState(null);
   const navigation = useNavigation();
   const API_URL = Constants.expoConfig.extra.API_URL;
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
+
+  const formatTime = (timeString) => {
+    const date = new Date(timeString);
+    return date.toLocaleTimeString();
+  };
 
   useEffect(() => {
     fetchItems();
   }, []);
 
-
   const handleClaim = async (food) => {
     try {
+      setClaimingItemId(food._id);
       const userToken = await SecureStore.getItemAsync("userToken");
 
-      const response = await axios.post(`${API_URL}/api/food/claim/${food._id}`, {}, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
+      const response = await axios.post(
+        `${API_URL}/api/food/claim/${food._id}`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
 
       if (response.status !== 200) {
         throw new Error(response.data.message || "Failed to claim food");
       }
 
-      alert("Food claimed successfully!");
       Toast.show({
         type: "success",
         text1: "Food claimed successfully!",
-   
       });
+
       await fetchItems();
     } catch (error) {
-     
+      if (error?.response?.status === 404) {
+        Toast.show({
+          type: "error",
+          text1: error?.response?.data?.message,
+        });
+        await fetchItems();
+        return;
+      }
       Toast.show({
         type: "error",
         text1: "Failed to claim food",
-   
       });
+    } finally {
+      setClaimingItemId(null);
     }
   };
 
@@ -90,26 +109,28 @@ const AvailableFoodScreen = () => {
               style={styles.card}
               onPress={() => navigation.navigate("food-details", item)}
             >
-              <Image
-                source={{
-                  uri: item.images[0],
-                }}
-                style={styles.image}
-              />
+              <Image source={{ uri: item.images[0] }} style={styles.image} />
               <View style={styles.info}>
                 <Text style={styles.foodName}>{item.name}</Text>
                 <Text style={styles.foodDetails}>{item.quantity}</Text>
-                <Text style={styles.foodCategory}>
-                  Category: {item.category}
-                </Text>
+                <Text style={styles.foodCategory}>Category: {item.category}</Text>
                 <Text style={styles.foodDateTime}>
-                  Date & Time: {item.postedAt}
+                  Date & Time: {formatDate(item.postedAt)} {formatTime(item.postedAt)}
                 </Text>
+
                 <TouchableOpacity
-                  style={styles.claimButton}
+                  style={[
+                    styles.claimButton,
+                    claimingItemId === item._id && { opacity: 0.6 },
+                  ]}
                   onPress={() => handleClaim(item)}
+                  disabled={claimingItemId === item._id}
                 >
-                  <Text style={styles.claimText}>Claim</Text>
+                  {claimingItemId === item._id ? (
+                    <ActivityIndicator size="small" color="#fff" />
+                  ) : (
+                    <Text style={styles.claimText}>Claim</Text>
+                  )}
                 </TouchableOpacity>
               </View>
             </TouchableOpacity>
@@ -136,9 +157,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     color: "#3F51B5",
   },
-  loader: {
-    marginTop: 20,
-  },
+  loader: { marginTop: 20 },
   noFoodText: {
     fontSize: 18,
     fontWeight: "bold",
@@ -166,6 +185,8 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginTop: 5,
     alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
   },
   claimText: { color: "white", fontSize: 14, fontWeight: "bold" },
 });

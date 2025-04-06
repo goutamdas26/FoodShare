@@ -5,34 +5,54 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
-  RefreshControl, // Import RefreshControl
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { ItemsContext } from "../../../../src/context/ItemContext";
-import { useContext, useEffect, useState } from "react"; // Import useState
+import { useContext, useEffect, useState } from "react";
 
 export default function ClaimedScreen() {
   const router = useRouter();
   const navigation = useNavigation();
   const { fetchClaimedFood, claimedFood } = useContext(ItemsContext);
-  const [refreshing, setRefreshing] = useState(false); // State for refreshing
+
+  const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchClaimedFood();
+    setRefreshing(false);
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      await fetchClaimedFood();
+      setLoading(false);
+    };
+    loadData();
+  }, []);
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
       style={styles.card}
-      onPress={() => navigation.navigate("claimed-details", item)} // Pass params
+      onPress={() => navigation.navigate("claimed-details", item)}
     >
       <Image
-        source={{ uri: item.foodItemId.imageUrl }} // Use dynamic image URL from item
+        source={
+          item.foodItemId.images
+            ? { uri: item.foodItemId.images[0] }
+            : require("../../../../assets/images/icon.png")
+        }
         style={styles.foodImage}
-        defaultSource={require("../../../../assets/images/icon.png")} // Default image
       />
 
       <View style={styles.cardContent}>
         <Text style={styles.foodName}>{item.foodItemId.name}</Text>
-        <Text style={styles.donorName}>From: {item.foodItemId.donorName}</Text>
+        <Text style={styles.donorName}>From: {item.foodItemId.donor.name}</Text>
         <Text style={styles.quantity}>
           Quantity: {item.foodItemId.quantity}
         </Text>
@@ -48,7 +68,7 @@ export default function ClaimedScreen() {
               styles.statusBadge,
               {
                 backgroundColor:
-                  item.status === "Picked Up" ? "#4CAF50" : "#FFA000",
+                  item.foodItemId.status === "Picked Up" ? "#4CAF50" : "#FFA000",
               },
             ]}
           >
@@ -66,33 +86,32 @@ export default function ClaimedScreen() {
     </TouchableOpacity>
   );
 
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await fetchClaimedFood(); // Fetch claimed food again
-    setRefreshing(false);
-  };
-useEffect(()=>{
-fetchClaimedFood()
-},[])
+  if (loading) {
+    return (
+      <View style={styles.emptyContainer}>
+        <ActivityIndicator size="large" color="#3F51B5" />
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
-      {claimedFood.length > 0 ?  (
-        <FlatList
-          data={claimedFood}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.foodItemId._id}
-          contentContainerStyle={styles.listContainer}
-          showsVerticalScrollIndicator={false}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} /> // Add RefreshControl
-          }
-        />
-      ) : (
-        <View style={styles.emptyContainer}>
-          <MaterialIcons name="history" size={64} color="#ccc" />
-          <Text style={styles.emptyText}>No claimed items yet</Text>
-        </View>
-      )}
+      <FlatList
+        data={claimedFood}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.foodItemId._id}
+        contentContainerStyle={styles.listContainer}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListEmptyComponent={
+          <View style={styles.emptyContainer}>
+            <MaterialIcons name="history" size={64} color="#ccc" />
+            <Text style={styles.emptyText}>No claimed items yet</Text>
+          </View>
+        }
+      />
     </View>
   );
 }
@@ -133,17 +152,17 @@ const styles = StyleSheet.create({
   foodName: {
     fontSize: 16,
     fontWeight: "bold",
-    color: "#3F51B5", // Changed to indigo 500
+    color: "#3F51B5",
     marginBottom: 4,
   },
   donorName: {
     fontSize: 14,
-    color: "#3F51B5", // Changed to indigo 500
+    color: "#3F51B5",
     marginBottom: 2,
   },
   quantity: {
     fontSize: 14,
-    color: "#3F51B5", // Changed to indigo 500
+    color: "#3F51B5",
     marginBottom: 4,
   },
   bottomRow: {
@@ -152,12 +171,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dateContainer: {
-    flex: 1, // Ensures the date text takes available space
+    flex: 1,
   },
   date: {
     fontSize: 12,
     color: "#888",
-    flexWrap: "wrap", // Allows wrapping if text is long
+    flexWrap: "wrap",
   },
   statusBadge: {
     paddingHorizontal: 8,
@@ -181,6 +200,6 @@ const styles = StyleSheet.create({
   emptyText: {
     marginTop: 12,
     fontSize: 16,
-    color: "#3F51B5", // Changed to indigo 500
+    color: "#3F51B5",
   },
 });

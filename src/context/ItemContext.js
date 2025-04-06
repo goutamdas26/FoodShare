@@ -138,7 +138,7 @@ export const ItemsProvider = ({ children }) => {
       });
 
       setUser(response.data);
-    console.log(user)
+
             await SecureStore.setItemAsync(
               "userData",
               JSON.stringify(response.data)

@@ -20,7 +20,7 @@ export default function ClaimDetailsScreen() {
   return (
     <ScrollView style={styles.container}>
       <Image
-        source={{ uri: claimDetails.image }}
+        source={{ uri: claimDetails.foodItemId.images[0] }}
         style={styles.image}
         defaultSource={require("../../../../assets/images/icon.png")}
       />
@@ -58,6 +58,12 @@ export default function ClaimDetailsScreen() {
             <MaterialIcons name="restaurant" size={20} color="#666" />
             <Text style={styles.detailText}>
               Quantity: {claimDetails.foodItemId.quantity}
+            </Text>
+          </View>
+          <View style={styles.detailRow}>
+          <MaterialIcons name="location-on" size={20} color="#666" />
+            <Text style={styles.detailText}>
+              Pickup Location: {claimDetails.foodItemId.location}
             </Text>
           </View>
         </View>

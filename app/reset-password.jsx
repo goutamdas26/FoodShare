@@ -42,7 +42,7 @@ const ResetPasswordScreen = () => {
 
     try {
       setLoading(true);
-      await axios.post(`${API_URL}/api/auth/reset-password`, {
+      await axios.post(`${API_URL}/api/reset/reset-password`, {
         email,
         newPassword: password,
       });
@@ -56,16 +56,19 @@ const ResetPasswordScreen = () => {
     } catch (error) {
      
       if(error.response.status==404){
-        Alert.alert(
-          "Error",
-          error.response?.data?.message || "Failed to reset password"
-        );
+       
+        Toast.show({
+          type: "error",
+          text1: error.response?.data?.message || "Failed to reset password",
+          
+        });
         return 
       }
-      Alert.alert(
-        "Error",
-        error.response?.data?.message || "Failed to reset password"
-      );
+      Toast.show({
+        type: "error",
+        text1: error.response?.data?.message || "Failed to reset password",
+        
+      });
     } finally {
       setLoading(false);
     }

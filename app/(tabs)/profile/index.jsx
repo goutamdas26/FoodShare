@@ -15,6 +15,9 @@ import { useRouter } from "expo-router";
 import { useLanguage } from "../../../src/context/LanguageContext";
 import { ItemsContext } from "../../../src/context/ItemContext";
 import Toast from "react-native-toast-message";
+import * as Updates from 'expo-updates';
+
+
 
 const SettingsScreen = () => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
@@ -22,7 +25,13 @@ const SettingsScreen = () => {
   const { changeLanguage, t } = useLanguage();
   const router = useRouter();
   const{user}=useContext(ItemsContext)
-
+  const restartApp = async () => {
+    try {
+      await Updates.reloadAsync();
+    } catch (e) {
+      console.log("Error reloading app:", e);
+    }
+  };
   const toggleLanguage = useCallback(() => {
     setLanguage((prevLang) => {
       const newLang = prevLang === "English" ? "हिंदी" : "English";
@@ -38,7 +47,7 @@ const SettingsScreen = () => {
       text1: "You are logged out!",
       
     });
-    router.replace("/login");
+    restartApp()
   }, [router]);
 useEffect(()=>{
 
