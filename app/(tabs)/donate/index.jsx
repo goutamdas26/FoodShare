@@ -491,7 +491,7 @@ const DonateFoodScreen = () => {
       });
 
       if (response.status === 201) {
-        Toast.show({ type: "success", text1: "Food donation submitted!" });
+        Toast.show({ type: "success", text1: "Thankyou for your donation!" });
         setFoodName("");
         setCategory("Human");
         setDescription("");

@@ -17,15 +17,21 @@ export default function SignupScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [phone, setPhone] = useState("");
   const router = useRouter();
 
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+
+  const isValidPhone = (phone) =>
+    /^\d{10}$/.test(phone.trim()); // Ensures 10 digit number
+
+  const isStrongPassword = (password) =>
+    password.length >= 6; // You can make this stricter
 
   const handleSignup = async () => {
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !phone || !address) {
       Toast.show({
         type: "info",
         text1: "Please fill all fields",
@@ -36,7 +42,23 @@ export default function SignupScreen() {
     if (!isValidEmail(email)) {
       Toast.show({
         type: "error",
-        text1: "Please enter a valid email address",
+        text1: "Enter a valid email address",
+      });
+      return;
+    }
+
+    if (!isValidPhone(phone)) {
+      Toast.show({
+        type: "error",
+        text1: "Phone number must be 10 digits",
+      });
+      return;
+    }
+
+    if (!isStrongPassword(password)) {
+      Toast.show({
+        type: "error",
+        text1: "Password must be at least 6 characters",
       });
       return;
     }
@@ -46,6 +68,8 @@ export default function SignupScreen() {
         name,
         email,
         password,
+        phone,
+        address,
       });
 
       Toast.show({
@@ -55,17 +79,14 @@ export default function SignupScreen() {
 
       router.replace("/login");
     } catch (error) {
-      if (error.response?.status === 409) {
-        Toast.show({
-          type: "error",
-          text1: error.response?.data?.error || "Email already registered",
-        });
-      } else {
-        Toast.show({
-          type: "error",
-          text1: "Something went wrong. Please try again.",
-        });
-      }
+      const status = error.response?.status;
+      const message =
+        error.response?.data?.error || "Something went wrong. Try again later.";
+
+      Toast.show({
+        type: "error",
+        text1: status === 409 ? message : "Signup failed",
+      });
     }
   };
 
@@ -98,6 +119,23 @@ export default function SignupScreen() {
         secureTextEntry
         value={password}
         onChangeText={setPassword}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Phone Number"
+        placeholderTextColor="#B0BEC5"
+        keyboardType="phone-pad"
+        value={phone}
+        onChangeText={setPhone}
+      />
+
+      <TextInput
+        style={styles.input}
+        placeholder="Address"
+        placeholderTextColor="#B0BEC5"
+        value={address}
+        onChangeText={setAddress}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSignup}>

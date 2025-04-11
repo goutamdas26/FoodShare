@@ -26,9 +26,9 @@ export default function LoginScreen() {
   };
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (email.trim() === "" || password.trim() === "") {
       Toast.show({
-        type: "warning",
+        type: "info",
         text1: "Please fill in all fields",
       });
       return;

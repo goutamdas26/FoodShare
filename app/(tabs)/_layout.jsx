@@ -22,19 +22,7 @@ export default function Layout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="foodhistory"
-        options={{
-          title: "FoodHistory",
-          tabBarIcon: ({ color, size, focused }) => (
-            <FontAwesome5
-              name="clipboard-list"
-              size={size}
-              color={focused ? "#3F51B5" : color}
-            />
-          ),
-        }}
-      />
+      
       <Tabs.Screen
         name="donate"
         options={{

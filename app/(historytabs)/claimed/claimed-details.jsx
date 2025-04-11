@@ -2,6 +2,7 @@ import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
+import GoBackHeader from "../../../src/components/goBack";
 
 export default function ClaimDetailsScreen() {
 
@@ -19,10 +20,11 @@ export default function ClaimDetailsScreen() {
 
   return (
     <ScrollView style={styles.container}>
+      <GoBackHeader/>
       <Image
         source={{ uri: claimDetails.foodItemId.images[0] }}
         style={styles.image}
-        defaultSource={require("../../../../assets/images/icon.png")}
+        defaultSource={require("../../../assets/images/icon.png")}
       />
 
       <View style={styles.content}>

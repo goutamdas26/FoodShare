@@ -11,8 +11,9 @@ import {
 import { useRouter } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { ItemsContext } from "../../../../src/context/ItemContext";
+import { ItemsContext } from "../../../src/context/ItemContext";
 import { useContext, useEffect, useState } from "react";
+import GoBackHeader from "../../../src/components/goBack";
 
 export default function ClaimedScreen() {
   const router = useRouter();
@@ -45,7 +46,7 @@ export default function ClaimedScreen() {
         source={
           item.foodItemId.images
             ? { uri: item.foodItemId.images[0] }
-            : require("../../../../assets/images/icon.png")
+            : require("../../../assets/images/icon.png")
         }
         style={styles.foodImage}
       />
@@ -88,7 +89,8 @@ export default function ClaimedScreen() {
 
   if (loading) {
     return (
-      <View style={styles.emptyContainer}>
+      <View style={styles.loadingContainer}>
+        <GoBackHeader />
         <ActivityIndicator size="large" color="#3F51B5" />
       </View>
     );
@@ -96,11 +98,15 @@ export default function ClaimedScreen() {
 
   return (
     <View style={styles.container}>
+      <GoBackHeader />
       <FlatList
         data={claimedFood}
         renderItem={renderItem}
         keyExtractor={(item) => item.foodItemId._id}
-        contentContainerStyle={styles.listContainer}
+        contentContainerStyle={[
+          styles.listContainer,
+          claimedFood.length === 0 && { flex: 1, justifyContent: "flex-start" },
+        ]}
         showsVerticalScrollIndicator={false}
         refreshControl={
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -120,6 +126,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
+    paddingTop: 70, // for header spacing
+  },
+  loadingContainer: {
+    flex: 1,
+    backgroundColor: "#f5f5f5",
+    paddingTop: 70,
+    justifyContent: "center",
+    alignItems: "center",
   },
   listContainer: {
     padding: 16,
@@ -132,10 +146,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
@@ -192,10 +203,9 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   emptyContainer: {
-    flex: 1,
+    marginTop: 50,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
   },
   emptyText: {
     marginTop: 12,

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "foodshare",
+    "name": "foodShare",
     "slug": "foodshare",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -8,14 +8,27 @@
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/images/splash-icon.png",
+      "imageWidth": 200,
+      "resizeMode": "contain",
+      "backgroundColor": "#1A237E"
+    },
     "ios": {
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "backgroundColor": "#1A237E"
+      },
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION"
+      ],
+      "package": "com.gdas04026.foodshare"
     },
     "web": {
       "bundler": "metro",
@@ -30,7 +43,7 @@
           "image": "./assets/images/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff"
+          "backgroundColor": "#1A237E"
         }
       ],
       "expo-localization"
@@ -38,10 +51,14 @@
     "experiments": {
       "typedRoutes": true
     },
-    "extra":{
-      "API_URL": "http://192.168.29.119:5000"
-      
+    "extra": {
+      "API_URL": "http://192.168.29.119:5000",
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "0500c8e3-19e2-4a38-9443-18ffad25c992"
+      }
     }
-  
   }
 }

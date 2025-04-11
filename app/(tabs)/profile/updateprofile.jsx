@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ItemsContext } from '../../../src/context/ItemContext';
@@ -19,126 +20,124 @@ import Toast from 'react-native-toast-message';
 const UpdateProfileScreen = () => {
   const { user, fetchUser } = useContext(ItemsContext);
   const { name, email, phone, address, profileImage } = user;
-  // 1️⃣ Add this new state to track selected image URI
   const [localImage, setLocalImage] = useState(profileImage);
+  const [loading, setLoading] = useState(false); // 🆕 Loading state
 
   const API_URL = Constants.expoConfig.extra.API_URL;
 
   const [formData, setFormData] = useState({
     name,
     email,
-    phone: phone ? phone.toString() : "", // Ensure phone is a string
-    address: address ? address.toString() : "",
-    profileImage:localImage,
+    phone: phone ? phone.toString() : '',
+    address: address ? address.toString() : '',
+    profileImage: localImage,
   });
 
-  // Image Picker Function
-const pickImage = async () => {
-  const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-  if (status !== "granted") {
-    Alert.alert("Permission Denied", "Allow access to select an image.");
-    return;
-  }
-
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    allowsEditing: true,
-    aspect: [1, 1],
-    quality: 1,
-  });
-
-  if (!result.canceled) {
-    setLocalImage(result.assets[0].uri); // Just store local image
-    setFormData((prev) => ({ ...prev, profileImage: localImage }));
-  }
-};
-const uploadImageToCloudinary = async () => {
-  if (!localImage) {
-    Alert.alert("No image selected", "Please select an image first.");
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("file", {
-    uri: localImage,
-    name: "profile.jpg",
-    type: "image/jpeg",
-  });
-  formData.append("upload_preset", "foodshare_profileimage"); // 🔁 Replace
-  formData.append("cloud_name", "dl92zh3w0"); // 🔁 Replace
-
-  try {
-    const res = await fetch(
-      "https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload",
-      {
-        method: "POST",
-        body: formData,
-      }
-    );
-
-    const data = await res.json();
-    if (data.secure_url) {
-      setFormData((prev) => ({ ...prev, profileImage: data.secure_url }));
-      setLocalImage(data.secure_url)
-
-    } else {
-  
-      console.error(data);
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Permission Denied', 'Allow access to select an image.');
+      return;
     }
-  } catch (err) {
-    console.error("Cloudinary Upload Error", err);
 
-  }
-};
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
 
+    if (!result.canceled) {
+      setLocalImage(result.assets[0].uri);
+      setFormData((prev) => ({ ...prev, profileImage: result.assets[0].uri }));
+    }
+  };
 
-  // Handle Profile Update
-  const handleUpdateProfile = async () => {
+  const uploadImageToCloudinary = async () => {
+    if (!localImage) return;
+
+    const data = new FormData();
+    data.append('file', {
+      uri: localImage,
+      name: 'profile.jpg',
+      type: 'image/jpeg',
+    });
+    data.append('upload_preset', 'foodshare_profileimage');
+    data.append('cloud_name', 'dl92zh3w0');
+
     try {
-      const token = await SecureStore.getItemAsync("userToken");
-      await uploadImageToCloudinary()
-      formData.profileImage=localImage
-      const response = await axios.put(`${API_URL}/api/user/update`, formData, {
+      const res = await fetch(
+        'https://api.cloudinary.com/v1_1/dl92zh3w0/image/upload',
+        {
+          method: 'POST',
+          body: data,
+        }
+      );
+      const resData = await res.json();
+      if (resData.secure_url) {
+        return resData.secure_url;
+      } else {
+        throw new Error('Upload failed');
+      }
+    } catch (error) {
+      console.error('Image upload error:', error);
+      throw error;
+    }
+  };
+
+  const handleUpdateProfile = async () => {
+    setLoading(true); // Start loading
+    try {
+      const token = await SecureStore.getItemAsync('userToken');
+      let uploadedImageUrl = localImage;
+
+      if (!localImage?.startsWith('http')) {
+        uploadedImageUrl = await uploadImageToCloudinary();
+      }
+
+      const updatedData = {
+        ...formData,
+        profileImage: uploadedImageUrl,
+      };
+
+      const res = await axios.put(`${API_URL}/api/user/update`, updatedData, {
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
       });
 
-      if (response.status == 200) {
+      if (res.status === 200) {
         fetchUser();
-       
         Toast.show({
-          type: "success",
-          text1: "Profile Updated",
-        
+          type: 'success',
+          text1: 'Profile Updated',
         });
       } else {
-        console.error("Failed to update profile:", response.status);
         Toast.show({
-          type: "error",
-          text1: "Failed to update profile:",
-        
+          type: 'error',
+          text1: 'Failed to update profile',
         });
       }
     } catch (error) {
-   
       Toast.show({
-        type: "error",
-        text1: "Error updating profile. Please try again later.",
-      
+        type: 'error',
+        text1: 'Error updating profile',
       });
+    } finally {
+      setLoading(false); // Stop loading
     }
   };
-useEffect(()=>{
 
-
-})
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          source={localImage ? { uri: localImage } : require('../../../assets/images/icon.png')}
+          source={
+            localImage
+              ? { uri: localImage }
+              : require('../../../assets/images/icon.png')
+          }
           style={styles.profileImage}
         />
         <TouchableOpacity style={styles.imageButton} onPress={pickImage}>
@@ -183,10 +182,15 @@ useEffect(()=>{
         />
 
         <TouchableOpacity
-          style={styles.updateButton}
+          style={[styles.updateButton, loading && { opacity: 0.6 }]}
           onPress={handleUpdateProfile}
+          disabled={loading}
         >
-          <Text style={styles.updateButtonText}>Update Profile</Text>
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.updateButtonText}>Update Profile</Text>
+          )}
         </TouchableOpacity>
       </View>
     </ScrollView>

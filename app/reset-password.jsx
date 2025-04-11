@@ -4,12 +4,13 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  Alert,
   StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import axios from "axios";
-import  Constants  from 'expo-constants';
+import Constants from "expo-constants";
 import Toast from "react-native-toast-message";
 
 const ResetPasswordScreen = () => {
@@ -20,22 +21,36 @@ const ResetPasswordScreen = () => {
   const [loading, setLoading] = useState(false);
   const API_URL = Constants.expoConfig.extra.API_URL;
 
+  const isPasswordStrong = (pwd) => {
+    const minLength = 6;
+    const hasNumber = /\d/;
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+    return (
+      pwd.length >= minLength && hasNumber.test(pwd) && hasSpecialChar.test(pwd)
+    );
+  };
+
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
-     
       Toast.show({
-        type: "warning",
-        text1: "Please fill in all fields",
-        
+        type: "error",
+        text1: "All fields are required",
       });
       return;
     }
+
     if (password !== confirmPassword) {
-    
       Toast.show({
-        type: "warning",
+        type: "error",
         text1: "Passwords do not match",
-        
+      });
+      return;
+    }
+
+    if (!isPasswordStrong(password)) {
+      Toast.show({
+        type: "error",
+        text1: "Password must be 6+ chars & include number + special character",
       });
       return;
     }
@@ -46,28 +61,19 @@ const ResetPasswordScreen = () => {
         email,
         newPassword: password,
       });
-   
+
       Toast.show({
         type: "success",
         text1: "Password updated successfully!",
-        
       });
       router.replace("/login");
     } catch (error) {
-     
-      if(error.response.status==404){
-       
-        Toast.show({
-          type: "error",
-          text1: error.response?.data?.message || "Failed to reset password",
-          
-        });
-        return 
-      }
+      const message =
+        error.response?.data?.message || "Failed to reset password";
+
       Toast.show({
         type: "error",
-        text1: error.response?.data?.message || "Failed to reset password",
-        
+        text1: message,
       });
     } finally {
       setLoading(false);
@@ -75,7 +81,10 @@ const ResetPasswordScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : undefined}
+      style={styles.container}
+    >
       <Text style={styles.title}>Reset Password</Text>
       <Text style={styles.subtitle}>Enter a new password for {email}</Text>
 
@@ -96,7 +105,7 @@ const ResetPasswordScreen = () => {
       />
 
       <TouchableOpacity
-        style={styles.button}
+        style={[styles.button, loading && { opacity: 0.7 }]}
         onPress={handleResetPassword}
         disabled={loading}
       >
@@ -104,7 +113,7 @@ const ResetPasswordScreen = () => {
           {loading ? "Updating..." : "Reset Password"}
         </Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -112,21 +121,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#eef2ff",
     padding: 20,
+    backgroundColor: "#eef2ff",
   },
   title: {
     fontSize: 28,
     fontWeight: "bold",
-    color: "#4f46e5", // Indigo 700
+    color: "#4f46e5",
+    textAlign: "center",
     marginBottom: 10,
   },
   subtitle: {
     fontSize: 16,
-    color: "#6366f1", // Indigo 500
-    marginBottom: 20,
+    color: "#6366f1",
     textAlign: "center",
+    marginBottom: 25,
   },
   input: {
     width: "100%",
@@ -138,11 +147,9 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   button: {
-    backgroundColor: "#4f46e5", // Indigo 700
+    backgroundColor: "#4f46e5",
     paddingVertical: 12,
-    paddingHorizontal: 20,
     borderRadius: 8,
-    width: "100%",
     alignItems: "center",
   },
   buttonText: {

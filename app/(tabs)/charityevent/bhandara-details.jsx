@@ -31,15 +31,8 @@ const BDetails = () => {
   };
 
   // Check if event is currently open
-  const isEventOpen = () => {
-    const now = new Date();
-    const start = new Date(startTime); // Using full ISO strings
-    const end = new Date(endTime);
-    
+ 
   
-
-    return now >= start && now <= end;
-  };
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -51,15 +44,7 @@ const BDetails = () => {
         <Text style={styles.label}>Event Name:</Text>
         <Text style={styles.title}>{title}</Text>
 
-        {/* Open / Close Status */}
-        <Text
-          style={[
-            styles.statusText,
-            { color: isEventOpen() ? 'green' : 'red' },
-          ]}
-        >
-          {isEventOpen() ? '✅ Open Now' : '❌ Closed Now'}
-        </Text>
+      
 
         {/* Date & Time Info */}
         <View style={styles.row}>

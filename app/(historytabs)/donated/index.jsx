@@ -15,7 +15,8 @@ import Constants from "expo-constants";
 const API_URL = Constants.expoConfig.extra.API_URL;
 import axios from "axios";
 import { useContext, useState, useEffect } from "react"; // Import useState and useEffect
-import { ItemsContext } from "../../../../src/context/ItemContext";
+import { ItemsContext } from "../../../src/context/ItemContext";
+import GoBackHeader from "../../../src/components/goBack";
 
 export default function DonatedScreen() {
   const { fetchDonatedFood, donatedFood } = useContext(ItemsContext);
@@ -52,7 +53,7 @@ export default function DonatedScreen() {
       <Image
         source={{ uri: item.foodItemId.images[0] }}
         style={styles.foodImage}
-        defaultSource={require("../../../../assets/images/icon.png")}
+        defaultSource={require("../../../assets/images/icon.png")}
       />
 
       <View style={styles.cardContent}>
@@ -107,6 +108,8 @@ export default function DonatedScreen() {
 
   return (
     <View style={styles.container}>
+      <GoBackHeader/>
+      
       {donatedFood.length > 0 ? (
         <FlatList
           data={donatedFood}
@@ -147,6 +150,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   listContainer: {
+    top:50,
     padding: 16,
   },
   card: {

@@ -9,7 +9,7 @@ import {
   Switch,
   StyleSheet,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { FontAwesome5, Ionicons } from "@expo/vector-icons";
 import * as SecureStore from "expo-secure-store";
 import { useRouter } from "expo-router";
 import { useLanguage } from "../../../src/context/LanguageContext";
@@ -86,6 +86,17 @@ useEffect(()=>{
         >
           <Ionicons name="document-text-outline" size={24} color="black" />
           <Text style={styles.menuText}>Verification</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/(historytabs)/claimed")}
+        >
+           <FontAwesome5
+              name="clipboard-list"
+              size={24}
+              color="gray"
+            />
+           <Text style={styles.menuText}> Food History</Text>
         </TouchableOpacity>
 
         <View style={styles.menuItem}>

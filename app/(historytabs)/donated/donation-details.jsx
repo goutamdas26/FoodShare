@@ -3,6 +3,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import { useContext } from "react";
+import GoBackHeader from "../../../src/components/goBack";
 
 export default function DonationDetailsScreen() {
   const route = useRoute();
@@ -18,10 +19,11 @@ const formatTime = (dateString) => {
 };
   return (
     <ScrollView style={styles.container}>
+      <GoBackHeader/>
       <Image
         source={{ uri: donationDetails.foodItemId.images[0] }}
         style={styles.image}
-        defaultSource={require("../../../../assets/images/icon.png")}
+        defaultSource={require("../../../assets/images/icon.png")}
       />
 
       <View style={styles.content}>
