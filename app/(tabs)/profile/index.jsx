@@ -57,7 +57,7 @@ useEffect(()=>{
       {/* Profile Section */}
       <View style={styles.profileContainer}>
         <Image
-          source={{uri:user?.profileImage}}
+          source={{ uri: user?.profileImage || "https://res.cloudinary.com/dl92zh3w0/image/upload/v1744383503/Avatar-Profile-Vector-PNG-Pic_z3sbbw.png" }}
           style={styles.profileImage}
         />
         <Text style={styles.profileName}>{user?.name}</Text>

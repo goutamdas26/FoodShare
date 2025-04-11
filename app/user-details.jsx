@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import Constants  from 'expo-constants';
 import axios from "axios";
+import GoBackHeader from "../src/components/goBack";
 
 const UserDetailsScreen = () => {
   // const user = {
@@ -24,8 +25,9 @@ userDetails()
 })
   return (
     <View style={styles.container}>
+      <GoBackHeader/>
       <Text style={styles.heading}>User Profile</Text>
-      <Image source={{ uri: user.profileImage }} style={styles.image} />
+      <Image source={{ uri: user.profileImage || "https://res.cloudinary.com/dl92zh3w0/image/upload/v1744383503/Avatar-Profile-Vector-PNG-Pic_z3sbbw.png" }} style={styles.image} />
       <View style={styles.detailContainer}>
         <Text style={styles.label}>Name</Text>
         <Text style={styles.value}>{user.name}</Text>
@@ -33,7 +35,7 @@ userDetails()
         <Text style={styles.label}>Email</Text>
         <Text style={styles.value}>{user.email}</Text>
         <Text style={styles.label}>Phone</Text>
-        <Text style={styles.value}>{user.phone}</Text>
+        <Text style={styles.value}>{user.phone || "Not available"}</Text>
         <Text style={styles.label}>Address</Text>
         <Text style={styles.value}>{user.address||"No address available"}</Text>
       </View>

@@ -1,5 +1,5 @@
-import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { View, Text, Image, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { router, useLocalSearchParams } from "expo-router";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import GoBackHeader from "../../../src/components/goBack";
@@ -74,9 +74,16 @@ export default function ClaimDetailsScreen() {
           <Text style={styles.sectionTitle}>Donor Information</Text>
           <View style={styles.detailRow}>
             <MaterialIcons name="store" size={20} color="#666" />
-            <Text style={styles.detailText}>
-              {claimDetails.foodItemId.donorDetails.name}
-            </Text>
+            <TouchableOpacity style={styles.detailText}   onPress={() =>
+                  router.push({
+                    pathname: "user-details",
+                    params: {
+                      userId: claimDetails.foodItemId.donor._id,
+                    },
+                  })
+                }>
+              <Text>{claimDetails.foodItemId.donorDetails.name}</Text>
+            </TouchableOpacity>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />

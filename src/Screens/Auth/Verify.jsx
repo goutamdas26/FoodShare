@@ -7,7 +7,6 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  Alert,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -17,7 +16,7 @@ import Toast from "react-native-toast-message";
 
 const Verify = () => {
   const API_URL = Constants.expoConfig.extra.API_URL;
-  const { user ,fetchUser} = useContext(ItemsContext);
+  const { user, fetchUser } = useContext(ItemsContext);
   const [kycData, setKycData] = useState({
     fullName: "",
     idNumber: "",
@@ -39,7 +38,10 @@ const Verify = () => {
         setKycData({ ...kycData, [type]: result.assets[0].uri });
       }
     } catch (error) {
-      Alert.alert("Error", "Failed to pick image");
+      Toast.show({
+        type: "error",
+        text1: "Failed to pick image",
+      });
     }
   };
 
@@ -50,24 +52,26 @@ const Verify = () => {
       !kycData.frontImage ||
       !kycData.backImage
     ) {
-      Alert.alert("Error", "Please fill all the required fields");
+      Toast.show({
+        type: "error",
+        text1: "Please fill all the required fields",
+      });
       return;
     }
+
     setLoading(true);
 
     try {
       const formData = new FormData();
-      formData.append("userId", user._id); // Replace with actual user ID
+      formData.append("userId", user._id);
       formData.append("fullName", kycData.fullName);
       formData.append("idNumber", kycData.idNumber);
       formData.append("idType", kycData.idType);
-
       formData.append("frontImage", {
         uri: kycData.frontImage,
         type: "image/jpeg",
         name: "frontImage.jpg",
       });
-
       formData.append("backImage", {
         uri: kycData.backImage,
         type: "image/jpeg",
@@ -79,23 +83,17 @@ const Verify = () => {
           "Content-Type": "multipart/form-data",
         },
       });
+
       Toast.show({
         type: "success",
         text1: response.data.message,
-        
       });
-fetchUser()
-    
-      
+
+      fetchUser();
     } catch (error) {
-      Alert.alert(
-        "Error",
-        error.response?.data?.message || "Failed to submit KYC details"
-      );
       Toast.show({
         type: "error",
-        text1: error.response?.data?.message || "Failed to submit KYC details"
-        
+        text1: error.response?.data?.message || "Failed to submit KYC details",
       });
     } finally {
       setLoading(false);

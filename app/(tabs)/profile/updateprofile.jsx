@@ -136,7 +136,7 @@ const UpdateProfileScreen = () => {
           source={
             localImage
               ? { uri: localImage }
-              : require('../../../assets/images/icon.png')
+              : {uri:"https://res.cloudinary.com/dl92zh3w0/image/upload/v1744383503/Avatar-Profile-Vector-PNG-Pic_z3sbbw.png"}
           }
           style={styles.profileImage}
         />

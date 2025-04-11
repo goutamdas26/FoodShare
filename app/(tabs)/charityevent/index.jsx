@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  ScrollView,
 } from "react-native";
 import React, { useContext, useEffect, useState, useCallback } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -16,6 +17,7 @@ const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString();
 };
+
 const formatTime = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleTimeString();
@@ -49,7 +51,9 @@ const FoodCharityScreen = () => {
       <Image source={{ uri: item.imageUrl }} style={styles.image} />
       <View style={styles.cardContent}>
         <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.detail}>📅 {formatDate(item.startDate)} {formatTime(item.startDate)}</Text>
+        <Text style={styles.detail}>
+          📅 {formatDate(item.startDate)} {formatTime(item.startDate)}
+        </Text>
         <Text style={styles.detail}>📍 {item.location}</Text>
       </View>
     </TouchableOpacity>
@@ -58,6 +62,7 @@ const FoodCharityScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Charity Events</Text>
+
       {events.length > 0 ? (
         <FlatList
           data={events}
@@ -68,15 +73,22 @@ const FoodCharityScreen = () => {
           onRefresh={onRefresh}
         />
       ) : (
-        <Text style={styles.noEventsText}>No Events Available now</Text>
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1 }}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        >
+          <Text style={styles.noEventsText}>No Events Available now</Text>
+        </ScrollView>
       )}
+
       <TouchableOpacity style={styles.addButton} onPress={handleAddBhandara}>
         <Text style={styles.addButtonText}>+</Text>
       </TouchableOpacity>
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -102,12 +114,11 @@ const styles = StyleSheet.create({
     height: 200,
   },
   noEventsText: {
-  fontSize: 16,
-  color: "#5C6BC0",
-  textAlign: "center",
-  marginTop: 50,
-}
-,
+    fontSize: 16,
+    color: "#5C6BC0",
+    textAlign: "center",
+    marginTop: 50,
+  },
   cardContent: {
     padding: 12,
   },
