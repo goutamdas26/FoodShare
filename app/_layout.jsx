@@ -53,13 +53,28 @@ const RootLayout = () => {
   return (
     <ItemsProvider>
       <LanguageProvider>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="login" />
-          <Stack.Screen name="signup" />
-          <Stack.Screen name="otp" />
-          <Stack.Screen name="list" options={{headerShown:true,title:"Add Event"}}/>
-        </Stack>
+      <Stack
+  screenOptions={{
+    headerShown: false,
+    animation: "fade", // smooth fade transition
+    animationTypeForReplace: "push",
+  }}
+>
+  <Stack.Screen name="(tabs)" />
+  <Stack.Screen name="login" />
+  <Stack.Screen name="signup" />
+  <Stack.Screen name="otp" />
+  <Stack.Screen
+    name="list"
+    options={{
+      presentation: "modal", // makes it a modal
+      animation: "fade",     // fade animation
+      headerShown: true,
+      title: "Add Event",
+    }}
+  />
+</Stack>
+
         <Toast/>
       </LanguageProvider>
     </ItemsProvider>

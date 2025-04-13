@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -14,12 +14,15 @@ import * as SecureStore from "expo-secure-store";
 import Constants from "expo-constants";
 import axios from "axios";
 import Toast from "react-native-toast-message";
+import { ItemsContext } from "../src/context/ItemContext";
 
-const API_URL = Constants.expoConfig.extra.API_URL;
+
 const CLOUDINARY_UPLOAD_PRESET = "foodshare_event";
 const CLOUDINARY_CLOUD_NAME = "dl92zh3w0";
 
 const AddFoodCharityEvent = () => {
+const {API_URL}=useContext(ItemsContext)
+
   const [event, setEvent] = useState({
     title: "",
     description: "",

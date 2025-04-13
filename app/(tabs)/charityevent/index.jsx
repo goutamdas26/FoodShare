@@ -23,6 +23,18 @@ const formatTime = (dateString) => {
   return date.toLocaleTimeString();
 };
 
+const getStatus = (startTime, endTime) => {
+  const now = new Date(); // current time
+
+  const start = new Date(startTime); // event start time
+  const end = new Date(endTime); // event end time
+
+  // Compare the current time with the event start and end times
+  if (now < start) return 'Upcoming'; // Event has not started
+  if (now >= start && now <= end) return 'Ongoing'; // Event is in progress
+  return 'Closed'; // Event has finished
+};
+
 const FoodCharityScreen = () => {
   const navigation = useNavigation();
   const { events, fetchEvents } = useContext(ItemsContext);
@@ -46,18 +58,23 @@ const FoodCharityScreen = () => {
     fetchEvents();
   }, []);
 
-  const renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
-      <Image source={{ uri: item.imageUrl }} style={styles.image} />
-      <View style={styles.cardContent}>
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.detail}>
-          📅 {formatDate(item.startDate)} {formatTime(item.startDate)}
-        </Text>
-        <Text style={styles.detail}>📍 {item.location}</Text>
-      </View>
-    </TouchableOpacity>
-  );
+  const renderItem = ({ item }) => {
+    const status = getStatus(item.startDate, item.endDate);
+
+    return (
+      <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
+        <Image source={{ uri: item.imageUrl }} style={styles.image} />
+        <View style={styles.cardContent}>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.detail}>
+            📅 {formatDate(item.startDate)} {formatTime(item.startDate)}
+          </Text>
+          <Text style={styles.detail}>📍 {item.location}</Text>
+          <Text style={styles.status(status)}>{status}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -93,7 +110,7 @@ const FoodCharityScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#E8EAF6",
+    backgroundColor: "white",
     padding: 16,
   },
   header: {
@@ -133,6 +150,17 @@ const styles = StyleSheet.create({
     color: "#5C6BC0",
     marginBottom: 2,
   },
+  status: (status) => ({
+    fontSize: 14,
+    fontWeight: "bold",
+    color:
+      status === "Upcoming"
+        ? "green"
+        : status === "Ongoing"
+        ? "orange"
+        : "red", // Set color for 'Upcoming', 'Ongoing', 'Completed'
+    marginTop: 4,
+  }),
   addButton: {
     backgroundColor: "#3F51B5",
     borderRadius: 50,

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -12,6 +12,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import axios from "axios";
 import Constants from "expo-constants";
 import Toast from "react-native-toast-message";
+import { ItemsContext } from "../src/context/ItemContext";
 
 const ResetPasswordScreen = () => {
   const { email } = useLocalSearchParams();
@@ -19,7 +20,7 @@ const ResetPasswordScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const API_URL = Constants.expoConfig.extra.API_URL;
+const{API_URL}=useContext(ItemsContext)
 
   const isPasswordStrong = (pwd) => {
     const minLength = 6;

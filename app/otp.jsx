@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   View,
   Text,
@@ -11,6 +11,7 @@ import axios from "axios";
 import { router, useLocalSearchParams } from "expo-router";
 import Constants from "expo-constants";
 import Toast from "react-native-toast-message";
+import { ItemsContext } from "../src/context/ItemContext";
 
 const VerifyOtpScreen = () => {
   const { email } = useLocalSearchParams();
@@ -18,8 +19,8 @@ const VerifyOtpScreen = () => {
   const [loading, setLoading] = useState(false);
   const [resendLoading, setResendLoading] = useState(false);
   const [timer, setTimer] = useState(30);
+const {API_URL}=useContext(ItemsContext)
 
-  const API_URL = Constants.expoConfig.extra.API_URL;
 
   useEffect(() => {
     if (timer > 0) {

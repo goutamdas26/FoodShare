@@ -28,7 +28,9 @@ const NGODetailsScreen = () => {
 
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>📞 Contact</Text>
-        <Text style={styles.text}>Email: contact@foodshare.org</Text>
+        <TouchableOpacity onPress={() => Linking.openURL('mailto:contact@foodshare.org')}>
+          <Text style={styles.text}>Email: contact@foodshare.org</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={()=>Linking.openURL("tel:+919876543210")}>
           <Text style={styles.text}>Phone: +91 9876543210</Text>
         </TouchableOpacity>

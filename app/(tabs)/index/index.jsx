@@ -11,7 +11,6 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { ItemsContext } from "../../../src/context/ItemContext";
-import Constants from "expo-constants";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
 import Toast from "react-native-toast-message";
@@ -21,7 +20,8 @@ const AvailableFoodScreen = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [claimingItemId, setClaimingItemId] = useState(null);
   const navigation = useNavigation();
-  const API_URL = Constants.expoConfig.extra.API_URL;
+  const {API_URL}=useContext(ItemsContext)
+
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);

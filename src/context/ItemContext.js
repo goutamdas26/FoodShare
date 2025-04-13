@@ -17,7 +17,7 @@ export const ItemsProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({});
   const[events,setEvents]=useState([])
-  const API_URL = Constants.expoConfig.extra.API_URL;
+  const API_URL =process.env.EXPO_PUBLIC_API_URL|| Constants.expoConfig.extra.API_URL;
 
   const setUserAndStore = async (userData) => {
     try {
@@ -154,7 +154,8 @@ export const ItemsProvider = ({ children }) => {
         user,
         fetchUser,
         events,
-        fetchEvents
+        fetchEvents,
+        API_URL
 
       }}
     >

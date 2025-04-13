@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -10,8 +10,9 @@ import { useRouter } from "expo-router";
 import axios from "axios";
 import Constants from "expo-constants";
 import Toast from "react-native-toast-message";
+import { ItemsContext } from "../src/context/ItemContext";
 
-const API_URL = Constants.expoConfig.extra.API_URL;
+
 
 export default function SignupScreen() {
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ export default function SignupScreen() {
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const router = useRouter();
-
+const {API_URL}=useContext(ItemsContext)
   const isValidEmail = (email) =>
     /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 

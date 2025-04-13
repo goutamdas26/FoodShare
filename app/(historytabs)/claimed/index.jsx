@@ -16,7 +16,7 @@ import { useContext, useEffect, useState } from "react";
 import GoBackHeader from "../../../src/components/goBack";
 
 export default function ClaimedScreen() {
-  const router = useRouter();
+
   const navigation = useNavigation();
   const { fetchClaimedFood, claimedFood } = useContext(ItemsContext);
 
@@ -45,9 +45,10 @@ export default function ClaimedScreen() {
       <Image
         source={
           item.foodItemId.images
-            ? { uri: item.foodItemId.images[0] }
-            : require("../../../assets/images/icon.png")
+            &&{ uri: item.foodItemId.images[0] }
+            
         }
+        defaultSource={{uri:"https://res.cloudinary.com/dl92zh3w0/image/upload/v1744538923/knife-fork-and-plate-circular-icon-vector_sfbhgq.jpg"}}
         style={styles.foodImage}
       />
 

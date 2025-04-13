@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Image,
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
@@ -17,8 +18,8 @@ export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const API_URL = Constants.expoConfig.extra.API_URL;
-  const { setUser } = useContext(ItemsContext);
+
+  const { setUser,API_URL } = useContext(ItemsContext);
 
   const validateEmail = (email) => {
     const regex = /^\S+@\S+\.\S+$/;
@@ -79,6 +80,13 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+      <Image source={require("../assets/images/icon.png")} style={{
+        height: 100,
+        width: 100,
+        bottom: 20,
+        overflow: 'hidden', // Added to ensure cropping effect
+        borderRadius: 20, // Optional: adds rounded corners
+      }}/>
       <Text style={styles.title}>Welcome Back</Text>
       <Text style={styles.subtitle}>Login to continue</Text>
 

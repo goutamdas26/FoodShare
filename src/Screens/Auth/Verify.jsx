@@ -177,7 +177,7 @@ const Verify = () => {
           disabled={loading}
         >
           <Text style={styles.submitButtonText}>
-            {loading ? "Submitting..." : "Submit KYC"}
+            {loading ? "Submitting..." : "Submit Verification"}
           </Text>
         </TouchableOpacity>
       </View>
@@ -188,7 +188,7 @@ const Verify = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#eef2ff",
+    backgroundColor: "white",
   },
   header: {
     fontSize: 26,

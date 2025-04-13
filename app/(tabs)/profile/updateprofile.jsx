@@ -23,7 +23,8 @@ const UpdateProfileScreen = () => {
   const [localImage, setLocalImage] = useState(profileImage);
   const [loading, setLoading] = useState(false); // 🆕 Loading state
 
-  const API_URL = Constants.expoConfig.extra.API_URL;
+  const {API_URL}=useContext(ItemsContext)
+
 
   const [formData, setFormData] = useState({
     name,

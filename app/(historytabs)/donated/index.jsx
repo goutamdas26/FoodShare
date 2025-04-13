@@ -7,13 +7,13 @@ import {
   StyleSheet,
   RefreshControl, // Import RefreshControl
 } from "react-native";
-import { useRouter } from "expo-router";
+
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import * as SecureStore from "expo-secure-store";
-import Constants from "expo-constants";
-const API_URL = Constants.expoConfig.extra.API_URL;
-import axios from "axios";
+
+
+
+
 import { useContext, useState, useEffect } from "react"; // Import useState and useEffect
 import { ItemsContext } from "../../../src/context/ItemContext";
 import GoBackHeader from "../../../src/components/goBack";
@@ -22,7 +22,7 @@ export default function DonatedScreen() {
   const { fetchDonatedFood, donatedFood } = useContext(ItemsContext);
   const [refreshing, setRefreshing] = useState(false); // State for refreshing
 
-  const router = useRouter();
+
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function DonatedScreen() {
       <Image
         source={{ uri: item.foodItemId.images[0] }}
         style={styles.foodImage}
-        defaultSource={require("../../../assets/images/icon.png")}
+        defaultSource={"https://res.cloudinary.com/dl92zh3w0/image/upload/v1744538923/knife-fork-and-plate-circular-icon-vector_sfbhgq.jpg"}
       />
 
       <View style={styles.cardContent}>

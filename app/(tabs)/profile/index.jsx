@@ -66,11 +66,11 @@ useEffect(()=>{
 
       {/* Settings Menu */}
       <View style={styles.menuContainer}>
-        <TouchableOpacity style={styles.menuItem} onPress={toggleLanguage}>
+        {/* <TouchableOpacity style={styles.menuItem} onPress={toggleLanguage}>
           <Ionicons name="globe-outline" size={24} color="black" />
           <Text style={styles.menuText}>{t("changeLanguage")}</Text>
           <Text style={styles.menuValue}>{language}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         <TouchableOpacity
           style={styles.menuItem}
@@ -108,6 +108,13 @@ useEffect(()=>{
           />
         </View>
 
+        <TouchableOpacity
+          style={styles.menuItem}
+          onPress={() => router.push("/profile/contact-us")}
+        >
+          <Ionicons name="mail-outline" size={24} color="black" />
+          <Text style={styles.menuText}>Contact Us</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={24} color="white" />
           <Text style={styles.logoutText}>{t("logout")}</Text>
