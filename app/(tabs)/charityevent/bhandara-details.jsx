@@ -13,30 +13,40 @@ const BDetails = () => {
     location,
     description,
     imageUrl,
-    cdate,
   } = route.params;
 
-  // Format full ISO date string to readable date
+  // Format ISO date string to readable date
   const formatDate = (isoString) => {
     if (!isoString) return 'N/A';
     const date = new Date(isoString);
     return date.toLocaleDateString();
   };
 
-  // Format full ISO time string to readable time
+  // Format ISO string to readable time
   const formatTime = (isoString) => {
     if (!isoString) return 'N/A';
     const date = new Date(isoString);
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
-  // Check if event is currently open
- 
-  
+  // Check event status
+  const getStatus = () => {
+    const now = new Date(); // current time
+
+    const start = new Date(startTime); // event start time
+    const end = new Date(endTime); // event end time
+
+    // Compare the current time with the event start and end times
+    if (now < start) return 'Upcoming'; // Event has not started
+    if (now >= start && now <= end) return 'Ongoing'; // Event is in progress
+    return 'Completed'; // Event has finished
+  };
+
+  const status = getStatus(); // Get the status of the event
 
   return (
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-      {/* Image at the top */}
+      {/* Event Image */}
       <Image source={{ uri: imageUrl }} style={styles.image} />
 
       {/* Details Section */}
@@ -44,9 +54,12 @@ const BDetails = () => {
         <Text style={styles.label}>Event Name:</Text>
         <Text style={styles.title}>{title}</Text>
 
-      
+        {/* Event Status */}
+        <Text style={[styles.statusText, { color: status === 'Ongoing' ? 'green' : status === 'Completed' ? 'gray' : 'blue' }]}>
+          {status === 'Ongoing' ? '🟢 Open Now' : status === 'Completed' ? '🔴 Closed' : '🔵 Upcoming'}
+        </Text>
 
-        {/* Date & Time Info */}
+        {/* Date and Time Info */}
         <View style={styles.row}>
           <View style={styles.halfWidth}>
             <Text style={styles.label}>Start Timing:</Text>
@@ -60,9 +73,11 @@ const BDetails = () => {
           </View>
         </View>
 
+        {/* Location */}
         <Text style={styles.label}>Location:</Text>
         <Text style={styles.location}>📍 {location}</Text>
 
+        {/* Description */}
         <Text style={styles.label}>Description:</Text>
         <Text style={styles.description}>{description}</Text>
       </View>
@@ -93,10 +108,10 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     color: '#2c3e50',
-    marginBottom: 10,
+    marginBottom: 5,
   },
   statusText: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     marginVertical: 8,
   },

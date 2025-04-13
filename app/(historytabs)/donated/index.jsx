@@ -109,7 +109,10 @@ export default function DonatedScreen() {
   return (
     <View style={styles.container}>
       <GoBackHeader/>
-      
+      <Text style={{position:"absolute"
+        ,textAlign:"center",
+        top:30,left:"35%",fontSize:20,fontWeight:"bold"
+      }}>Donated Food</Text>
       {donatedFood.length > 0 ? (
         <FlatList
           data={donatedFood}

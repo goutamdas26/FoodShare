@@ -98,7 +98,12 @@ export default function ClaimedScreen() {
 
   return (
     <View style={styles.container}>
+      <Text style={{position:"absolute"
+        ,textAlign:"center",
+        top:30,left:"35%",fontSize:20,fontWeight:"bold"
+      }}>Claimed Food</Text>
       <GoBackHeader />
+      
       <FlatList
         data={claimedFood}
         renderItem={renderItem}

@@ -12,7 +12,13 @@ export const translations = {
     cancel: 'Cancel',
     changeLanguage: 'Change Language',
     english: 'English',
-    hindi: 'Hindi'
+    hindi: 'Hindi',
+    updateProfile: 'Update Profile',
+    verification: 'Verification',
+    foodHistory: 'Food History',
+    notifications: 'Notifications',
+    logout: 'Logout',
+    loggedOut: 'You are logged out!',
   },
   हिंदी: {
     welcome: 'स्वागत है',
@@ -27,6 +33,12 @@ export const translations = {
     cancel: 'रद्द करें',
     changeLanguage: 'भाषा बदलें',
     english: 'अंग्रेज़ी',
-    hindi: 'हिंदी'
-  }
+    hindi: 'हिंदी',
+    updateProfile: 'प्रोफ़ाइल अपडेट करें',
+    verification: 'सत्यापन',
+    foodHistory: 'भोजन इतिहास',
+    notifications: 'सूचनाएं',
+    logout: 'लॉग आउट',
+    loggedOut: 'आप लॉग आउट हो गए हैं!',
+  },
 };

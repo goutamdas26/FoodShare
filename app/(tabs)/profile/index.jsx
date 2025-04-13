@@ -77,7 +77,7 @@ useEffect(()=>{
           onPress={() => router.push("/profile/updateprofile")}
         >
           <Ionicons name="person-outline" size={24} color="black" />
-          <Text style={styles.menuText}>Update Profile</Text>
+          <Text style={styles.menuText}>{t("updateProfile")}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -85,7 +85,7 @@ useEffect(()=>{
           onPress={() => router.push("/profile/kycverify")}
         >
           <Ionicons name="document-text-outline" size={24} color="black" />
-          <Text style={styles.menuText}>Verification</Text>
+          <Text style={styles.menuText}>{t("verification")}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.menuItem}
@@ -96,12 +96,12 @@ useEffect(()=>{
               size={24}
               color="gray"
             />
-           <Text style={styles.menuText}> Food History</Text>
+           <Text style={styles.menuText}> {t("foodHistory")}</Text>
         </TouchableOpacity>
 
         <View style={styles.menuItem}>
           <Ionicons name="notifications-outline" size={24} color="black" />
-          <Text style={styles.menuText}>Notifications</Text>
+          <Text style={styles.menuText}>{t("notifications")}</Text>
           <Switch
             value={notificationsEnabled}
             onValueChange={() => setNotificationsEnabled(!notificationsEnabled)}
@@ -110,7 +110,7 @@ useEffect(()=>{
 
         <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
           <Ionicons name="log-out-outline" size={24} color="white" />
-          <Text style={styles.logoutText}>Logout</Text>
+          <Text style={styles.logoutText}>{t("logout")}</Text>
         </TouchableOpacity>
       </View>
     </View>
