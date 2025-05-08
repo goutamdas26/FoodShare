@@ -21,6 +21,7 @@ import * as SecureStore from "expo-secure-store";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import Toast from "react-native-toast-message";
 import { ItemsContext } from "../../../src/context/ItemContext";
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 
 
@@ -37,6 +38,7 @@ const DonateFoodScreen = () => {
   const [showTimePicker, setShowTimePicker] = useState(false);
   const [loading, setLoading] = useState(false);
   const {API_URL}=useContext(ItemsContext)
+  const isValidPhone = (phone) => isValidPhoneNumber(phone.trim(), 'IN');
 
   // Load saved draft
   useEffect(() => {
@@ -107,8 +109,9 @@ const DonateFoodScreen = () => {
       Toast.show({ type: "error", text1: "Please fill all fields and upload images" });
       return;
     }
+  
 
-    if (!isPhoneValid(phone)) {
+    if (!isValidPhone(phone)) {
       Toast.show({ type: "error", text1: "Invalid phone number" });
       return;
     }

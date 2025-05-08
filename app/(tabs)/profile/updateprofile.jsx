@@ -16,6 +16,9 @@ import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import { isValidPhoneNumber } from 'libphonenumber-js';
+import validator from "validator";
+
 
 const UpdateProfileScreen = () => {
   const { user, fetchUser } = useContext(ItemsContext);
@@ -25,6 +28,9 @@ const UpdateProfileScreen = () => {
 
   const {API_URL}=useContext(ItemsContext)
 
+  const isValidPhone = (phone) => isValidPhoneNumber(phone.trim(), 'IN');
+
+  const isValidEmail = (email) => validator.isEmail(email.trim());
 
   const [formData, setFormData] = useState({
     name,
@@ -95,7 +101,21 @@ const UpdateProfileScreen = () => {
       if (!localImage?.startsWith('http')) {
         uploadedImageUrl = await uploadImageToCloudinary();
       }
-
+      if (!isValidPhone(formData.phone)) {
+        console.log(formData.phone)
+        Toast.show({
+          type: "error",
+          text1: "Enter valid phone number.",
+        });
+        return;
+      }
+      if (!isValidEmail(formData.email)) {
+        Toast.show({
+          type: "error",
+          text1: "Enter a valid email address",
+        });
+        return;
+      }
       const updatedData = {
         ...formData,
         profileImage: uploadedImageUrl,

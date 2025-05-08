@@ -15,6 +15,10 @@ export default function ProfileLayout() {
         name="kycverify"
         options={{ title: "Verification", headerShown: true }}
       />
+      <Stack.Screen
+        name="contact-us"
+        options={{ title: "Contact Us", headerShown: true }}
+      />
     </Stack>
   );
 }

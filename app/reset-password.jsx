@@ -22,15 +22,23 @@ const ResetPasswordScreen = () => {
   const [loading, setLoading] = useState(false);
 const{API_URL}=useContext(ItemsContext)
 
-  const isPasswordStrong = (pwd) => {
-    const minLength = 6;
-    const hasNumber = /\d/;
-    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
-    return (
-      pwd.length >= minLength && hasNumber.test(pwd) && hasSpecialChar.test(pwd)
-    );
-  };
+  // const isPasswordStrong = (pwd) => {
+  //   const minLength = 6;
+  //   const hasNumber = /\d/;
+  //   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>]/;
+  //   return (
+  //     pwd.length >= minLength && hasNumber.test(pwd) && hasSpecialChar.test(pwd)
+  //   );
+  // };
 
+  const isPasswordStrong = (password) =>
+    validator.isStrongPassword(password.trim(), {
+      minLength: 6,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    });
   const handleResetPassword = async () => {
     if (!password || !confirmPassword) {
       Toast.show({

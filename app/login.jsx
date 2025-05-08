@@ -6,25 +6,28 @@ import {
   TouchableOpacity,
   StyleSheet,
   Image,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import axios from "axios";
-import Constants from "expo-constants";
 import { ItemsContext } from "../src/context/ItemContext";
 import Toast from "react-native-toast-message";
+import validator from "validator";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false); // 🔹 Loading state
   const router = useRouter();
 
-  const { setUser,API_URL } = useContext(ItemsContext);
+  const { setUser, API_URL } = useContext(ItemsContext);
 
-  const validateEmail = (email) => {
-    const regex = /^\S+@\S+\.\S+$/;
-    return regex.test(email);
-  };
+  // const validateEmail = (email) => {
+  //   const regex = /^\S+@\S+\.\S+$/;
+  //   return regex.test(email);
+  // };
+  const validateEmail = (email) => validator.isEmail(email.trim());
 
   const handleLogin = async () => {
     if (email.trim() === "" || password.trim() === "") {
@@ -44,6 +47,7 @@ export default function LoginScreen() {
     }
 
     try {
+      setLoading(true); // 🔹 Start loading
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
@@ -75,18 +79,23 @@ export default function LoginScreen() {
         text1: "Login failed",
         text2: "Invalid credentials or server error",
       });
+    } finally {
+      setLoading(false); // 🔹 End loading
     }
   };
 
   return (
     <View style={styles.container}>
-      <Image source={require("../assets/images/icon.png")} style={{
-        height: 100,
-        width: 100,
-        bottom: 20,
-        overflow: 'hidden', // Added to ensure cropping effect
-        borderRadius: 20, // Optional: adds rounded corners
-      }}/>
+      <Image
+        source={require("../assets/images/icon.png")}
+        style={{
+          height: 100,
+          width: 100,
+          bottom: 20,
+          overflow: "hidden",
+          borderRadius: 20,
+        }}
+      />
       <Text style={styles.title}>Welcome Back</Text>
       <Text style={styles.subtitle}>Login to continue</Text>
 
@@ -108,8 +117,16 @@ export default function LoginScreen() {
         onChangeText={setPassword}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Login</Text>
+      <TouchableOpacity
+        style={[styles.button, loading && { opacity: 0.7 }]}
+        onPress={handleLogin}
+        disabled={loading}
+      >
+        {loading ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Text style={styles.buttonText}>Login</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("/signup")}>
@@ -122,6 +139,9 @@ export default function LoginScreen() {
     </View>
   );
 }
+
+// Styles remain unchanged...
+
 
 // Styles
 const styles = StyleSheet.create({

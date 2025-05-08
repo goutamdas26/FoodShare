@@ -1,6 +1,4 @@
 
-
-
 import React, { createContext, useState, useEffect } from "react";
 import axios from "axios";
 import Constants from "expo-constants";
@@ -63,6 +61,7 @@ export const ItemsProvider = ({ children }) => {
     const token = await SecureStore.getItemAsync("userToken");
     if (!token) {
       console.warn("User token not available. Skipping fetchItems.");
+      
       return;
     }
     

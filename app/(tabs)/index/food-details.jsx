@@ -7,9 +7,11 @@ import {
   FlatList,
   Image,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const { width } = Dimensions.get("window");
 
@@ -22,6 +24,7 @@ const Details = () => {
     category,
     location,
     donorDetails,
+    donor,
     expiry,
     postedAt,
     description,
@@ -99,18 +102,30 @@ const formatTime = (timeString) => {
 
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Donor Information</Text>
-          <View style={styles.detailRow}>
+          <TouchableOpacity style={styles.detailRow} onPress={() =>
+                  router.push({
+                    pathname: "user-details",
+                    params: {
+                      userId: donor._id,
+                    },
+                  })
+                }>
             <MaterialIcons name="store" size={20} color="#666" />
             <Text style={styles.detailText}>{donorDetails?.name}</Text>
-          </View>
+          </TouchableOpacity>
           <View style={styles.detailRow}>
             <MaterialIcons name="location-on" size={20} color="#666" />
             <Text style={styles.detailText}>{location}</Text>
           </View>
-          <View style={styles.detailRow}>
+          <TouchableOpacity style={styles.detailRow} onPress={()=>Linking.openURL(`tel:+91${donorDetails?.phone}`)}>
             <MaterialIcons name="phone" size={20} color="#666" />
             <Text style={styles.detailText}>{donorDetails?.phone}</Text>
-          </View>
+          </TouchableOpacity>
+          <View style={styles.detailRow}>
+  <Ionicons name="person-circle" size={20} color="#3F51B5" style={{ marginRight: 0 }} />
+  <Text style={styles.detailText}>User: {donor?.kycStatus}</Text>
+</View>
+
         </View>
 
         <View style={styles.section}>

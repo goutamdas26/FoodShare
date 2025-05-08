@@ -9,6 +9,7 @@ import {
   StyleSheet,
   RefreshControl,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { ItemsContext } from "../../../src/context/ItemContext";
 import * as SecureStore from "expo-secure-store";
@@ -123,7 +124,21 @@ const AvailableFoodScreen = () => {
                     styles.claimButton,
                     claimingItemId === item._id && { opacity: 0.6 },
                   ]}
-                  onPress={() => handleClaim(item)}
+                  onPress={() => {
+                    Alert.alert(
+                      "Confirm Claim",
+                      "Do you really want to claim this food?",
+                      [
+                        { text: "Cancel", style: "cancel" },
+                        {
+                          text: "Yes",
+                          onPress: () => handleClaim(item),
+                        },
+                      ],
+                      { cancelable: true }
+                    );
+                  }}
+                  
                   disabled={claimingItemId === item._id}
                 >
                   {claimingItemId === item._id ? (

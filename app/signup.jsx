@@ -5,13 +5,14 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import axios from "axios";
-import Constants from "expo-constants";
 import Toast from "react-native-toast-message";
 import { ItemsContext } from "../src/context/ItemContext";
-
+import validator from "validator";
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 
 export default function SignupScreen() {
@@ -20,16 +21,25 @@ export default function SignupScreen() {
   const [password, setPassword] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
-const {API_URL}=useContext(ItemsContext)
-  const isValidEmail = (email) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
+  const { API_URL } = useContext(ItemsContext);
 
-  const isValidPhone = (phone) =>
-    /^\d{10}$/.test(phone.trim()); // Ensures 10 digit number
+  const isValidEmail = (email) => validator.isEmail(email.trim());
 
+  // const isValidPhone = (phone) => /^\d{10}$/.test(phone.trim());
+  const isValidPhone = (phone) => isValidPhoneNumber(phone.trim(), 'IN');
+
+
+  // const isStrongPassword = (password) => password.length >= 6;
   const isStrongPassword = (password) =>
-    password.length >= 6; // You can make this stricter
+    validator.isStrongPassword(password.trim(), {
+      minLength: 6,
+      minLowercase: 1,
+      minUppercase: 1,
+      minNumbers: 1,
+      minSymbols: 1,
+    });
 
   const handleSignup = async () => {
     if (!name || !email || !password || !phone || !address) {
@@ -51,7 +61,7 @@ const {API_URL}=useContext(ItemsContext)
     if (!isValidPhone(phone)) {
       Toast.show({
         type: "error",
-        text1: "Phone number must be 10 digits",
+        text1: "Enter valid phone number.",
       });
       return;
     }
@@ -64,6 +74,7 @@ const {API_URL}=useContext(ItemsContext)
       return;
     }
 
+    setLoading(true);
     try {
       await axios.post(`${API_URL}/api/auth/register`, {
         name,
@@ -88,6 +99,8 @@ const {API_URL}=useContext(ItemsContext)
         type: "error",
         text1: status === 409 ? message : "Signup failed",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,7 +115,6 @@ const {API_URL}=useContext(ItemsContext)
         value={name}
         onChangeText={setName}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Email"
@@ -112,7 +124,6 @@ const {API_URL}=useContext(ItemsContext)
         value={email}
         onChangeText={setEmail}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Password"
@@ -121,7 +132,6 @@ const {API_URL}=useContext(ItemsContext)
         value={password}
         onChangeText={setPassword}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Phone Number"
@@ -130,7 +140,6 @@ const {API_URL}=useContext(ItemsContext)
         value={phone}
         onChangeText={setPhone}
       />
-
       <TextInput
         style={styles.input}
         placeholder="Address"
@@ -139,8 +148,12 @@ const {API_URL}=useContext(ItemsContext)
         onChangeText={setAddress}
       />
 
-      <TouchableOpacity style={styles.button} onPress={handleSignup}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+      <TouchableOpacity style={styles.button} onPress={handleSignup} disabled={loading}>
+        {loading ? (
+          <ActivityIndicator color="#FFF" />
+        ) : (
+          <Text style={styles.buttonText}>Sign Up</Text>
+        )}
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => router.push("/login")}>

@@ -93,9 +93,11 @@ export default function ClaimDetailsScreen() {
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="phone" size={20} color="#666" />
+            <TouchableOpacity onPress={()=>Linking.openURL(`tel:+91${claimDetails.foodItemId.donorDetails.phone}`)}>
             <Text style={styles.detailText}>
               {claimDetails.foodItemId.donorDetails.phone}
             </Text>
+            </TouchableOpacity>
           </View>
         </View>
 

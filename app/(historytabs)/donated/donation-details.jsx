@@ -8,7 +8,7 @@ import GoBackHeader from "../../../src/components/goBack";
 export default function DonationDetailsScreen() {
   const route = useRoute();
   const donationDetails = route.params || {};
-console.log(JSON.stringify(donationDetails.foodItemId.claimedBy, null, 2));
+
 const formatDate = (dateString) => {
   const date = new Date(dateString);
   return date.toLocaleDateString(); // Local date format
@@ -58,13 +58,13 @@ const formatTime = (dateString) => {
           <View style={styles.detailRow}>
             <MaterialIcons name="event" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Posted at: {formatDate(donationDetails.foodItemId.postedAt)}
+              Posted at: {formatDate(donationDetails.foodItemId.postedAt)}  {formatTime(donationDetails.foodItemId.postedAt)}
             </Text>
           </View>
           <View style={styles.detailRow}>
             <MaterialIcons name="schedule" size={20} color="#666" />
             <Text style={styles.detailText}>
-              Expires at: {formatDate(donationDetails.foodItemId.expiry)}
+              Expires at: {formatDate(donationDetails.foodItemId.expiry)} {formatTime(donationDetails.foodItemId.expiry)}
             </Text>
           </View>
           <View style={styles.detailRow}>
@@ -118,11 +118,14 @@ const formatTime = (dateString) => {
               {donationDetails.foodItemId.location}
             </Text>
           </View>
-          <View style={styles.detailRow}>
+          <View style={styles.detailRow} >
             <MaterialIcons name="phone" size={20} color="#666" />
+            <TouchableOpacity onPress={()=>Linking.openURL(`tel:+91${donationDetails.foodItemId.donorDetails.phone}`)}>
             <Text style={styles.detailText}>
               {donationDetails.foodItemId.donorDetails.phone}
             </Text>
+
+            </TouchableOpacity>
           </View>
         </View>
 

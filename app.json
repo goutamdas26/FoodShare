@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "foodShare",
+    "name": "FoodShare",
     "slug": "foodshare",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -52,7 +52,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "API_URL": "http://192.168.29.119:5000",
+      "API_URL": "https://foodshare-be.onrender.com",
       "router": {
         "origin": false
       },
