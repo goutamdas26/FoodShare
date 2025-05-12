@@ -29,11 +29,12 @@ const Verify = () => {
   const pickImage = async (type) => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        mediaTypes: ['images'],
         allowsEditing: true,
         aspect: [4, 3],
         quality: 0.8,
       });
+    
       if (!result.canceled) {
         setKycData({ ...kycData, [type]: result.assets[0].uri });
       }
@@ -118,7 +119,7 @@ const Verify = () => {
           value={kycData.idNumber}
           onChangeText={(text) => setKycData({ ...kycData, idNumber: text })}
           placeholder="Enter ID number"
-          keyboardType="number-pad"
+     
           placeholderTextColor="#bbb"
         />
         <Text style={styles.label}>ID Type</Text>

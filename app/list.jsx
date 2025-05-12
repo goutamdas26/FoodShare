@@ -66,9 +66,10 @@ const {API_URL}=useContext(ItemsContext)
       return Toast.show({ type: "error", text1: "Image permission denied." });
     }
 
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      
+      allowsEditing:true,
       quality: 1,
     });
 

@@ -62,8 +62,14 @@ const DonateFoodScreen = () => {
 
 
   const pickImages = async () => {
+    // let result = await ImagePicker.launchImageLibraryAsync({
+    //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    //   allowsMultipleSelection: true,
+    //   quality: 1,
+    // });
     let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      mediaTypes: ['images'],
+      
       allowsMultipleSelection: true,
       quality: 1,
     });
